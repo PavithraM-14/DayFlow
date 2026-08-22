@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ---------------------------------------------------------------------
    Dayflow design tokens
    Palette follows Odoo's official brand: the plum/purple mark color
@@ -20,15 +24,36 @@
 
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Ubuntu, "Noto Sans", Arial, sans-serif;
-  /* Decorative handwriting face (next/font, self-hosted) — used only for the
-     marker-highlight accent, never for buttons/inputs/body copy. This is not
-     part of Odoo's official type system (their real UI is system-sans only);
-     it's a nod to the highlighter-marker headings in the project's own
-     requirements doc. */
   --font-hand: "Caveat", "Segoe Script", cursive;
 
   --max-width: 1120px;
   --radius: 10px;
+}
+
+/* Custom utility classes from the HTML templates */
+.marker-highlight {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+}
+.marker-highlight::after {
+  content: '';
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  bottom: 2px;
+  height: 40%;
+  background-color: #ffd7f1;
+  z-index: -1;
+  transform: rotate(-1deg);
+  border-radius: 2px;
+}
+.card-hover {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card-hover:hover {
+  box-shadow: 0 4px 12px rgba(87, 52, 79, 0.05);
+  transform: translateY(-2px);
 }
 
 * {
@@ -55,10 +80,7 @@ a {
   text-decoration: none;
 }
 
-h1,
-h2,
-h3,
-p {
+h1, h2, h3, p {
   margin: 0;
 }
 
@@ -73,8 +95,7 @@ button {
   font-family: inherit;
 }
 
-input,
-select {
+input, select {
   font-family: inherit;
   font-size: 14.5px;
 }
