@@ -32,6 +32,12 @@ export default function HRDashboardPage() {
             </Link>
           </li>
           <li>
+            <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="/dashboard/verification">
+              <span className="material-symbols-outlined">how_to_reg</span>
+              <span>New Employee Verification</span>
+            </Link>
+          </li>
+          <li>
             <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="/dashboard/attendance">
               <span className="material-symbols-outlined">pending_actions</span>
               <span>Attendance</span>

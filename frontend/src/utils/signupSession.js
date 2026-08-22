@@ -9,6 +9,11 @@
 const PENDING_KEY = "dayflow:hr-signup:pending";
 const RESULT_KEY = "dayflow:hr-signup:result";
 
+// The employee flow mirrors it across its own three pages
+// (/signup/employee -> .../verify -> .../submitted).
+const EMPLOYEE_PENDING_KEY = "dayflow:employee-signup:pending";
+const EMPLOYEE_RESULT_KEY = "dayflow:employee-signup:result";
+
 const read = (key) => {
   if (typeof window === "undefined") return null;
   try {
@@ -47,3 +52,15 @@ export const clearPendingSignup = () => clear(PENDING_KEY);
 export const saveSignupResult = (result) => write(RESULT_KEY, result);
 export const getSignupResult = () => read(RESULT_KEY);
 export const clearSignupResult = () => clear(RESULT_KEY);
+
+/** { email, name, companyName, role, devOtp?, emailDelivered } */
+export const saveEmployeePendingSignup = (pending) =>
+  write(EMPLOYEE_PENDING_KEY, pending);
+export const getEmployeePendingSignup = () => read(EMPLOYEE_PENDING_KEY);
+export const clearEmployeePendingSignup = () => clear(EMPLOYEE_PENDING_KEY);
+
+/** The { request, company } the employee verify-otp step returned. */
+export const saveEmployeeSignupResult = (result) =>
+  write(EMPLOYEE_RESULT_KEY, result);
+export const getEmployeeSignupResult = () => read(EMPLOYEE_RESULT_KEY);
+export const clearEmployeeSignupResult = () => clear(EMPLOYEE_RESULT_KEY);

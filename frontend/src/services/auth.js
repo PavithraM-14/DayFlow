@@ -36,10 +36,63 @@ export const resendHrSignupOtp = (email) =>
 export const verifyHrSignupOtp = ({ email, otp }) =>
   apiClient.post(`${HR_SIGNUP}/verify-otp`, { email, otp });
 
+const EMPLOYEE_SIGNUP = "/auth/signup/employee";
+
+/**
+ * Step 1 of joining an existing company: submit the form and have a
+ * 6-digit code emailed. Plain JSON — unlike the HR flow there is no logo.
+ */
+export const sendEmployeeSignupOtp = ({
+  companyId,
+  role,
+  name,
+  email,
+  phone,
+  password,
+}) =>
+  apiClient.post(
+    `${EMPLOYEE_SIGNUP}/send-otp`,
+    { companyId, role, name, email, phone: phone || "", password },
+    { auth: false }
+  );
+
+export const resendEmployeeSignupOtp = (email) =>
+  apiClient.post(`${EMPLOYEE_SIGNUP}/resend-otp`, { email }, { auth: false });
+
+/**
+ * Step 2: a valid code files a join request for the chosen company. It
+ * does NOT create an account — that happens when the company's HR
+ * approves the request.
+ */
+export const verifyEmployeeSignupOtp = ({ email, otp }) =>
+  apiClient.post(
+    `${EMPLOYEE_SIGNUP}/verify-otp`,
+    { email, otp },
+    { auth: false }
+  );
+
+/**
+ * Sign in with email + password.
+ *
+ * On success `data` carries { token, user }; the user's `role` is what
+ * decides which dashboard to land on. Signing in with the employee
+ * Login ID is not supported yet — the backend has no such identifier.
+ */
+export const login = ({ email, password }) =>
+  apiClient.post("/auth/login", { email, password }, { auth: false });
+
+/** Revalidates the stored token and returns fresh user details. */
+export const fetchCurrentUser = () => apiClient.get("/auth/me");
+
 export const authService = {
   sendHrSignupOtp,
   resendHrSignupOtp,
   verifyHrSignupOtp,
+  sendEmployeeSignupOtp,
+  resendEmployeeSignupOtp,
+  verifyEmployeeSignupOtp,
+  login,
+  fetchCurrentUser,
 };
 
 export default authService;

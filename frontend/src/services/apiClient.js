@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/config";
+import { getAuthToken } from "@/utils/authSession";
 
 /**
  * Thin fetch wrapper for the Dayflow API.
@@ -7,9 +8,14 @@ import { API_BASE_URL } from "@/config";
  * when the request never reached the server — so callers can branch on
  * validation errors without a try/catch around every call.
  */
-const request = async (path, { method = "GET", body, headers } = {}) => {
+const request = async (path, { method = "GET", body, headers, auth = true } = {}) => {
   const isFormData =
     typeof FormData !== "undefined" && body instanceof FormData;
+
+  // Attached whenever there is a stored session, so protected endpoints
+  // work without every caller remembering the header. Pass `auth: false`
+  // to send a deliberately anonymous request.
+  const token = auth ? getAuthToken() : null;
 
   let response;
   try {
@@ -18,6 +24,7 @@ const request = async (path, { method = "GET", body, headers } = {}) => {
       // Let the browser set the multipart boundary itself.
       headers: {
         ...(isFormData || !body ? {} : { "Content-Type": "application/json" }),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...headers,
       },
       body: isFormData ? body : body ? JSON.stringify(body) : undefined,
@@ -53,6 +60,7 @@ const request = async (path, { method = "GET", body, headers } = {}) => {
 export const apiClient = {
   get: (path, options) => request(path, { ...options, method: "GET" }),
   post: (path, body, options) => request(path, { ...options, method: "POST", body }),
+  patch: (path, body, options) => request(path, { ...options, method: "PATCH", body }),
 };
 
 export default apiClient;

@@ -33,6 +33,12 @@ export default function Page() {
             </Link>
           </li>
           <li>
+            <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="/dashboard/verification">
+              <span className="material-symbols-outlined">how_to_reg</span>
+              <span>New Employee Verification</span>
+            </Link>
+          </li>
+          <li>
             <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'reports' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/attendance">
               <span className="material-symbols-outlined" style={active === 'reports' ? { fontVariationSettings: "'FILL' 1" } : {}}>pending_actions</span>
               <span>Attendance</span>
