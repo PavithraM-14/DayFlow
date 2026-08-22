@@ -1,0 +1,31 @@
+# Day Flow — root .gitignore
+# backend/ and frontend/ each have their own .gitignore for app-specific
+# build output and dependencies (node_modules, .next, .env, etc.).
+# This one covers things at the repo root and cross-cutting junk.
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Env files at the root (if ever added)
+.env
+.env.local
+
+# Dependency dirs, just in case anything is run from the root
+node_modules/
+
+# Scratch folders used while transferring generated files onto this
+# machine — safe to delete, not part of the project
+_scaffold_tmp/
+_to_delete/

@@ -1,0 +1,29 @@
+{
+  "name": "dayflow-backend",
+  "version": "1.0.0",
+  "description": "Day Flow backend API — Node.js + Express + MongoDB (MVC architecture)",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [
+    "dayflow",
+    "express",
+    "mongodb",
+    "mvc"
+  ],
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.9.3",
+    "morgan": "^1.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

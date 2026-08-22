@@ -1,0 +1,22 @@
+{
+  "name": "dayflow-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Day Flow frontend — React + Next.js (JavaScript), MVC-style structure",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fontsource/caveat": "^5.3.0",
+    "next": "^16.3.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "eslint": "^10.9.0",
+    "eslint-config-next": "^16.3.2"
+  }
+}

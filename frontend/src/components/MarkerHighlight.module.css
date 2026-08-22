@@ -1,0 +1,31 @@
+/*
+ * Recreates the marker-highlight heading style from the project's own
+ * requirements doc (handwritten script over a rough highlighter swipe).
+ * This is a deliberate, decorative exception to Odoo's real (system-sans)
+ * type system — used sparingly as an eyebrow/accent, never on form
+ * controls or body copy.
+ */
+.wrap {
+  display: inline-block;
+  position: relative;
+  padding: 2px 4px;
+}
+
+.swipe {
+  position: absolute;
+  inset: 8% -6px;
+  background: #f5a83c;
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  transform: rotate(-1.2deg);
+  z-index: 0;
+}
+
+.text {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1;
+  white-space: nowrap;
+}

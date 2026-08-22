@@ -1,0 +1,80 @@
+/* ---------------------------------------------------------------------
+   Dayflow design tokens
+   Palette follows Odoo's official brand: the plum/purple mark color
+   (#714B67), the enterprise teal accent (#017E84), and the neutral
+   system font stack Odoo ships on odoo.com and in the backend UI.
+   --------------------------------------------------------------------- */
+:root {
+  --color-primary: #714b67;
+  --color-primary-dark: #5b3c53;
+  --color-primary-tint: #f5eef3;
+  --color-accent: #017e84;
+
+  --color-bg: #ffffff;
+  --color-bg-alt: #faf8fa;
+  --color-text: #1f1b1e;
+  --color-text-muted: #6b6570;
+  --color-border: #e8e3e7;
+  --color-danger: #b3261e;
+  --color-success: #2e7d32;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Ubuntu, "Noto Sans", Arial, sans-serif;
+  /* Decorative handwriting face (next/font, self-hosted) — used only for the
+     marker-highlight accent, never for buttons/inputs/body copy. This is not
+     part of Odoo's official type system (their real UI is system-sans only);
+     it's a nod to the highlighter-marker headings in the project's own
+     requirements doc. */
+  --font-hand: "Caveat", "Segoe Script", cursive;
+
+  --max-width: 1120px;
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-bg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+select {
+  font-family: inherit;
+  font-size: 14.5px;
+}
