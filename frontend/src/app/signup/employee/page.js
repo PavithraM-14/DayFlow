@@ -10,8 +10,11 @@ import SubmitButton from "@/components/SubmitButton";
 import InfoNote from "@/components/InfoNote";
 import { REGISTERED_COMPANIES } from "@/services/companies";
 
+const ROLES = ["Employee", "HR"];
+
 const INITIAL_FORM = {
   company: "",
+  role: "",
   name: "",
   email: "",
   phone: "",
@@ -48,6 +51,15 @@ export default function EmployeeSignUpPage() {
           onChange={handleChange("company")}
           options={REGISTERED_COMPANIES}
           placeholder="Select your company"
+          required
+        />
+        <SelectField
+          id="role"
+          label="Role"
+          value={form.role}
+          onChange={handleChange("role")}
+          options={ROLES}
+          placeholder="Select your role"
           required
         />
         <TextField

@@ -43,14 +43,14 @@ export default function GetStartedPage() {
               <RoleCard
                 href="/signup/employee"
                 icon={EMPLOYEE_ICON}
-                title="Employee"
-                description="Join already registered company"
+                title="Join already registered company"
+                description=""
               />
               <RoleCard
                 href="/signup/hr"
                 icon={HR_ICON}
-                title="HR Officer"
-                description="Register your company to use Dayflow"
+                title="Register your company to use Dayflow"
+                description=""
               />
             </div>
           </section>
