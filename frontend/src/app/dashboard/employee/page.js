@@ -5,100 +5,7 @@ import Link from 'next/link';
 export default function Page() {
   const active = 'employee';
   return (
-    <div className="bg-surface text-on-surface font-body-md h-screen flex overflow-hidden">
-      
-      {/* SideNavBar */}
-      <nav className="hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant h-screen w-64 fixed left-0 py-6 px-4 z-50">
-        <div className="flex items-center gap-3 mb-8 px-2">
-          <div className="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
-            <span className="material-symbols-outlined">water_drop</span>
-          </div>
-          <div>
-            <h1 className="text-title-md font-title-md font-black text-primary">Dayflow</h1>
-            <p className="font-label-sm text-label-sm text-on-surface-variant">HR Management</p>
-          </div>
-        </div>
-
-        <ul className="flex flex-col gap-1 flex-grow">
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'employee' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/hr">
-              <span className="material-symbols-outlined" style={active === 'employee' ? { fontVariationSettings: "'FILL' 1" } : {}}>dashboard</span>
-              <span>Dashboard</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'employee' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/employee">
-              <span className="material-symbols-outlined" style={active === 'employee' ? { fontVariationSettings: "'FILL' 1" } : {}}>groups</span>
-              <span>Employees</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'employee' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/attendance">
-              <span className="material-symbols-outlined" style={active === 'employee' ? { fontVariationSettings: "'FILL' 1" } : {}}>pending_actions</span>
-              <span>Attendance</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'employee' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/time-off">
-              <span className="material-symbols-outlined" style={active === 'employee' ? { fontVariationSettings: "'FILL' 1" } : {}}>calendar_today</span>
-              <span>Time Off</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'employee' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/payroll">
-              <span className="material-symbols-outlined" style={active === 'employee' ? { fontVariationSettings: "'FILL' 1" } : {}}>payments</span>
-              <span>Payroll</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'employee' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/reports">
-              <span className="material-symbols-outlined" style={active === 'employee' ? { fontVariationSettings: "'FILL' 1" } : {}}>assessment</span>
-              <span>Reports</span>
-            </Link>
-          </li>
-        </ul>
-
-        <div className="mt-auto border-t border-outline-variant pt-4">
-          <ul className="flex flex-col gap-1">
-            <li>
-              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
-                <span className="material-symbols-outlined">settings</span>
-                <span>Settings</span>
-              </Link>
-            </li>
-            <li>
-              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
-                <span className="material-symbols-outlined">help_outline</span>
-                <span>Help</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      {/* Employees - Dayflow */}
-<div className="flex-1 ml-64 flex flex-col h-screen overflow-hidden">
-{/* TopAppBar */}
-<header className="bg-surface docked top-0 w-full sticky z-40 border-b border-outline-variant flex justify-between items-center h-16 px-gutter shrink-0">
-<div className="flex-1 max-w-md">
-<div className="relative group">
-<span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input className="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-[10px] text-body-sm font-body-sm focus:ring-2 focus:ring-primary-container focus:border-primary focus:outline-none transition-all placeholder:text-outline shadow-sm" placeholder="Search employees..." type="text" />
-</div>
-</div>
-<div className="flex items-center gap-4 ml-auto">
-<button className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant relative">
-<span className="material-symbols-outlined">notifications</span>
-<span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
-</button>
-<button className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant">
-<span className="material-symbols-outlined">apps</span>
-</button>
-<div className="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-2">
-<img alt="Administrator Profile" className="w-full h-full object-cover" data-alt="Professional corporate headshot of an administrator in a modern office, soft high-key lighting, professional humanist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEDeLXmBoP7CweMLnRfstMJNSe_9SZ9MLN9_vl1BKotGoxVB-o9PAUryzcR2Vtfrs7aA6JoffkaAt-KspRgQ-JzsjSeJMya2qrFDXRpgpJLVsxMXfKAy3XlOodAxHIFm9IUZiSw15STw1BRg0no68Ovdo81Opo4DQDyHHir2oJlpVJXtD56_PhNlbe6-iHreT4o4C9UvX0YFdHgviqk47L1aRFqZVdGDbS2DXepjhB8VOFFuqTcIHYTw" />
-</div>
-</div>
-</header>
+    <>
 {/* Page Content */}
 <main className="flex-1 overflow-y-auto bg-surface-container-low px-gutter py-8">
 <div className="max-w-[1120px] mx-auto">
@@ -142,7 +49,7 @@ export default function Page() {
 <p className="font-body-sm text-body-sm text-on-surface-variant mb-3">Senior Backend Engineer</p>
 <span className="px-3 py-1 bg-surface-container rounded-full font-label-sm text-label-sm text-on-surface-variant border border-outline-variant/50">Engineering</span>
 <div className="flex gap-2 mt-5 w-full pt-4 border-t border-surface-container-highest">
-<button className="flex-1 py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-label-sm text-label-sm text-on-surface">View</button>
+<Link href="/dashboard/profile" className="flex-1 py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-label-sm text-label-sm text-on-surface block text-center">View</Link>
 <button className="w-8 h-8 rounded bg-surface-container hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface-variant">
 <span className="material-symbols-outlined text-[16px]">mail</span>
 </button>
@@ -159,7 +66,7 @@ export default function Page() {
 <p className="font-body-sm text-body-sm text-on-surface-variant mb-3">Lead Product Designer</p>
 <span className="px-3 py-1 bg-surface-container rounded-full font-label-sm text-label-sm text-on-surface-variant border border-outline-variant/50">Design</span>
 <div className="flex gap-2 mt-5 w-full pt-4 border-t border-surface-container-highest">
-<button className="flex-1 py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-label-sm text-label-sm text-on-surface">View</button>
+<Link href="/dashboard/profile" className="flex-1 py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-label-sm text-label-sm text-on-surface block text-center">View</Link>
 <button className="w-8 h-8 rounded bg-surface-container hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface-variant">
 <span className="material-symbols-outlined text-[16px]">mail</span>
 </button>
@@ -177,7 +84,7 @@ export default function Page() {
 <p className="font-body-sm text-body-sm text-on-surface-variant mb-3">Marketing Manager</p>
 <span className="px-3 py-1 bg-surface-container rounded-full font-label-sm text-label-sm text-on-surface-variant border border-outline-variant/50">Marketing</span>
 <div className="flex gap-2 mt-5 w-full pt-4 border-t border-surface-container-highest">
-<button className="flex-1 py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-label-sm text-label-sm text-on-surface">View</button>
+<Link href="/dashboard/profile" className="flex-1 py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-label-sm text-label-sm text-on-surface block text-center">View</Link>
 <button className="w-8 h-8 rounded bg-surface-container hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface-variant">
 <span className="material-symbols-outlined text-[16px]">mail</span>
 </button>
@@ -194,7 +101,7 @@ export default function Page() {
 <p className="font-body-sm text-body-sm text-on-surface-variant mb-3">HR Business Partner</p>
 <span className="px-3 py-1 bg-surface-container rounded-full font-label-sm text-label-sm text-on-surface-variant border border-outline-variant/50">Human Resources</span>
 <div className="flex gap-2 mt-5 w-full pt-4 border-t border-surface-container-highest">
-<button className="flex-1 py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-label-sm text-label-sm text-on-surface">View</button>
+<Link href="/dashboard/profile" className="flex-1 py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors font-label-sm text-label-sm text-on-surface block text-center">View</Link>
 <button className="w-8 h-8 rounded bg-surface-container hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface-variant">
 <span className="material-symbols-outlined text-[16px]">mail</span>
 </button>
@@ -203,8 +110,6 @@ export default function Page() {
 </div>
 </div>
 </main>
-</div>
-
-    </div>
+    </>
   );
 }

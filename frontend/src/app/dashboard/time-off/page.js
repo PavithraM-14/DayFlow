@@ -5,104 +5,7 @@ import Link from 'next/link';
 export default function Page() {
   const active = 'time-off';
   return (
-    <div className="bg-surface text-on-surface font-body-md h-screen flex overflow-hidden">
-      
-      {/* SideNavBar */}
-      <nav className="hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant h-screen w-64 fixed left-0 py-6 px-4 z-50">
-        <div className="flex items-center gap-3 mb-8 px-2">
-          <div className="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
-            <span className="material-symbols-outlined">water_drop</span>
-          </div>
-          <div>
-            <h1 className="text-title-md font-title-md font-black text-primary">Dayflow</h1>
-            <p className="font-label-sm text-label-sm text-on-surface-variant">HR Management</p>
-          </div>
-        </div>
-
-        <ul className="flex flex-col gap-1 flex-grow">
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/hr">
-              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>dashboard</span>
-              <span>Dashboard</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/employee">
-              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>groups</span>
-              <span>Employees</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/attendance">
-              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>pending_actions</span>
-              <span>Attendance</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/time-off">
-              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>calendar_today</span>
-              <span>Time Off</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/payroll">
-              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>payments</span>
-              <span>Payroll</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/reports">
-              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>assessment</span>
-              <span>Reports</span>
-            </Link>
-          </li>
-        </ul>
-
-        <div className="mt-auto border-t border-outline-variant pt-4">
-          <ul className="flex flex-col gap-1">
-            <li>
-              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
-                <span className="material-symbols-outlined">settings</span>
-                <span>Settings</span>
-              </Link>
-            </li>
-            <li>
-              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
-                <span className="material-symbols-outlined">help_outline</span>
-                <span>Help</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      {/* Time Off - Dayflow */}
-<div className="flex-1 flex flex-col md:ml-64 relative min-h-screen">
-{/* TopAppBar */}
-<header className="bg-surface dark:bg-surface-dim sticky top-0 w-full z-40 border-b border-outline-variant dark:border-outline h-16 px-gutter flex justify-between items-center transition-colors">
-<div className="flex-1 flex items-center gap-4 max-w-md">
-<div className="relative w-full hidden md:block">
-<span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
-<input className="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg text-body-sm font-body-sm focus:ring-2 focus:ring-primary-container focus:border-primary-container outline-none transition-shadow text-on-surface" placeholder="Search employees, requests..." type="text" />
-</div>
-<button className="md:hidden text-on-surface-variant p-2 rounded-full hover:bg-surface-container-low transition-colors">
-<span className="material-symbols-outlined">menu</span>
-</button>
-</div>
-<div className="flex items-center gap-2 md:gap-4">
-<button className="text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors p-2 rounded-full relative">
-<span className="material-symbols-outlined">notifications</span>
-<span className="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full ring-2 ring-surface"></span>
-</button>
-<button className="text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors p-2 rounded-full hidden sm:block">
-<span className="material-symbols-outlined">apps</span>
-</button>
-<div className="h-8 w-px bg-outline-variant mx-2 hidden sm:block"></div>
-<button className="flex items-center gap-2 focus:ring-2 focus:ring-primary-container outline-none rounded-full overflow-hidden border border-outline-variant">
-<img alt="Administrator Profile" className="w-8 h-8 object-cover rounded-full bg-surface-container-high" data-alt="A professional headshot of a corporate HR administrator, looking friendly and approachable, modern well-lit office background, high quality photography, professional humanist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDm0Arlux9LDS02wq-3ccxiorgGEn9Jq7yHVwrTVImM_BUIvUw9Zckhk4uY961_ferIKz2Ggmlhveol7D-fsbb-Bj-OfklT9w9FcZF05aXw4ulDbPWIDKN_BX6yFP_LGQYVRHi5GzB1csdc1RqgWrtTTOjak9PKVIubLLjGxZOsYpaPndwVut5eIy980JEJ0tx0w8dh98Tsv-ImcbedBiPNxRqJOnlXBKttxhFXNOsY4hE8z7aQ4VLU0A" />
-</button>
-</div>
-</header>
+    <>
 {/* Canvas */}
 <main className="flex-1 overflow-y-auto p-4 md:p-gutter lg:p-container-padding">
 <div className="max-w-[1120px] mx-auto w-full">
@@ -326,8 +229,6 @@ export default function Page() {
 </div>
 </div>
 </main>
-</div>
-
-    </div>
+    </>
   );
 }

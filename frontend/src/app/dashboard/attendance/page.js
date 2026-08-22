@@ -5,109 +5,7 @@ import Link from 'next/link';
 export default function Page() {
   const active = 'attendance';
   return (
-    <div className="bg-surface text-on-surface font-body-md h-screen flex overflow-hidden">
-      
-      {/* SideNavBar */}
-      <nav className="hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant h-screen w-64 fixed left-0 py-6 px-4 z-50">
-        <div className="flex items-center gap-3 mb-8 px-2">
-          <div className="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
-            <span className="material-symbols-outlined">water_drop</span>
-          </div>
-          <div>
-            <h1 className="text-title-md font-title-md font-black text-primary">Dayflow</h1>
-            <p className="font-label-sm text-label-sm text-on-surface-variant">HR Management</p>
-          </div>
-        </div>
-
-        <ul className="flex flex-col gap-1 flex-grow">
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/hr">
-              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>dashboard</span>
-              <span>Dashboard</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/employee">
-              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>groups</span>
-              <span>Employees</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/attendance">
-              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>pending_actions</span>
-              <span>Attendance</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/time-off">
-              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>calendar_today</span>
-              <span>Time Off</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/payroll">
-              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>payments</span>
-              <span>Payroll</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/reports">
-              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>assessment</span>
-              <span>Reports</span>
-            </Link>
-          </li>
-        </ul>
-
-        <div className="mt-auto border-t border-outline-variant pt-4">
-          <ul className="flex flex-col gap-1">
-            <li>
-              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
-                <span className="material-symbols-outlined">settings</span>
-                <span>Settings</span>
-              </Link>
-            </li>
-            <li>
-              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
-                <span className="material-symbols-outlined">help_outline</span>
-                <span>Help</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      {/* Attendance - Dayflow */}
-<div className="flex-1 md:ml-64 flex flex-col min-h-screen">
-{/* Shared Component: TopAppBar */}
-<header className="flex justify-between items-center h-16 px-gutter bg-surface sticky top-0 z-40 border-b border-outline-variant">
-{/* Left Side: Mobile Menu & Breadcrumb */}
-<div className="flex items-center gap-4">
-<button className="md:hidden text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors focus:ring-2 ring-primary-container outline-none">
-<span className="material-symbols-outlined">menu</span>
-</button>
-<div className="hidden sm:flex items-center gap-2 text-sm text-on-surface-variant">
-<span>Dayflow</span>
-<span className="material-symbols-outlined text-[16px]">chevron_right</span>
-<span className="font-medium text-on-surface">Attendance Log</span>
-</div>
-</div>
-{/* Right Side: Search & Actions */}
-<div className="flex items-center gap-3">
-<button className="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors focus:ring-2 ring-primary-container outline-none">
-<span className="material-symbols-outlined">search</span>
-</button>
-<button className="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors focus:ring-2 ring-primary-container outline-none relative">
-<span className="material-symbols-outlined">notifications</span>
-<span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
-</button>
-<button className="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors focus:ring-2 ring-primary-container outline-none">
-<span className="material-symbols-outlined">apps</span>
-</button>
-<div className="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-2 shrink-0">
-<img alt="Administrator Profile" className="w-full h-full object-cover" data-alt="Professional corporate headshot of a diverse female executive with warm, bright lighting and an approachable smile. Modern office background out of focus. High-key light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjxbXNV55YTHkNXvTnuimjX8WD8nqqbABQr7jb72MtodLMW7jnQQiBNLsb7WY8_yfpBJAKRwu2nRlg8foKbHC6f7ZRv62_CuyVLEC_I2FrdQObDdd2t-VgKDlU2E2JWnJ0ZGR9NfCjzO6s1XloBUqbQ5IL4gcH7QtEO3Su2ddUjx7TTCm6fFE7AU44j-nR5i5mVtXAUEc440E69hCJa4JlQx3sO5GuJTOfemKTM6ZLnCKv229xVtqZHg" />
-</div>
-</div>
-</header>
+    <>
 {/* Page Content Canvas */}
 <main className="flex-1 p-gutter max-w-[1120px] w-full mx-auto">
 {/* Page Header */}
@@ -296,8 +194,6 @@ export default function Page() {
 </div>
 </div>
 </main>
-</div>
-
-    </div>
+    </>
   );
 }

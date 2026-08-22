@@ -4,94 +4,7 @@ import Link from 'next/link';
 
 export default function EmployeeDashboard() {
   return (
-    <div className="bg-surface text-on-surface font-body-md min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
-      <aside className="bg-surface-container border-r border-outline-variant h-screen w-64 fixed left-0 top-0 flex flex-col gap-4 py-6 px-4 z-40 hidden md:flex">
-{/* Header */}
-<div className="flex items-center gap-3 px-2 mb-4">
-<div className="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-lg flex-shrink-0">
-<span className="material-symbols-outlined" data-icon="corporate_fare">corporate_fare</span>
-</div>
-<div>
-<h1 className="font-headline-lg text-primary text-xl">Dayflow</h1>
-<p className="font-label-sm text-label-sm text-on-surface-variant">HR Management</p>
-</div>
-</div>
-{/* Main Nav */}
-<nav className="flex-1 flex flex-col gap-1">
-{/* Active Tab: Dashboard */}
-<Link className="text-primary font-bold bg-primary-container/10 rounded-lg flex items-center gap-3 px-3 py-2.5 active:scale-95 duration-200 group relative" href="/employee-dashboard">
-<span className="material-symbols-outlined" data-icon="dashboard" data-weight="fill" style={{fontVariationSettings: "'FILL' 1"}}>dashboard</span>
-<span className="font-label-sm text-label-sm">Dashboard</span>
-{/* Active Indicator Line */}
-<div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-primary rounded-r-full"></div>
-</Link>
-<Link className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="/employee-dashboard/attendance">
-<span className="material-symbols-outlined" data-icon="timer">timer</span>
-<span className="font-label-sm text-label-sm">Attendance</span>
-</Link>
-<Link className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="/employee-dashboard/time-off">
-<span className="material-symbols-outlined" data-icon="event_busy">event_busy</span>
-<span className="font-label-sm text-label-sm">Time Off</span>
-</Link>
-<Link className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="/employee-dashboard/profile">
-<span className="material-symbols-outlined" data-icon="person">person</span>
-<span className="font-label-sm text-label-sm">My Profile</span>
-</Link>
-<Link className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="/employee-dashboard/payroll">
-<span className="material-symbols-outlined" data-icon="payments">payments</span>
-<span className="font-label-sm text-label-sm">Payroll</span>
-</Link>
-</nav>
-{/* CTA */}
-<button className="mt-auto bg-primary text-on-primary rounded-lg py-2.5 px-4 font-label-sm text-label-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mb-4 w-full active:scale-95 duration-200">
-<span className="material-symbols-outlined text-sm" data-icon="login">login</span>
-            Check In
-        </button>
-{/* Footer Nav */}
-<div className="flex flex-col gap-1 border-t border-outline-variant pt-4">
-<a className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2 rounded-lg active:scale-95 duration-200" href="#">
-<span className="material-symbols-outlined text-sm" data-icon="settings">settings</span>
-<span className="font-label-sm text-label-sm">Settings</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2 rounded-lg active:scale-95 duration-200 text-error" href="#">
-<span className="material-symbols-outlined text-sm" data-icon="logout">logout</span>
-<span className="font-label-sm text-label-sm">Logout</span>
-</a>
-</div>
-</aside>
-{/* Main Content Wrapper */}
-<div className="flex-1 md:ml-64 flex flex-col min-h-screen relative">
-{/* Mobile Top Nav (Hidden on Desktop) */}
-{/* TopNavBar (Mobile) */}
-<header className="md:hidden flex items-center justify-between p-4 bg-surface border-b border-outline-variant sticky top-0 z-50">
-  <div className="flex items-center gap-2">
-    <span className="material-symbols-outlined text-primary">menu</span>
-    <h1 className="font-title-md text-primary">Dayflow</h1>
-  </div>
-  <img alt="Profile photo" className="w-8 h-8 rounded-full border border-outline-variant bg-surface-container object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrJ1l9JGS0deg42HpVQSStp3WuLg6cFZW2FeG26-gaOuYdb6ndlwrx2AuaA27pg_mwg-16BH0vLFVhbSYT_mV6myPlpU4qy2NJ_opECPnYffJnHomg15Xs2ms4GmmLi3nl8qphGPoWWcyhhYNSJTjr42ac6VRMY6AFBrSr5ALG3Pt2PH4hMFAMsCFMQTOCwpWDb_wcsXAldmDawt7V86kvLeq6kxCD7Yttk5p3P4saztOMOfhirc7mSQ" />
-</header>
-{/* TopNavBar (Desktop) */}
-<header className="bg-surface flex justify-between items-center h-16 px-gutter border-b border-outline-variant sticky top-0 z-40 hidden md:flex">
-  <div className="flex items-center gap-4 flex-grow max-w-md">
-    <div className="relative w-full">
-      <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
-      <input className="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-[10px] focus:ring-2 focus:ring-primary-container focus:border-primary focus:outline-none transition-colors text-body-sm font-body-sm" placeholder="Search employees, documents..." type="text" />
-    </div>
-  </div>
-  <div className="flex items-center gap-4 ml-auto">
-    <button className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant relative">
-      <span className="material-symbols-outlined">notifications</span>
-      <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
-    </button>
-    <button className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant">
-      <span className="material-symbols-outlined">apps</span>
-    </button>
-    <div className="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
-      <img alt="Profile" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrJ1l9JGS0deg42HpVQSStp3WuLg6cFZW2FeG26-gaOuYdb6ndlwrx2AuaA27pg_mwg-16BH0vLFVhbSYT_mV6myPlpU4qy2NJ_opECPnYffJnHomg15Xs2ms4GmmLi3nl8qphGPoWWcyhhYNSJTjr42ac6VRMY6AFBrSr5ALG3Pt2PH4hMFAMsCFMQTOCwpWDb_wcsXAldmDawt7V86kvLeq6kxCD7Yttk5p3P4saztOMOfhirc7mSQ" />
-    </div>
-  </div>
-</header>
-{/* Content Area */}
+    <>
 <main className="flex-1 max-w-max-width w-full mx-auto px-margin-mobile md:px-gutter py-gutter flex flex-col gap-6">
 {/* Welcome Header */}
 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
@@ -250,7 +163,6 @@ export default function EmployeeDashboard() {
 </div>
 </div>
 </main>
-</div>
-    </div>
+    </>
   );
 }

@@ -4,47 +4,7 @@ import Link from 'next/link';
 
 export default function EmployeeTimeOff() {
   return (
-    <div className="bg-surface text-on-surface font-body-md min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
-      {/* Side Navigation (Desktop) */}
-<nav className="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 py-unit-base px-4 border-r border-outline-variant bg-surface-container-low z-40">
-<div className="mb-8 px-4 py-4">
-<h1 className="font-headline-lg text-headline-lg text-primary">Dayflow</h1>
-<p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">HR Portal</p>
-</div>
-<div className="flex-1 space-y-2">
-<Link href="/employee-dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span>Dashboard</span>
-</Link>
-<Link href="/employee-dashboard/attendance" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="event_available">event_available</span>
-<span>Attendance</span>
-</Link>
-<Link href="/employee-dashboard/time-off" className="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all font-title-md text-title-md scale-100 shadow-sm border border-secondary-fixed" >
-<span className="material-symbols-outlined" data-icon="calendar_today" data-weight="fill" style={{fontVariationSettings: "'FILL' 1"}}>calendar_today</span>
-<span>Time Off</span>
-</Link>
-<Link href="/employee-dashboard/profile" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="person">person</span>
-<span>My Profile</span>
-</Link>
-<Link href="/employee-dashboard/payroll" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="payments">payments</span>
-<span>Payroll</span>
-</Link>
-</div>
-<div className="mt-auto pt-4 border-t border-outline-variant space-y-2">
-<Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="help">help</span>
-<span>Help</span>
-</Link>
-<Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="logout">logout</span>
-<span>Logout</span>
-</Link>
-</div>
-</nav>
-{/* Main Content Area */}
+    <>
 <main className="flex-1 md:ml-64 flex flex-col min-h-screen max-w-[1120px] mx-auto w-full">
 {/* Top App Bar (Mobile & Desktop overrides) */}
 {/* TopNavBar (Mobile) */}
@@ -218,21 +178,6 @@ export default function EmployeeTimeOff() {
 </div>
 </div>
 </main>
-{/* Bottom Navigation (Mobile Only) */}
-<nav className="md:hidden fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant z-50 flex justify-around items-center h-16 pb-safe">
-<Link href="/employee-dashboard" className="flex flex-col items-center justify-center w-full h-full text-on-surface-variant" >
-<span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span className="font-label-sm text-label-sm mt-1">Dashboard</span>
-</Link>
-<Link href="/employee-dashboard/time-off" className="flex flex-col items-center justify-center w-full h-full text-primary border-t-2 border-primary bg-primary-container/10" >
-<span className="material-symbols-outlined" data-icon="calendar_today" data-weight="fill" style={{fontVariationSettings: "'FILL' 1"}}>calendar_today</span>
-<span className="font-label-sm text-label-sm mt-1 font-bold">Time Off</span>
-</Link>
-<Link href="/employee-dashboard/profile" className="flex flex-col items-center justify-center w-full h-full text-on-surface-variant" >
-<span className="material-symbols-outlined" data-icon="person">person</span>
-<span className="font-label-sm text-label-sm mt-1">Profile</span>
-</Link>
-</nav>
-    </div>
+    </>
   );
 }

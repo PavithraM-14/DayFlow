@@ -1,107 +1,14 @@
 'use client';
 
+import { useState } from 'react';
+
 import Link from 'next/link';
 
 export default function Page() {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const active = 'profile';
   return (
-    <div className="bg-surface text-on-surface font-body-md h-screen flex overflow-hidden">
-      
-      {/* SideNavBar */}
-      <nav className="hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant h-screen w-64 fixed left-0 py-6 px-4 z-50">
-        <div className="flex items-center gap-3 mb-8 px-2">
-          <div className="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
-            <span className="material-symbols-outlined">water_drop</span>
-          </div>
-          <div>
-            <h1 className="text-title-md font-title-md font-black text-primary">Dayflow</h1>
-            <p className="font-label-sm text-label-sm text-on-surface-variant">HR Management</p>
-          </div>
-        </div>
-
-        <ul className="flex flex-col gap-1 flex-grow">
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'profile' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/hr">
-              <span className="material-symbols-outlined" style={active === 'profile' ? { fontVariationSettings: "'FILL' 1" } : {}}>dashboard</span>
-              <span>Dashboard</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'profile' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/employee">
-              <span className="material-symbols-outlined" style={active === 'profile' ? { fontVariationSettings: "'FILL' 1" } : {}}>groups</span>
-              <span>Employees</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'profile' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/attendance">
-              <span className="material-symbols-outlined" style={active === 'profile' ? { fontVariationSettings: "'FILL' 1" } : {}}>pending_actions</span>
-              <span>Attendance</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'profile' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/time-off">
-              <span className="material-symbols-outlined" style={active === 'profile' ? { fontVariationSettings: "'FILL' 1" } : {}}>calendar_today</span>
-              <span>Time Off</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'profile' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/payroll">
-              <span className="material-symbols-outlined" style={active === 'profile' ? { fontVariationSettings: "'FILL' 1" } : {}}>payments</span>
-              <span>Payroll</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'profile' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/reports">
-              <span className="material-symbols-outlined" style={active === 'profile' ? { fontVariationSettings: "'FILL' 1" } : {}}>assessment</span>
-              <span>Reports</span>
-            </Link>
-          </li>
-        </ul>
-
-        <div className="mt-auto border-t border-outline-variant pt-4">
-          <ul className="flex flex-col gap-1">
-            <li>
-              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
-                <span className="material-symbols-outlined">settings</span>
-                <span>Settings</span>
-              </Link>
-            </li>
-            <li>
-              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
-                <span className="material-symbols-outlined">help_outline</span>
-                <span>Help</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      {/* Employee Profile - Dayflow */}
-{/* Main Content Area */}
-<main className="flex-1 flex flex-col min-w-0 bg-[#FAF8FA] md:ml-64">
-{/* TopAppBar (Shared Component) */}
-<header className="docked top-0 w-full sticky z-40 border-b border-outline-variant dark:border-outline bg-surface dark:bg-surface-dim flex justify-between items-center h-16 px-gutter ml-0 md:ml-0">
-<div className="flex items-center gap-4">
-<button className="md:hidden text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full">
-<span className="material-symbols-outlined" data-icon="menu">menu</span>
-</button>
-<div className="relative hidden sm:block">
-<span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input className="pl-10 pr-4 py-2 w-64 bg-surface-container-lowest border border-outline-variant rounded-[10px] text-body-sm focus:ring-2 focus:ring-primary-container outline-none transition-all focus:border-primary" placeholder="Search employees..." type="text" />
-</div>
-</div>
-<div className="flex items-center gap-4">
-<span className="font-accent-marker text-accent-marker text-secondary hidden lg:block">Welcome back, Admin!</span>
-<button className="text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full relative">
-<span className="material-symbols-outlined" data-icon="notifications">notifications</span>
-<span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
-</button>
-<button className="text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full hidden sm:block">
-<span className="material-symbols-outlined" data-icon="apps">apps</span>
-</button>
-<img className="w-8 h-8 rounded-full object-cover ml-2 border border-outline-variant cursor-pointer" data-alt="A professional headshot of a corporate administrator, female, mid-30s, wearing glasses and a dark blazer, soft natural lighting, light-mode background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs1aEsH8beTkKabnaz-uxzDgQ15QknxXbG1iM3IaUawoo7caMMRWM7mGf2fgHcDO-ZNNRqL_SM6x8qiFP0QInS6NfBBuFe5-baGY4MLv72XfNBfs_UfsrDeSkchj-i2vdm3jPzyOuzykitTyl2zhCSTvMnoh-qnJ4Ty-hDBphOrtslvVmPwIPJo36RXvQ8kC1rcVzOhBClddhgs07MD5sVEWEOItcogyMwaJCF2aRBX3YC7pp68GmquA" />
-</div>
-</header>
+    <>
 {/* Profile Content Canvas */}
 <div className="flex-1 overflow-y-auto p-4 md:p-gutter">
 <div className="max-w-[1120px] mx-auto w-full flex flex-col gap-gutter">
@@ -128,7 +35,7 @@ export default function Page() {
 </div>
 </div>
 <div className="flex gap-3 w-full md:w-auto mt-4 md:mt-0">
-<button className="flex-1 md:flex-none px-4 py-2 bg-primary text-on-primary rounded-[10px] font-label-sm hover:bg-surface-tint transition-colors flex items-center justify-center gap-2">
+<button onClick={() => setIsEditModalOpen(true)} className="flex-1 md:flex-none px-4 py-2 bg-primary text-on-primary rounded-[10px] font-label-sm hover:bg-surface-tint transition-colors flex items-center justify-center gap-2">
 <span className="material-symbols-outlined text-[18px]">edit</span> Edit Profile
                             </button>
 <button className="px-4 py-2 bg-surface-container border border-outline-variant text-on-surface rounded-[10px] hover:bg-surface-container-high transition-colors">
@@ -140,7 +47,7 @@ export default function Page() {
 <div className="px-gutter border-t border-outline-variant bg-surface-container-lowest">
 <nav className="flex gap-6 overflow-x-auto">
 <a className="py-4 text-primary border-b-2 border-primary font-label-sm font-bold whitespace-nowrap" href="#">Personal Details</a>
-<a className="py-4 text-on-surface-variant hover:text-primary transition-colors font-label-sm whitespace-nowrap" href="#">Job Info</a>
+<Link className="py-4 text-on-surface-variant hover:text-primary transition-colors font-label-sm whitespace-nowrap" href="/dashboard/performance">Job Info</Link>
 <a className="py-4 text-on-surface-variant hover:text-primary transition-colors font-label-sm whitespace-nowrap flex items-center gap-1" href="#">Salary Info <span className="material-symbols-outlined text-[14px]">lock</span></a>
 <a className="py-4 text-on-surface-variant hover:text-primary transition-colors font-label-sm whitespace-nowrap" href="#">Documents</a>
 </nav>
@@ -239,8 +146,166 @@ export default function Page() {
 </div>
 </div>
 </div>
-</main>
 
-    </div>
+      {/* Edit Profile Modal */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-gutter font-body-md text-on-surface">
+          <div className="absolute inset-0 bg-on-surface/20 backdrop-blur-sm" onClick={() => setIsEditModalOpen(false)}></div>
+          
+          <div className="relative bg-surface-container-lowest w-full max-w-[960px] rounded-[10px] border border-outline-variant shadow-[0_12px_24px_rgba(30,26,29,0.1)] flex flex-col max-h-[90vh] overflow-hidden z-10">
+            {/* Header */}
+            <header className="flex justify-between items-center px-4 md:px-8 py-6 border-b border-outline-variant bg-surface shrink-0">
+              <div>
+                <h1 className="font-headline-lg text-headline-lg text-primary">Edit Profile</h1>
+                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Update your personal and professional details.</p>
+              </div>
+              <button onClick={() => setIsEditModalOpen(false)} className="p-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-full transition-colors group">
+                <span className="material-symbols-outlined text-2xl group-hover:text-primary transition-colors">close</span>
+              </button>
+            </header>
+            
+            {/* Scrollable Form Area */}
+            <div className="flex-1 overflow-y-auto px-4 md:px-8 py-6">
+              <form className="space-y-6">
+                {/* Profile Photo Section */}
+                <div className="bg-surface-container-low rounded-xl border border-outline-variant p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                  <div className="relative group cursor-pointer shrink-0">
+                    <img alt="Profile Picture" className="w-24 h-24 rounded-full object-cover border-2 border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyxifbI3YBP0Q5JjVgfpRQi7k1fj0SzvOCEEJzYZow9uOn5IvCd3DVK03LuLcJN5aJNr77wnhYF1YS7qlIHtKhL0MHKJBev0Pxyc0r9OZC73J22B3h6idMGB_AOeigA76KsQukwjCgCrjno6aOGYaeZ74Q6ciUkI4MhpsCNuTHw1LfPph1Re5orKdQjvzsvQtZ3-uYH0lSJ-4B3YeXWlA6L4l2lOYBpWwfL1hSKn12UjGzleiEHl9RKw" />
+                    <div className="absolute inset-0 bg-on-surface/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="material-symbols-outlined text-on-primary">photo_camera</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="font-title-md text-title-md text-on-surface mb-2">Profile Photo</h3>
+                    <div className="flex gap-4">
+                      <button className="bg-primary text-on-primary font-label-sm text-label-sm px-4 py-2 rounded-lg hover:opacity-90 transition-opacity" type="button">Upload New</button>
+                      <button className="text-error hover:bg-error-container font-label-sm text-label-sm px-4 py-2 rounded-lg transition-colors" type="button">Remove</button>
+                    </div>
+                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 text-xs">JPG, GIF or PNG. Max size of 2MB.</p>
+                  </div>
+                </div>
+
+                {/* Bento Grid for Form Sections */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Personal Details */}
+                  <div className="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 space-y-4">
+                    <div className="flex items-center gap-2 mb-2 border-b border-surface-variant pb-2">
+                      <span className="material-symbols-outlined text-primary text-xl">person</span>
+                      <h3 className="font-title-md text-title-md text-on-surface">Personal Details</h3>
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Full Name</label>
+                      <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none" type="text" defaultValue="Eleanor Shellstrop" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Date of Birth</label>
+                        <div className="relative">
+                          <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none appearance-none" type="date" defaultValue="1990-10-14" />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Nationality</label>
+                        <select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none">
+                          <option>American</option>
+                          <option>Canadian</option>
+                          <option>British</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Gender</label>
+                        <select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none">
+                          <option>Female</option>
+                          <option>Male</option>
+                          <option>Non-binary</option>
+                          <option>Prefer not to say</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Marital Status</label>
+                        <select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none">
+                          <option>Single</option>
+                          <option>Married</option>
+                          <option>Divorced</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Contact Details */}
+                  <div className="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 space-y-4">
+                    <div className="flex items-center gap-2 mb-2 border-b border-surface-variant pb-2">
+                      <span className="material-symbols-outlined text-primary text-xl">contact_mail</span>
+                      <h3 className="font-title-md text-title-md text-on-surface">Contact Details</h3>
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1 flex justify-between">Work Email <span className="text-xs text-outline">(Read Only)</span></label>
+                      <input className="w-full bg-surface-variant/30 border border-outline-variant/50 rounded-lg px-4 py-2 text-on-surface-variant font-body-sm text-body-sm cursor-not-allowed" disabled type="email" defaultValue="eleanor.s@dayflow.com" />
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Personal Email</label>
+                      <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none" type="email" defaultValue="eshellstrop89@gmail.com" />
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Phone Number</label>
+                      <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none" type="tel" defaultValue="+1 (555) 019-2834" />
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Current Address</label>
+                      <textarea className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none resize-none" rows="2" defaultValue="123 Fake Street, Apt 4B\nPhoenix, AZ 85001"></textarea>
+                    </div>
+                  </div>
+
+                  {/* Professional Info */}
+                  <div className="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 space-y-4 md:col-span-2">
+                    <div className="flex items-center gap-2 mb-2 border-b border-surface-variant pb-2">
+                      <span className="material-symbols-outlined text-primary text-xl">work</span>
+                      <h3 className="font-title-md text-title-md text-on-surface">Professional Information</h3>
+                      <span className="ml-auto font-accent-marker text-accent-marker text-primary-container marker-highlight hidden sm:inline-block">Admin approval required</span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Job Title</label>
+                        <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none" type="text" defaultValue="Senior Sales Representative" />
+                      </div>
+                      <div>
+                        <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Department</label>
+                        <select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none">
+                          <option>Sales</option>
+                          <option>Marketing</option>
+                          <option>Engineering</option>
+                          <option>HR</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Location</label>
+                        <select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none">
+                          <option>Phoenix Office</option>
+                          <option>Remote</option>
+                          <option>New York HQ</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            
+            {/* Footer Actions */}
+            <footer className="bg-surface border-t border-outline-variant px-4 md:px-8 py-6 flex justify-end gap-4 shrink-0">
+              <button onClick={() => setIsEditModalOpen(false)} className="px-6 py-2 rounded-lg font-label-sm text-label-sm text-primary hover:bg-surface-variant/50 transition-colors" type="button">
+                  Cancel
+              </button>
+              <button onClick={() => setIsEditModalOpen(false)} className="px-6 py-2 rounded-lg font-label-sm text-label-sm bg-secondary text-on-secondary hover:bg-secondary/90 transition-colors shadow-sm flex items-center gap-2" type="button">
+                <span className="material-symbols-outlined text-[18px]">save</span>
+                Save Changes
+              </button>
+            </footer>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

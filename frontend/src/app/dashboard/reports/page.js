@@ -5,79 +5,7 @@ import Link from 'next/link';
 export default function Page() {
   const active = 'reports';
   return (
-    <div className="bg-surface text-on-surface font-body-md h-screen flex overflow-hidden">
-      
-      {/* SideNavBar */}
-      <nav className="hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant h-screen w-64 fixed left-0 py-6 px-4 z-50">
-        <div className="flex items-center gap-3 mb-8 px-2">
-          <div className="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
-            <span className="material-symbols-outlined">water_drop</span>
-          </div>
-          <div>
-            <h1 className="text-title-md font-title-md font-black text-primary">Dayflow</h1>
-            <p className="font-label-sm text-label-sm text-on-surface-variant">HR Management</p>
-          </div>
-        </div>
-
-        <ul className="flex flex-col gap-1 flex-grow">
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'reports' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/hr">
-              <span className="material-symbols-outlined" style={active === 'reports' ? { fontVariationSettings: "'FILL' 1" } : {}}>dashboard</span>
-              <span>Dashboard</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'reports' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/employee">
-              <span className="material-symbols-outlined" style={active === 'reports' ? { fontVariationSettings: "'FILL' 1" } : {}}>groups</span>
-              <span>Employees</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'reports' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/attendance">
-              <span className="material-symbols-outlined" style={active === 'reports' ? { fontVariationSettings: "'FILL' 1" } : {}}>pending_actions</span>
-              <span>Attendance</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'reports' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/time-off">
-              <span className="material-symbols-outlined" style={active === 'reports' ? { fontVariationSettings: "'FILL' 1" } : {}}>calendar_today</span>
-              <span>Time Off</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'reports' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/payroll">
-              <span className="material-symbols-outlined" style={active === 'reports' ? { fontVariationSettings: "'FILL' 1" } : {}}>payments</span>
-              <span>Payroll</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'reports' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/reports">
-              <span className="material-symbols-outlined" style={active === 'reports' ? { fontVariationSettings: "'FILL' 1" } : {}}>assessment</span>
-              <span>Reports</span>
-            </Link>
-          </li>
-        </ul>
-
-        <div className="mt-auto border-t border-outline-variant pt-4">
-          <ul className="flex flex-col gap-1">
-            <li>
-              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
-                <span className="material-symbols-outlined">settings</span>
-                <span>Settings</span>
-              </Link>
-            </li>
-            <li>
-              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
-                <span className="material-symbols-outlined">help_outline</span>
-                <span>Help</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      {/* Reports Overview - Dayflow */}
-{/* Main Content */}
+    <>
 <main className="ml-64 p-gutter max-w-max-width mx-auto pb-24 w-full">
 {/* Header */}
 <div className="flex justify-between items-end mb-8">
@@ -382,7 +310,6 @@ export default function Page() {
 </div>
 </div>
 </main>
-
-    </div>
+    </>
   );
 }
