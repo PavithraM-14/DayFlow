@@ -50,12 +50,7 @@ export default function EmployeeDashboardLayout({ children }) {
               <span>Dashboard</span>
             </Link>
           </li>
-          <li>
-            <Link className={getItemClasses('/employee-dashboard/employees')} href="#">
-              <span className="material-symbols-outlined" style={getIconStyleString('/employee-dashboard/employees')}>groups</span>
-              <span>Employees</span>
-            </Link>
-          </li>
+
           <li>
             <Link className={getItemClasses('/employee-dashboard/attendance')} href="/employee-dashboard/attendance">
               <span className="material-symbols-outlined" style={getIconStyleString('/employee-dashboard/attendance')}>timer</span>
@@ -74,12 +69,7 @@ export default function EmployeeDashboardLayout({ children }) {
               <span>Payroll</span>
             </Link>
           </li>
-          <li>
-            <Link className={getItemClasses('/employee-dashboard/reports')} href="#">
-              <span className="material-symbols-outlined" style={getIconStyleString('/employee-dashboard/reports')}>bar_chart</span>
-              <span>Reports</span>
-            </Link>
-          </li>
+
         </ul>
 
         <div className="mt-auto pt-4 flex flex-col gap-4 border-t border-outline-variant">
