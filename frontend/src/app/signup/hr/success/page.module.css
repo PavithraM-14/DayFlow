@@ -1,41 +1,41 @@
-.block {
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  padding: 16px 18px;
-  margin-bottom: 16px;
-  background: var(--color-bg-alt);
-}
-
-.blockHead {
+/* Auto-redirect notice: the account already exists, so signing in is the
+   only step left — the countdown says so and the button skips the wait. */
+.redirectRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.blockTitle {
-  font-size: 14px;
-  font-weight: 700;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  font-size: 13.5px;
   color: var(--color-text);
+  background: var(--color-primary-tint);
+  border: 1px solid var(--color-primary);
+  border-radius: 10px;
 }
 
-.badge {
-  font-size: 11px;
+.redirectBtn {
+  padding: 7px 14px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary);
-  background: var(--color-primary-tint);
-  border-radius: 999px;
-  padding: 3px 9px;
+  color: #ffffff;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.redirectBtn:hover {
+  opacity: 0.9;
 }
 
 .companyRow {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-bottom: 12px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 16px;
 }
 
 .logo,
@@ -68,38 +68,37 @@
   color: var(--color-text);
 }
 
-.fields {
-  display: grid;
-  gap: 8px;
-  margin: 0;
-}
-
-.field {
-  display: grid;
-  grid-template-columns: 130px 1fr;
-  gap: 10px;
-  align-items: baseline;
-  font-size: 13px;
-}
-
-.field dt {
-  font-weight: 600;
-  color: var(--color-text-muted);
-}
-
-.field dd {
-  margin: 0;
-  color: var(--color-text);
-  overflow-wrap: anywhere;
-}
-
-.mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 12px;
-}
-
 .muted {
+  font-size: 13px;
   color: var(--color-text-muted);
+}
+
+/* Same summary block as the employee flow's confirmation, so the two
+   sign-up endings read as one family. */
+.summary {
+  padding: 14px 16px;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 13.5px;
+  padding: 4px 0;
+}
+
+.rowLabel {
+  color: var(--color-text-muted);
+}
+
+.rowValue {
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .role {
@@ -112,44 +111,4 @@
   background: #e6f3f4;
   border-radius: 999px;
   padding: 3px 9px;
-}
-
-@media (max-width: 480px) {
-  .field {
-    grid-template-columns: 1fr;
-    gap: 2px;
-  }
-}
-
-/* Auto-redirect notice: the account already exists, so signing in is the
-   only step left — the countdown says so and the button skips the wait. */
-.redirectRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 0 0 18px;
-  padding: 12px 14px;
-  font-size: 13.5px;
-  color: var(--color-text);
-  background: var(--color-primary-tint);
-  border: 1px solid var(--color-primary);
-  border-radius: 10px;
-}
-
-.redirectBtn {
-  padding: 7px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #ffffff;
-  background: var(--color-primary);
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: opacity 0.15s ease;
-}
-
-.redirectBtn:hover {
-  opacity: 0.9;
 }
