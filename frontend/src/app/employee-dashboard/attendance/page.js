@@ -46,6 +46,7 @@ export default function EmployeeAttendance() {
 
   const [records, setRecords] = useState([]);
   const [today, setToday] = useState(null);
+  const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -59,6 +60,7 @@ export default function EmployeeAttendance() {
       if (response.success) {
         setRecords((response.data?.records || []).slice().reverse());
         setToday(response.data?.today || null);
+        setSummary(response.data?.summary || null);
         setError('');
       } else {
         setError(response.message || 'Could not load your attendance.');
@@ -173,11 +175,31 @@ export default function EmployeeAttendance() {
             )}
           </div>
         </div>
-        <div className="md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
-          <div className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">
-            Hours Logged ({MONTHS[month - 1].slice(0, 3)})
+        <div className="md:col-span-4 grid grid-cols-2 gap-gutter">
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex flex-col justify-between">
+            <div className="font-label-sm text-label-sm text-on-surface-variant uppercase">Days Present</div>
+            <div className="font-headline-lg text-headline-lg text-secondary font-bold tabular-nums">
+              {summary ? summary.daysPresent : '—'}
+            </div>
           </div>
-          <div className="font-display-lg text-display-lg text-primary font-bold">{hoursLabel}</div>
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex flex-col justify-between">
+            <div className="font-label-sm text-label-sm text-on-surface-variant uppercase">Leaves</div>
+            <div className="font-headline-lg text-headline-lg text-primary font-bold tabular-nums">
+              {summary ? summary.daysOnLeave : '—'}
+            </div>
+          </div>
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex flex-col justify-between">
+            <div className="font-label-sm text-label-sm text-on-surface-variant uppercase">Working Days</div>
+            <div className="font-headline-lg text-headline-lg text-on-surface font-bold tabular-nums">
+              {summary ? summary.totalWorkingDays : '—'}
+            </div>
+          </div>
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex flex-col justify-between">
+            <div className="font-label-sm text-label-sm text-on-surface-variant uppercase">Hours Logged</div>
+            <div className="font-title-md text-title-md text-on-surface font-bold tabular-nums">
+              {summary ? summary.hoursLabel : hoursLabel}
+            </div>
+          </div>
         </div>
       </section>
 

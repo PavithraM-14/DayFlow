@@ -12,7 +12,7 @@ import { useAuth } from "@/context/AuthContext";
 import { dashboardPathFor } from "@/utils/authSession";
 import styles from "./page.module.css";
 
-const INITIAL_FORM = { email: "", password: "" };
+const INITIAL_FORM = { identifier: "", password: "" };
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,16 +33,16 @@ export default function LoginPage() {
     setError("");
     setStatus(null);
 
-    const email = form.email.trim();
+    const identifier = form.identifier.trim();
 
-    if (!email || !form.password) {
-      setError("Enter your email and password.");
+    if (!identifier || !form.password) {
+      setError("Enter your Login ID or email and password.");
       return;
     }
 
     setSigningIn(true);
 
-    const response = await signIn({ email, password: form.password });
+    const response = await signIn({ identifier, password: form.password });
 
     if (!response.success) {
       // Stays mounted on failure — only the password is cleared, so a
@@ -89,12 +89,12 @@ export default function LoginPage() {
         )}
 
         <TextField
-          id="email"
-          label="Email"
-          type="email"
-          value={form.email}
-          onChange={handleChange("email")}
-          placeholder="you@company.com"
+          id="identifier"
+          label="Login ID or Email"
+          type="text"
+          value={form.identifier}
+          onChange={handleChange("identifier")}
+          placeholder="0510042023000 or you@company.com"
           autoComplete="username"
           required
         />

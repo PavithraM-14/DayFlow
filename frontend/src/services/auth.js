@@ -72,14 +72,14 @@ export const verifyEmployeeSignupOtp = ({ email, otp }) =>
   );
 
 /**
- * Sign in with email + password.
+ * Sign in with a Login ID OR email, plus password.
  *
- * On success `data` carries { token, user }; the user's `role` is what
- * decides which dashboard to land on. Signing in with the employee
- * Login ID is not supported yet — the backend has no such identifier.
+ * `identifier` is sent to the backend, which treats a value containing "@"
+ * as an email and anything else as a Login ID. On success `data` carries
+ * { token, user }; the user's `role` decides which dashboard to land on.
  */
-export const login = ({ email, password }) =>
-  apiClient.post("/auth/login", { email, password }, { auth: false });
+export const login = ({ identifier, password }) =>
+  apiClient.post("/auth/login", { identifier, password }, { auth: false });
 
 /** Revalidates the stored token and returns fresh user details. */
 export const fetchCurrentUser = () => apiClient.get("/auth/me");
@@ -101,6 +101,10 @@ export const resetPassword = (token, newPassword) =>
     { auth: false }
   );
 
+/** Change the signed-in user's password (Security tab). */
+export const changePassword = ({ currentPassword, newPassword }) =>
+  apiClient.patch("/auth/password", { currentPassword, newPassword });
+
 export const authService = {
   sendHrSignupOtp,
   resendHrSignupOtp,
@@ -112,6 +116,7 @@ export const authService = {
   fetchCurrentUser,
   forgotPassword,
   resetPassword,
+  changePassword,
 };
 
 export default authService;

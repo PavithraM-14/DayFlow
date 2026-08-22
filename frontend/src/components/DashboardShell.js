@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import CheckInWidget from "@/components/CheckInWidget";
+import AvatarUploader from "@/components/AvatarUploader";
 
 /**
  * Single source of truth for both dashboard sidebars.
@@ -52,14 +53,6 @@ const PROFILE_PATH = { hr: "/dashboard/profile", employee: "/employee-dashboard/
 const matchesRoute = (pathname, href, isRoot) =>
   isRoot ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 
-const initials = (name) =>
-  (name || "")
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("") || "?";
-
 export default function DashboardShell({
   variant = "hr",
   searchPlaceholder = "Search employees, documents...",
@@ -69,6 +62,7 @@ export default function DashboardShell({
   const router = useRouter();
   const { user, signOut } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [search, setSearch] = useState("");
   const menuRef = useRef(null);
 
   const items = variant === "employee" ? EMPLOYEE_NAV : HR_NAV;
@@ -189,23 +183,34 @@ export default function DashboardShell({
         {/* TopAppBar */}
         <header className="bg-surface flex justify-between items-center h-16 px-gutter border-b border-outline-variant sticky top-0 z-40">
           <div className="flex items-center gap-4 flex-grow max-w-md">
-            <div className="relative w-full">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">
-                search
-              </span>
-              <input
-                className="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-[10px] focus:ring-2 focus:ring-primary-container focus:border-primary focus:outline-none transition-colors text-body-sm font-body-sm"
-                placeholder={searchPlaceholder}
-                type="text"
-              />
-            </div>
+            {variant === "hr" ? (
+              <form
+                className="relative w-full"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  const q = search.trim();
+                  router.push(q ? `/dashboard/employee?q=${encodeURIComponent(q)}` : "/dashboard/employee");
+                }}
+              >
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">
+                  search
+                </span>
+                <input
+                  className="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-[10px] focus:ring-2 focus:ring-primary-container focus:border-primary focus:outline-none transition-colors text-body-sm font-body-sm"
+                  placeholder={searchPlaceholder}
+                  type="text"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  aria-label="Search employees"
+                />
+              </form>
+            ) : (
+              <div className="w-full" />
+            )}
           </div>
           <div className="flex items-center gap-4 ml-auto">
-            {/* Persistent check-in/out systray — every signed-in user
-                (employee or HR) can punch in or out from any page, per
-                the wireframe's header widget. HR needs this too: they are
-                employees of the company as well and their own attendance
-                should be trackable the same way. */}
+            {/* Persistent check-in/out systray — anyone can punch in or out
+                from any page, per the wireframe's header widget. */}
             <div className="pr-1 border-r border-outline-variant mr-1">
               <CheckInWidget />
             </div>
@@ -227,7 +232,12 @@ export default function DashboardShell({
                 aria-haspopup="menu"
                 aria-expanded={menuOpen}
               >
-                {initials(user?.name)}
+                <AvatarUploader
+                  employeeId={user?._id}
+                  name={user?.name}
+                  className="w-full h-full flex items-center justify-center"
+                  textClassName="font-bold text-sm"
+                />
               </button>
 
               {menuOpen && (

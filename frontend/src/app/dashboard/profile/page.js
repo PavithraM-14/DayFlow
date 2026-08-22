@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import DashboardShell from '@/components/DashboardShell';
 import AvatarUploader from '@/components/AvatarUploader';
+import ChangePasswordForm from '@/components/ChangePasswordForm';
 import { useAuth } from '@/context/AuthContext';
 import { updateEmployee } from '@/services/employees';
 
 export default function HRSelfProfilePage() {
   const { user, refreshUser } = useAuth();
 
+  const [tab, setTab] = useState('profile');
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({
     phone: user?.phone || '',
@@ -80,6 +82,34 @@ export default function HRSelfProfilePage() {
         </div>
       )}
 
+      <div className="flex gap-1 mt-gutter border-b border-outline-variant">
+        {[
+          { key: 'profile', label: 'Profile' },
+          { key: 'security', label: 'Security' },
+        ].map((t) => (
+          <button
+            key={t.key}
+            type="button"
+            onClick={() => setTab(t.key)}
+            className={`px-4 py-2 font-label-sm text-label-sm border-b-2 -mb-px transition-colors ${
+              tab === t.key
+                ? 'border-primary text-primary font-semibold'
+                : 'border-transparent text-on-surface-variant hover:text-on-surface'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'security' && (
+        <div className="mt-gutter bg-surface-container-lowest rounded-xl border border-outline-variant p-6">
+          <h3 className="font-title-md text-title-md mb-4">Change Password</h3>
+          <ChangePasswordForm />
+        </div>
+      )}
+
+      {tab === 'profile' && (
       <div className="mt-gutter bg-surface-container-lowest rounded-xl border border-outline-variant p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-title-md text-title-md">Contact Details</h3>
@@ -161,6 +191,7 @@ export default function HRSelfProfilePage() {
           </form>
         )}
       </div>
+      )}
     </DashboardShell>
   );
 }

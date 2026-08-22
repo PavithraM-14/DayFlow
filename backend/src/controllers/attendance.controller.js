@@ -143,11 +143,36 @@ const myAttendance = async (req, res, next) => {
       date: Attendance.dayKey(),
     }).lean();
 
+    // Monthly summary tiles: days present, days on leave, and total
+    // working (week)days in the month — the wireframe's "count of days
+    // present / leaves count / total working days".
+    let totalWorkingDays = 0;
+    const cursor = new Date(start);
+    while (cursor < end) {
+      const weekday = cursor.getUTCDay();
+      if (weekday !== 0 && weekday !== 6) totalWorkingDays += 1;
+      cursor.setUTCDate(cursor.getUTCDate() + 1);
+    }
+
+    const daysPresent = records.reduce((sum, r) => {
+      if (r.status === "present") return sum + 1;
+      if (r.status === "half-day") return sum + 0.5;
+      return sum;
+    }, 0);
+    const daysOnLeave = records.filter((r) => r.status === "leave").length;
+    const totalWorkMinutes = records.reduce((sum, r) => sum + (r.workMinutes || 0), 0);
+
     return res.status(200).json({
       success: true,
       data: {
         records: records.map(serializeRecord),
         today: serializeRecord(today),
+        summary: {
+          daysPresent,
+          daysOnLeave,
+          totalWorkingDays,
+          hoursLabel: formatMinutes(totalWorkMinutes),
+        },
       },
     });
   } catch (error) {

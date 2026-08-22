@@ -16,6 +16,9 @@ router.post("/login", loginLimiter, authController.login);
 // Re-validates a stored token on page load and returns fresh user details.
 router.get("/me", requireAuth, authController.me);
 
+// Change password from the profile Security tab (requires the current one).
+router.patch("/password", requireAuth, authController.changePassword);
+
 // Forgot / reset password. otpRequestLimiter is reused here rather than
 // adding a new limiter — it already caps repeated requests per IP across
 // different target emails, which is exactly the risk on this endpoint too.

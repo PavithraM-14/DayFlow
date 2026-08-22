@@ -78,6 +78,7 @@ const userSchema = new mongoose.Schema(
     about: { type: String, trim: true, maxlength: 2000, default: "" },
     skills: { type: [String], default: [] },
     certifications: { type: [String], default: [] },
+    interests: { type: [String], default: [] },
 
     avatar: {
       data: Buffer,

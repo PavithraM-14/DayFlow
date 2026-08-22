@@ -1,28 +1,48 @@
 const mongoose = require("mongoose");
 
 /**
- * Generates the employee Login ID described in the spec:
+ * Generates the all-numeric employee Login ID described in the spec:
  *
- *   [Company Code][first two letters of first name][first two letters of
- *   last name][year of joining][4-digit serial number for that year]
+ *   [2-digit company code][name code][year of joining][4-digit serial]
  *
- *   Example: OIJODO20220001
- *     OI    -> Odoo India (company code)
- *     JODO  -> first two letters of first + last name
- *     2022  -> year of joining
- *     0001  -> serial number of joining, that year
+ *   Example (spec): 05 2080 2023 0001
+ *     05   -> company / head code
+ *     2080 -> derived from the employee's first + last name
+ *     2023 -> year of joining
+ *     0001 -> serial number of joining, that year
  *
- * This is a display/reference identifier (shown on the profile page, not
- * used to sign in — sign-in is still email + password, see auth.controller).
+ * The name code is the alphabet position (A=01 … Z=26) of the first letter
+ * of the first name followed by that of the last name — e.g. "Test User"
+ * -> T(20) U(21) -> 2021. The company code prefers any digits already in
+ * the company's `code`, otherwise it derives a stable 2-digit value from
+ * the code's letters.
+ *
+ * The Login ID can now be used to sign in (see auth.controller's login),
+ * alongside email.
  */
+
+const letterIndex = (ch) => {
+  const code = String(ch || "").toUpperCase().charCodeAt(0) - 64; // A=1 … Z=26
+  return code >= 1 && code <= 26 ? code : 0;
+};
+
+const two = (n) => String(n).padStart(2, "0").slice(-2);
 
 const namePart = (fullName) => {
   const parts = String(fullName || "").trim().split(/\s+/).filter(Boolean);
   const first = parts[0] || "";
   const last = parts.length > 1 ? parts[parts.length - 1] : first;
+  return `${two(letterIndex(first[0]))}${two(letterIndex(last[0]))}`;
+};
 
-  const two = (s) => (s + "XX").slice(0, 2).toUpperCase();
-  return `${two(first)}${two(last)}`;
+const companyPart = (company) => {
+  const raw = company?.code || company?.name || "";
+  const digits = String(raw).replace(/\D/g, "");
+  if (digits.length >= 2) return digits.slice(0, 2);
+
+  const letters = String(raw).replace(/[^A-Za-z]/g, "").toUpperCase();
+  const combined = (letterIndex(letters[0]) * 26 + letterIndex(letters[1] || "A")) % 100;
+  return two(combined);
 };
 
 /**
@@ -44,7 +64,6 @@ const nextSerialForYear = async (User, companyId, year) => {
 };
 
 const generateLoginId = async ({ User, company, name, dateOfJoining }) => {
-  const companyCode = company?.code || "CO";
   const joinDate = dateOfJoining ? new Date(dateOfJoining) : new Date();
   const year = joinDate.getUTCFullYear();
 
@@ -53,7 +72,7 @@ const generateLoginId = async ({ User, company, name, dateOfJoining }) => {
 
   const serial = await nextSerialForYear(User, companyId, year);
 
-  return `${companyCode}${namePart(name)}${year}${String(serial).padStart(4, "0")}`;
+  return `${companyPart(company)}${namePart(name)}${year}${String(serial).padStart(4, "0")}`;
 };
 
 module.exports = { generateLoginId };

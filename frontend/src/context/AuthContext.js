@@ -65,8 +65,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   /** Returns the raw API response so callers can show the server's message. */
-  const signIn = useCallback(async ({ email, password }) => {
-    const response = await loginRequest({ email, password });
+  const signIn = useCallback(async ({ identifier, password }) => {
+    const response = await loginRequest({ identifier, password });
 
     if (response.success && response.data?.token) {
       saveSession({ token: response.data.token, user: response.data.user });

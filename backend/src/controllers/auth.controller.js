@@ -678,34 +678,43 @@ const login = async (req, res, next) => {
     // `{ "$ne": null }`), and calling .trim() on that would throw before
     // ever reaching a query. Rejecting it outright as "invalid" is both
     // safer and gives a cleaner 400 than a 500 from the crash.
-    if (req.body.email !== undefined && typeof req.body.email !== "string") {
-      return fail(res, 400, "Enter a valid email address");
+    // The sign-in field accepts either an email or a Login ID, so guard
+    // both `identifier` (new) and the legacy `email` key against non-string
+    // bodies (e.g. an injected `{ "$ne": null }`).
+    const rawIdentifier = req.body.identifier !== undefined ? req.body.identifier : req.body.email;
+    if (rawIdentifier !== undefined && typeof rawIdentifier !== "string") {
+      return fail(res, 400, "Enter your Login ID or email");
     }
     if (req.body.password !== undefined && typeof req.body.password !== "string") {
       return fail(res, 400, "Password is required");
     }
 
-    const email = (req.body.email || "").trim().toLowerCase();
+    const identifier = (rawIdentifier || "").trim();
     const password = req.body.password || "";
 
-    if (!email) return fail(res, 400, "Email is required");
-    if (!isValidEmail(email)) {
+    if (!identifier) return fail(res, 400, "Enter your Login ID or email");
+    if (!password) return fail(res, 400, "Password is required");
+
+    // An "@" means treat it as an email; otherwise it's a Login ID. Login
+    // IDs are stored uppercase (see utils/loginId.js), so match uppercased.
+    const looksLikeEmail = identifier.includes("@");
+    const email = looksLikeEmail ? identifier.toLowerCase() : "";
+    if (looksLikeEmail && !isValidEmail(email)) {
       return fail(res, 400, "Enter a valid email address");
     }
-    // Deliberately not run through validatePassword: the sign-up policy
-    // must not be echoed back here, or the error text would tell an
-    // attacker which guesses were even worth making.
-    if (!password) return fail(res, 400, "Password is required");
 
     // passwordHash is `select: false` on the model, so it has to be asked
     // for explicitly.
-    const user = await User.findOne({ email })
+    const lookup = looksLikeEmail
+      ? { email }
+      : { loginId: identifier.toUpperCase() };
+    const user = await User.findOne(lookup)
       .select("+passwordHash")
       .populate("company", "name");
 
     // One message for "no such account" and "wrong password" alike, so
     // the endpoint cannot be used to discover which emails are registered.
-    const INVALID_CREDENTIALS = "Incorrect email or password";
+    const INVALID_CREDENTIALS = "Incorrect Login ID / email or password";
 
     // No account yet — but there may be a join request under this email,
     // in which case the honest answer is "waiting on HR" or "rejected"
@@ -716,6 +725,10 @@ const login = async (req, res, next) => {
     // message above exists to hide. Only the actual applicant, who can
     // produce the password, learns the status.
     if (!user) {
+      // The join-request status hint only applies to email sign-ins — a
+      // pending request has no Login ID yet.
+      if (!looksLikeEmail) return fail(res, 401, INVALID_CREDENTIALS);
+
       const request = await EmployeeRequest.findOne({
         email,
         status: { $in: ["pending", "rejected"] },
@@ -903,6 +916,46 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
+/**
+ * PATCH /api/auth/password   { currentPassword, newPassword }
+ *
+ * The Security tab's change-password action. Requires the current password
+ * (so a stolen token alone can't rotate the credential) and enforces the
+ * same strength policy as sign-up.
+ */
+const changePassword = async (req, res, next) => {
+  try {
+    const currentPassword = req.body.currentPassword;
+    const newPassword = req.body.newPassword;
+
+    if (typeof currentPassword !== "string" || typeof newPassword !== "string") {
+      return fail(res, 400, "Both current and new passwords are required");
+    }
+    if (!currentPassword || !newPassword) {
+      return fail(res, 400, "Both current and new passwords are required");
+    }
+
+    const policy = validatePassword(newPassword);
+    if (!policy.isValid) return fail(res, 400, policy.message);
+
+    const user = await User.findById(req.auth.sub).select("+passwordHash");
+    if (!user) return fail(res, 401, "Your session is no longer valid");
+
+    const matches = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!matches) return fail(res, 400, "Your current password is incorrect");
+
+    const sameAsOld = await bcrypt.compare(newPassword, user.passwordHash);
+    if (sameAsOld) return fail(res, 400, "Choose a password different from your current one");
+
+    user.passwordHash = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
+    await user.save();
+
+    return res.status(200).json({ success: true, message: "Password changed" });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   sendHrSignupOtp,
   resendHrSignupOtp,
@@ -912,6 +965,7 @@ module.exports = {
   verifyEmployeeSignupOtp,
   login,
   me,
+  changePassword,
   forgotPassword,
   resetPassword,
   assertOtpDevExposureSafety,

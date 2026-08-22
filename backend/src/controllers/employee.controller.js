@@ -95,7 +95,13 @@ const SELF_EDITABLE_FIELDS = [
   "about",
   "skills",
   "certifications",
+  "interests",
   "bankDetails",
+  // Personal details shown on the employee's own "Private Info" tab.
+  "dateOfBirth",
+  "gender",
+  "maritalStatus",
+  "nationality",
 ];
 
 // Fields HR may change on anyone at their company. Deliberately excludes
@@ -118,6 +124,7 @@ const HR_EDITABLE_FIELDS = [
   "about",
   "skills",
   "certifications",
+  "interests",
   "bankDetails",
   "salary",
   "leaveAllocation",
@@ -197,7 +204,7 @@ const updateEmployee = async (req, res, next) => {
       // These three accept arbitrary nested JSON from the client — sanitize
       // shape and content before it ever reaches Mongoose, rather than
       // trusting the request body directly.
-      if (field === "skills" || field === "certifications") {
+      if (field === "skills" || field === "certifications" || field === "interests") {
         employee.set(field, sanitizeTagList(req.body[field]));
       } else if (field === "bankDetails") {
         employee.set(field, sanitizeBankDetails(req.body[field]));

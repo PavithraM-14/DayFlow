@@ -72,6 +72,13 @@ export default function EmployeeDirectoryPage() {
     load();
   }, [load]);
 
+  // Seed the search box from a ?q= handed over by the top-bar search.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const q = new URLSearchParams(window.location.search).get('q');
+    if (q) setSearch(q);
+  }, []);
+
   const departments = useMemo(() => {
     const set = new Set(employees.map((e) => e.department).filter(Boolean));
     return ['All', ...Array.from(set)];
@@ -186,6 +193,7 @@ export default function EmployeeDirectoryPage() {
               className="bg-surface-container-lowest border border-outline-variant rounded-[10px] p-5 flex flex-col items-center text-center card-hover transition-shadow group relative overflow-hidden"
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <Link href={`/dashboard/profile/${emp._id}`} className="flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg">
               <div className="relative mb-4">
                 <div className="w-20 h-20 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-display-lg text-[28px] border border-outline-variant shadow-sm">
                   {initials(emp.name)}
@@ -209,6 +217,7 @@ export default function EmployeeDirectoryPage() {
               <span className="px-3 py-1 bg-surface-container rounded-full font-label-sm text-label-sm text-on-surface-variant border border-outline-variant/50">
                 {emp.department || 'Unassigned'}
               </span>
+              </Link>
               <div className="flex gap-2 mt-5 w-full pt-4 border-t border-surface-container-highest">
                 <Link
                   href={`/dashboard/profile/${emp._id}`}
