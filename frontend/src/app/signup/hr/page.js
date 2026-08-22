@@ -9,8 +9,10 @@ import CompanyLogoField from "@/components/CompanyLogoField";
 import PasswordField from "@/components/PasswordField";
 import SubmitButton from "@/components/SubmitButton";
 import AlertMessage from "@/components/AlertMessage";
+import PasswordRequirements from "@/components/PasswordRequirements";
 import { sendHrSignupOtp } from "@/services/auth";
 import { savePendingSignup } from "@/utils/signupSession";
+import { MIN_PASSWORD_LENGTH, validatePassword } from "@/utils/passwordPolicy";
 
 const INITIAL_FORM = {
   companyName: "",
@@ -20,8 +22,6 @@ const INITIAL_FORM = {
   password: "",
   confirmPassword: "",
 };
-
-const MIN_PASSWORD_LENGTH = 8; // matches backend/src/utils/validation.js
 
 export default function HrSignUpPage() {
   const router = useRouter();
@@ -37,8 +37,11 @@ export default function HrSignUpPage() {
     e.preventDefault();
     setError("");
 
-    if (form.password.length < MIN_PASSWORD_LENGTH) {
-      setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters`);
+    // Same policy the API enforces; checked here so the whole form is not
+    // round-tripped just to be told the password is too weak.
+    const passwordCheck = validatePassword(form.password);
+    if (!passwordCheck.isValid) {
+      setError(passwordCheck.message);
       return;
     }
     if (form.password !== form.confirmPassword) {
@@ -132,6 +135,7 @@ export default function HrSignUpPage() {
           placeholder={`At least ${MIN_PASSWORD_LENGTH} characters`}
           required
         />
+        <PasswordRequirements password={form.password} />
         <PasswordField
           id="confirmPassword"
           label="Confirm Password"

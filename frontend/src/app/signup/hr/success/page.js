@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthCard from "@/components/AuthCard";
 import AlertMessage from "@/components/AlertMessage";
 import { API_BASE_URL } from "@/config";
-import { getSignupResult } from "@/utils/signupSession";
+import { clearSignupResult, getSignupResult } from "@/utils/signupSession";
 import styles from "./page.module.css";
+
+// Long enough to read the confirmation, short enough not to feel stuck.
+const REDIRECT_SECONDS = 5;
 
 /**
  * Placeholder confirmation for the auth flow: it exists to prove the OTP
@@ -18,6 +21,7 @@ import styles from "./page.module.css";
 export default function HrSignupSuccessPage() {
   const router = useRouter();
   const [result, setResult] = useState(null);
+  const [secondsLeft, setSecondsLeft] = useState(REDIRECT_SECONDS);
 
   useEffect(() => {
     const stored = getSignupResult();
@@ -27,6 +31,34 @@ export default function HrSignupSuccessPage() {
     }
     setResult(stored);
   }, [router]);
+
+  /**
+   * The account exists at this point, so sign-in is the only thing left to
+   * do — go there on the user's behalf instead of leaving them on a page
+   * with nothing actionable. `goToSignIn` also drives the button, so both
+   * paths clear the stored result and cannot double-navigate.
+   */
+  const goToSignIn = useCallback(() => {
+    // Otherwise a Back press lands on a stale confirmation for an
+    // already-created account.
+    clearSignupResult();
+    router.replace("/login");
+  }, [router]);
+
+  useEffect(() => {
+    // Wait until the stored result has been read: starting the clock
+    // before that could redirect someone who is about to be bounced to
+    // the form instead.
+    if (!result) return undefined;
+
+    if (secondsLeft <= 0) {
+      goToSignIn();
+      return undefined;
+    }
+
+    const timer = setTimeout(() => setSecondsLeft((n) => n - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [result, secondsLeft, goToSignIn]);
 
   if (!result) return null;
 
@@ -43,13 +75,22 @@ export default function HrSignupSuccessPage() {
       maxWidth="560px"
       footer={
         <>
-          Ready to sign in? <Link href="/login">Go to Sign In</Link>
+          Not redirected? <Link href="/login">Go to Sign In</Link>
         </>
       }
     >
       <AlertMessage tone="success">
         Company and HR user created successfully.
       </AlertMessage>
+
+      <div className={styles.redirectRow} role="status">
+        <span>
+          Taking you to sign in in <strong>{secondsLeft}s</strong>...
+        </span>
+        <button type="button" className={styles.redirectBtn} onClick={goToSignIn}>
+          Sign in now
+        </button>
+      </div>
 
       <section className={styles.block}>
         <div className={styles.blockHead}>

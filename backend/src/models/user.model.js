@@ -138,8 +138,11 @@ userSchema.set("toJSON", {
  * directly here to avoid a require cycle — the id it needs (code) is
  * fetched through a plain query instead.
  */
-userSchema.pre("save", async function assignLoginId(next) {
-  if (!this.isNew || this.loginId) return next();
+userSchema.pre("save", async function assignLoginId() {
+  // No `next` parameter: Mongoose 9 dropped callback-style middleware and
+  // calls the hook with undefined, so awaiting the returned promise is
+  // the only supported form. Returning early is what "skip" looks like.
+  if (!this.isNew || this.loginId) return;
 
   try {
     if (!this.dateOfJoining) this.dateOfJoining = new Date();
@@ -159,8 +162,6 @@ userSchema.pre("save", async function assignLoginId(next) {
     // created rather than blocking sign-up/approval on it.
     console.error("[USER] Could not generate loginId:", error.message);
   }
-
-  next();
 });
 
 const User = mongoose.model("User", userSchema);

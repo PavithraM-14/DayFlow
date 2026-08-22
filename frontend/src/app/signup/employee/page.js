@@ -11,9 +11,11 @@ import SubmitButton from "@/components/SubmitButton";
 import AlertMessage from "@/components/AlertMessage";
 import InfoNote from "@/components/InfoNote";
 import CompanyCombobox from "@/components/CompanyCombobox";
+import PasswordRequirements from "@/components/PasswordRequirements";
 import { listCompanies } from "@/services/companies";
 import { sendEmployeeSignupOtp } from "@/services/auth";
 import { saveEmployeePendingSignup } from "@/utils/signupSession";
+import { MIN_PASSWORD_LENGTH, validatePassword } from "@/utils/passwordPolicy";
 
 // Shown capitalised, submitted lowercase — the API's roles are "employee"
 // and "hr".
@@ -28,8 +30,6 @@ const INITIAL_FORM = {
   password: "",
   confirmPassword: "",
 };
-
-const MIN_PASSWORD_LENGTH = 8;
 
 export default function EmployeeSignUpPage() {
   const router = useRouter();
@@ -83,8 +83,11 @@ export default function EmployeeSignUpPage() {
       setError("Select the role you are joining as.");
       return;
     }
-    if (form.password.length < MIN_PASSWORD_LENGTH) {
-      setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters.`);
+    // Same policy the API enforces; checked here so the whole form is not
+    // round-tripped just to be told the password is too weak.
+    const passwordCheck = validatePassword(form.password);
+    if (!passwordCheck.isValid) {
+      setError(passwordCheck.message);
       return;
     }
     if (form.password !== form.confirmPassword) {
@@ -197,6 +200,7 @@ export default function EmployeeSignUpPage() {
           placeholder={`At least ${MIN_PASSWORD_LENGTH} characters`}
           required
         />
+        <PasswordRequirements password={form.password} />
         <PasswordField
           id="confirmPassword"
           label="Confirm Password"
