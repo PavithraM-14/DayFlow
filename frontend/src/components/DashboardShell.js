@@ -132,22 +132,42 @@ export default function DashboardShell({
         <div className="mt-auto border-t border-outline-variant pt-4">
           <ul className="flex flex-col gap-1">
             <li>
-              <a
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all cursor-not-allowed opacity-60"
-                title="Coming soon"
-              >
-                <span className="material-symbols-outlined">settings</span>
-                <span>Settings</span>
-              </a>
+              {variant === "hr" ? (
+                <Link
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all"
+                  href="/dashboard/settings"
+                >
+                  <span className="material-symbols-outlined">settings</span>
+                  <span>Settings</span>
+                </Link>
+              ) : (
+                <a
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all cursor-not-allowed opacity-60"
+                  title="Coming soon"
+                >
+                  <span className="material-symbols-outlined">settings</span>
+                  <span>Settings</span>
+                </a>
+              )}
             </li>
             <li>
-              <a
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all cursor-not-allowed opacity-60"
-                title="Coming soon"
-              >
-                <span className="material-symbols-outlined">help_outline</span>
-                <span>Help</span>
-              </a>
+              {variant === "hr" ? (
+                <Link
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all"
+                  href="/dashboard/help"
+                >
+                  <span className="material-symbols-outlined">help_outline</span>
+                  <span>Help</span>
+                </Link>
+              ) : (
+                <a
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all cursor-not-allowed opacity-60"
+                  title="Coming soon"
+                >
+                  <span className="material-symbols-outlined">help_outline</span>
+                  <span>Help</span>
+                </a>
+              )}
             </li>
             <li>
               <button

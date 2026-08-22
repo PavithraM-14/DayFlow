@@ -14,19 +14,19 @@ import { dashboardPathFor } from "@/utils/authSession";
  * in, so by the time this renders there is a user to route on.
  */
 export default function DashboardIndexPage() {
-  const router = useRouter();
-  const { user } = useAuth();
+ const router = useRouter();
+ const { user } = useAuth();
 
-  useEffect(() => {
-    if (user) router.replace(dashboardPathFor(user));
-  }, [user, router]);
+ useEffect(() => {
+ if (user) router.replace(dashboardPathFor(user));
+ }, [user, router]);
 
-  return (
-    <div
-      className="bg-surface text-on-surface-variant font-body-md h-screen flex items-center justify-center"
-      role="status"
-    >
-      Loading...
-    </div>
-  );
+ return (
+ <div
+ className="bg-surface text-on-surface-variant font-body-md h-screen flex items-center justify-center"
+ role="status"
+ >
+ Loading...
+ </div>
+ );
 }

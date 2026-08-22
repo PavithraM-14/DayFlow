@@ -1,87 +1,10 @@
 export default function Page() {
-  return (
-    <div className="bg-background text-on-surface font-body-md min-h-screen antialiased flex overflow-hidden">
-      <style dangerouslySetInnerHTML={{ __html: `` }} />
-      
-{/*  SideNavBar  */}
-<aside className="hidden md:flex w-[280px] h-screen fixed left-0 top-0 bg-surface border-r border-outline-variant flex-col py-lg z-50">
-<div className="mb-xl px-lg">
-<h1 className="font-display-lg text-display-lg font-bold text-primary">DAYFLOW</h1>
-<p className="font-body-md text-body-md text-on-surface-variant">HRMS Portal</p>
-</div>
-<nav className="flex-1 space-y-2 overflow-y-auto px-4">
-<a className="flex items-center px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out group" href="#">
-<span className="material-symbols-outlined mr-4 text-on-surface-variant group-hover:text-on-surface">dashboard</span>
-<span className="font-body-md text-body-md font-medium">Dashboard</span>
-</a>
-<a className="flex items-center px-4 py-3 rounded-xl text-on-primary bg-primary font-medium transition-colors duration-200 ease-in-out" href="#">
-<span className="material-symbols-outlined mr-4 text-on-primary" style={{ fontVariationSettings: '\'FILL\' 1' }}>groups</span>
-<span className="font-body-md text-body-md">Employees</span>
-</a>
-<a className="flex items-center px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out group" href="#">
-<span className="material-symbols-outlined mr-4 text-on-surface-variant group-hover:text-on-surface">calendar_today</span>
-<span className="font-body-md text-body-md font-medium">Attendance</span>
-</a>
-<a className="flex items-center px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out group" href="#">
-<span className="material-symbols-outlined mr-4 text-on-surface-variant group-hover:text-on-surface">event_busy</span>
-<span className="font-body-md text-body-md font-medium">Time Off</span>
-</a>
-<a className="flex items-center px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out group" href="#">
-<span className="material-symbols-outlined mr-4 text-on-surface-variant group-hover:text-on-surface">payments</span>
-<span className="font-body-md text-body-md font-medium">Payroll</span>
-</a>
-<a className="flex items-center px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out group" href="#">
-<span className="material-symbols-outlined mr-4 text-on-surface-variant group-hover:text-on-surface">assessment</span>
-<span className="font-body-md text-body-md font-medium">Reports</span>
-</a>
-<div className="h-px bg-outline-variant my-4 mx-4"></div>
-<a className="flex items-center px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out group" href="#">
-<span className="material-symbols-outlined mr-4 text-on-surface-variant group-hover:text-on-surface">person</span>
-<span className="font-body-md text-body-md font-medium">My Profile</span>
-</a>
-<a className="flex items-center px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out group" href="#">
-<span className="material-symbols-outlined mr-4 text-on-surface-variant group-hover:text-on-surface">settings</span>
-<span className="font-body-md text-body-md font-medium">Settings</span>
-</a>
-</nav>
-<div className="mt-auto pt-md px-4">
-<a className="flex items-center px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out group" href="#">
-<span className="material-symbols-outlined mr-4 text-on-surface-variant group-hover:text-on-surface">logout</span>
-<span className="font-body-md text-body-md font-medium">Logout</span>
-</a>
-</div>
-</aside>
-{/*  Main Content Area  */}
-<main className="flex-1 flex flex-col md:ml-[280px] h-screen overflow-hidden bg-background">
-{/*  TopAppBar  */}
-<header className="flex justify-between items-center h-20 px-lg lg:px-xl sticky top-0 z-40 bg-surface border-b border-outline-variant shrink-0">
-<div className="flex items-center gap-md lg:hidden">
-<button className="p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors">
-<span className="material-symbols-outlined">menu</span>
-</button>
-<span className="font-display-lg-mobile text-display-lg-mobile font-bold text-primary">DAYFLOW</span>
-</div>
-<div className="hidden lg:flex flex-1 items-center max-w-2xl relative">
-<span className="material-symbols-outlined absolute left-4 text-on-surface-variant pointer-events-none">search</span>
-<input className="w-full bg-surface-container border border-outline-variant rounded-xl py-3 pl-12 pr-4 text-on-surface font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors placeholder:text-on-surface-variant" placeholder="Search employees, documents..." type="text"/>
-</div>
-<div className="flex items-center gap-4 ml-auto">
-<button className="p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Toggle Theme">
-<span className="material-symbols-outlined">light_mode</span>
-</button>
-<button className="p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors relative">
-<span className="material-symbols-outlined">notifications</span>
-<span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
-</button>
-<div className="w-10 h-10 rounded-full border border-outline-variant overflow-hidden cursor-pointer hover:border-primary transition-colors">
-<img alt="User Avatar" className="w-full h-full object-cover" data-alt="A professional corporate headshot of an executive in a modern office setting. Sharp focus, cinematic lighting, modern dark aesthetic with subtle cool undertones. High quality, photorealistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIoEnetilgWORvnb-EXyzgJXgDMJF33HwBh9uToCp1sNLx_YjQ5B9LeLAE25OdSatQjGRmdT3rsJmIOpl84cdWo_50vvzXNAb7Sukr8ESwI8LntHdl9mUtCRa6U3qZvKyhHjHhYu5jUhYJ0GgKj00sIAMtaoJMsWFOnbZBYVeR0fE1Rjc-64iLAZbhpcKYfhF0JEGs-PmSw1FqxYpSKumBRvy3g5ap3YjP11hwcPJTkniz6S0X99CXkw"/>
-</div>
-</div>
-</header>
-{/*  Scrollable Canvas  */}
-<div className="flex-1 overflow-y-auto p-lg lg:p-xl xl:px-24 xl:py-12 scroll-smooth">
+ return (
+ <>
+{/* Scrollable Canvas */}
+<div className="flex-1 p-lg lg:p-xl xl:px-24 xl:py-12 scroll-smooth">
 <div className="max-w-7xl mx-auto space-y-8">
-{/*  Page Header  */}
+{/* Page Header */}
 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
 <div>
 <h2 className="font-display-lg text-display-lg text-on-surface mb-2">Employees</h2>
@@ -90,11 +13,11 @@ export default function Page() {
 <div className="flex items-center gap-4">
 <button className="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-on-primary rounded-xl font-headline-md text-headline-md font-medium hover:bg-primary/90 transition-colors shadow-sm">
 <span className="material-symbols-outlined">add</span>
-                            Add Employee
-                        </button>
+ Add Employee
+ </button>
 </div>
 </div>
-{/*  Controls Bar  */}
+{/* Controls Bar */}
 <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between bg-surface-container p-4 rounded-2xl border border-outline-variant">
 <div className="flex-1 w-full md:w-auto relative lg:hidden">
 <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">search</span>
@@ -128,9 +51,9 @@ export default function Page() {
 </button>
 </div>
 </div>
-{/*  Employee Grid  */}
+{/* Employee Grid */}
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-{/*  Card 1  */}
+{/* Card 1 */}
 <div className="bg-surface-container border border-outline-variant rounded-2xl p-6 flex flex-col hover:border-primary/50 hover:bg-surface-container-high transition-all duration-300 cursor-pointer group relative overflow-hidden">
 <div className="flex justify-between items-start mb-6 relative z-10">
 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-green/10 text-status-green border border-status-green/20">
@@ -161,7 +84,7 @@ export default function Page() {
 </div>
 </div>
 </div>
-{/*  Card 2  */}
+{/* Card 2 */}
 <div className="bg-surface-container border border-outline-variant rounded-2xl p-6 flex flex-col hover:border-primary/50 hover:bg-surface-container-high transition-all duration-300 cursor-pointer group relative overflow-hidden">
 <div className="flex justify-between items-start mb-6 relative z-10">
 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-blue/10 text-status-blue border border-status-blue/20">
@@ -189,7 +112,7 @@ export default function Page() {
 </div>
 </div>
 </div>
-{/*  Card 3  */}
+{/* Card 3 */}
 <div className="bg-surface-container border border-outline-variant rounded-2xl p-6 flex flex-col hover:border-primary/50 hover:bg-surface-container-high transition-all duration-300 cursor-pointer group relative overflow-hidden">
 <div className="flex justify-between items-start mb-6 relative z-10">
 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-green/10 text-status-green border border-status-green/20">
@@ -220,7 +143,7 @@ export default function Page() {
 </div>
 </div>
 </div>
-{/*  Card 4  */}
+{/* Card 4 */}
 <div className="bg-surface-container border border-outline-variant rounded-2xl p-6 flex flex-col hover:border-primary/50 hover:bg-surface-container-high transition-all duration-300 cursor-pointer group relative overflow-hidden">
 <div className="flex justify-between items-start mb-6 relative z-10">
 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-red/10 text-status-red border border-status-red/20">
@@ -249,18 +172,16 @@ export default function Page() {
 </div>
 </div>
 </div>
-{/*  Pagination  */}
+{/* Pagination */}
 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-6 border-t border-outline-variant mt-8">
 <p className="font-body-md text-body-md text-on-surface-variant">Showing 1 to 4 of 48 employees</p>
 <div className="flex gap-3">
-<button className="px-4 py-2 rounded-xl border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium" disabled="">Previous</button>
+<button className="px-4 py-2 rounded-xl border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium" disabled={true}>Previous</button>
 <button className="px-4 py-2 rounded-xl border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors font-medium">Next</button>
 </div>
 </div>
 </div>
 </div>
-</main>
-
-    </div>
-  );
+ </>
+ );
 }
