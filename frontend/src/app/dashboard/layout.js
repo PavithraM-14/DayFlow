@@ -2,9 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import RequireAuth from '@/components/RequireAuth';
+import { useAuth } from '@/context/AuthContext';
 
 export default function HRDashboardLayout({ children }) {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   const getItemClasses = (path) => {
     // Exact match for dashboard, prefix match for others
@@ -29,7 +32,7 @@ export default function HRDashboardLayout({ children }) {
     return {};
   };
 
-  return (
+  const shell = (
     <div className="bg-surface text-on-surface font-body-md h-screen flex overflow-hidden">
       {/* SideNavBar */}
       <nav className="hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant h-screen w-64 fixed left-0 py-6 px-4 z-50">
@@ -56,6 +59,14 @@ export default function HRDashboardLayout({ children }) {
               <span>Employees</span>
             </Link>
           </li>
+          {user?.role === 'hr' && (
+            <li>
+              <Link className={getItemClasses('/dashboard/verification')} href="/dashboard/verification">
+                <span className="material-symbols-outlined" style={getIconStyleString('/dashboard/verification')}>how_to_reg</span>
+                <span>New Employee Verification</span>
+              </Link>
+            </li>
+          )}
           <li>
             <Link className={getItemClasses('/dashboard/attendance')} href="/dashboard/attendance">
               <span className="material-symbols-outlined" style={getIconStyleString('/dashboard/attendance')}>pending_actions</span>
@@ -142,4 +153,6 @@ export default function HRDashboardLayout({ children }) {
       </div>
     </div>
   );
+
+  return <RequireAuth>{shell}</RequireAuth>;
 }

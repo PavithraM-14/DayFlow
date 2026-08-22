@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import RequireAuth from '@/components/RequireAuth';
 
 export default function EmployeeDashboardLayout({ children }) {
   const pathname = usePathname();
@@ -29,7 +30,7 @@ export default function EmployeeDashboardLayout({ children }) {
     return {};
   };
 
-  return (
+  const shell = (
     <div className="bg-surface text-on-surface font-body-md min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
       {/* SideNavBar */}
       <nav className="hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant h-screen w-64 fixed left-0 py-6 px-4 z-50">
@@ -165,4 +166,6 @@ export default function EmployeeDashboardLayout({ children }) {
       </div>
     </div>
   );
+
+  return <RequireAuth>{shell}</RequireAuth>;
 }

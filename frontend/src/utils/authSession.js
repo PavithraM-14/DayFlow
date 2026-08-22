@@ -59,10 +59,10 @@ export const clearSession = () => {
 /**
  * Where a signed-in user belongs, by role.
  *
- * Employees go to /dashboard/profile, not /dashboard/employee — despite
- * the name, that route is the HR-facing employee *directory*. There is no
- * employee-specific dashboard yet, and profile is the one page that shows
- * a person their own details.
+ * The two role areas are separate route trees: /dashboard/* is the HR
+ * side, /employee-dashboard/* is what an employee sees. Note that
+ * /dashboard/employee is not an employee page at all — it is the
+ * HR-facing employee *directory*.
  */
 export const dashboardPathFor = (user) =>
-  user?.role === "hr" ? "/dashboard/hr" : "/dashboard/profile";
+  user?.role === "hr" ? "/dashboard/hr" : "/employee-dashboard";
