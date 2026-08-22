@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import { useAuth } from '@/context/AuthContext';
-import { checkIn, checkOut } from '@/services/attendance';
+import { checkIn, checkOut, emitAttendanceChanged, onAttendanceChanged } from '@/services/attendance';
 import { dashboardSummary } from '@/services/dashboard';
 
 const QUICK_LINKS = [
@@ -63,6 +63,8 @@ export default function EmployeeDashboard() {
 
   useEffect(() => {
     load();
+    // Stay in sync with the header check-in widget (and any other surface).
+    return onAttendanceChanged(() => load({ quiet: true }));
   }, [load]);
 
   const handleCheckIn = async () => {
@@ -72,6 +74,7 @@ export default function EmployeeDashboard() {
     setBusy(false);
     if (response.success) {
       load({ quiet: true });
+      emitAttendanceChanged();
     } else {
       setError(response.message || 'Could not check in.');
     }
@@ -84,6 +87,7 @@ export default function EmployeeDashboard() {
     setBusy(false);
     if (response.success) {
       load({ quiet: true });
+      emitAttendanceChanged();
     } else {
       setError(response.message || 'Could not check out.');
     }

@@ -56,9 +56,11 @@ const deriveCompanyCode = (name) => {
   return "CO";
 };
 
-companySchema.pre("validate", function assignCode(next) {
+// Synchronous hook — no `next`. Mongoose 9 dropped callback-style
+// middleware, so declaring a `next` parameter gets it called with
+// undefined and throws "next is not a function" on every company insert.
+companySchema.pre("validate", function assignCode() {
   if (!this.code) this.code = deriveCompanyCode(this.name);
-  next();
 });
 
 companySchema.virtual("hasLogo").get(function () {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import CheckInWidget from "@/components/CheckInWidget";
 
 /**
  * Single source of truth for both dashboard sidebars.
@@ -200,6 +201,14 @@ export default function DashboardShell({
             </div>
           </div>
           <div className="flex items-center gap-4 ml-auto">
+            {/* Persistent check-in/out systray — employees can punch in or
+                out from any page, per the wireframe's header widget. */}
+            {variant === "employee" && (
+              <div className="pr-1 border-r border-outline-variant mr-1">
+                <CheckInWidget />
+              </div>
+            )}
+
             <button
               className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant relative"
               title="Notifications (coming soon)"

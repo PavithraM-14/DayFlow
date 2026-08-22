@@ -5,16 +5,9 @@ import { useParams } from 'next/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import DocumentsPanel from '@/components/DocumentsPanel';
 import TagListEditor from '@/components/TagListEditor';
+import AvatarUploader from '@/components/AvatarUploader';
 import { getEmployee, updateEmployee } from '@/services/employees';
 import { getSalary, updateSalary } from '@/services/payroll';
-
-const initials = (name) =>
-  (name || '')
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join('') || '?';
 
 const toDateInput = (value) => {
   if (!value) return '';
@@ -26,6 +19,30 @@ const currency = (value) =>
   new Intl.NumberFormat(undefined, { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(
     value || 0
   );
+
+// Mirrors the backend's utils/payroll.js DEFAULTS, so the edit form can
+// pre-fill a component's *effective* value even before HR has overridden it.
+const DEFAULT_COMPONENTS = {
+  basicPercentOfWage: 50,
+  hraPercentOfBasic: 50,
+  standardAllowanceFlat: 4167,
+  performanceBonusPercentOfBasic: 8.33,
+  ltaPercentOfBasic: 8.333,
+  pfEmployeePercentOfBasic: 12,
+  pfEmployerPercentOfBasic: 12,
+  professionalTaxFlat: 200,
+};
+
+const COMPONENT_FIELDS = [
+  { key: 'basicPercentOfWage', label: 'Basic', unit: '% of Wage' },
+  { key: 'hraPercentOfBasic', label: 'HRA', unit: '% of Basic' },
+  { key: 'standardAllowanceFlat', label: 'Standard Allowance', unit: '₹ (flat)' },
+  { key: 'performanceBonusPercentOfBasic', label: 'Performance Bonus', unit: '% of Basic' },
+  { key: 'ltaPercentOfBasic', label: 'LTA', unit: '% of Basic' },
+  { key: 'pfEmployeePercentOfBasic', label: 'PF — Employee', unit: '% of Basic' },
+  { key: 'pfEmployerPercentOfBasic', label: 'PF — Employer', unit: '% of Basic' },
+  { key: 'professionalTaxFlat', label: 'Professional Tax', unit: '₹ (flat)' },
+];
 
 const emptyProfileForm = {
   name: '',
@@ -57,7 +74,12 @@ export default function EmployeeProfileViewPage() {
   const [savingProfile, setSavingProfile] = useState(false);
 
   const [editingSalary, setEditingSalary] = useState(false);
-  const [salaryForm, setSalaryForm] = useState({ wage: 0, workingDaysPerWeek: 5 });
+  const [salaryForm, setSalaryForm] = useState({
+    wage: 0,
+    workingDaysPerWeek: 5,
+    breakTimeMinutes: 60,
+    ...DEFAULT_COMPONENTS,
+  });
   const [savingSalary, setSavingSalary] = useState(false);
 
   const [skills, setSkills] = useState([]);
@@ -117,6 +139,10 @@ export default function EmployeeProfileViewPage() {
       setSalaryForm({
         wage: salaryResponse.data.wage || 0,
         workingDaysPerWeek: salaryResponse.data.workingDaysPerWeek || 5,
+        breakTimeMinutes: salaryResponse.data.breakTimeMinutes ?? 60,
+        // Effective values = spec defaults with this employee's overrides on top.
+        ...DEFAULT_COMPONENTS,
+        ...(salaryResponse.data.components || {}),
       });
     }
 
@@ -146,13 +172,31 @@ export default function EmployeeProfileViewPage() {
     event.preventDefault();
     setSavingSalary(true);
     setNotice('');
+
+    const components = {};
+    COMPONENT_FIELDS.forEach(({ key }) => {
+      components[key] = Number(salaryForm[key]) || 0;
+    });
+
+    const workingDaysPerWeek = Number(salaryForm.workingDaysPerWeek) || 5;
+    const breakTimeMinutes = Number(salaryForm.breakTimeMinutes) || 0;
+
     const response = await updateSalary(id, {
       wage: Number(salaryForm.wage) || 0,
-      workingDaysPerWeek: Number(salaryForm.workingDaysPerWeek) || 5,
+      workingDaysPerWeek,
+      breakTimeMinutes,
+      components,
     });
     setSavingSalary(false);
     if (response.success) {
-      setSalary((prev) => ({ ...prev, wage: response.data.wage, breakdown: response.data.breakdown }));
+      setSalary((prev) => ({
+        ...prev,
+        wage: response.data.wage,
+        breakdown: response.data.breakdown,
+        workingDaysPerWeek,
+        breakTimeMinutes,
+        components,
+      }));
       setEditingSalary(false);
       setNotice('Salary structure updated.');
     } else {
@@ -226,9 +270,13 @@ export default function EmployeeProfileViewPage() {
       <div className="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden relative">
         <div className="h-32 bg-gradient-to-r from-primary-container to-secondary-container opacity-20 absolute w-full top-0"></div>
         <div className="p-gutter relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 mt-8">
-          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-display-lg text-[40px] border-4 border-surface-container-lowest shadow-sm">
-            {initials(employee?.name)}
-          </div>
+          <AvatarUploader
+            employeeId={id}
+            name={employee?.name}
+            canEdit
+            className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-display-lg text-[40px] border-4 border-surface-container-lowest shadow-sm shrink-0"
+            textClassName="font-display-lg text-[40px]"
+          />
           <div className="flex-1">
             <h2 className="font-headline-lg text-headline-lg text-on-background">{employee?.name}</h2>
             <p className="font-title-md text-title-md text-on-surface-variant mb-1">
@@ -428,11 +476,11 @@ export default function EmployeeProfileViewPage() {
             </div>
 
             {editingSalary ? (
-              <form onSubmit={saveSalary} className="flex flex-col gap-4">
-                <div className="grid grid-cols-2 gap-4">
+              <form onSubmit={saveSalary} className="flex flex-col gap-5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   <TextInput
                     type="number"
-                    label="Monthly Wage"
+                    label="Monthly Wage (₹)"
                     value={salaryForm.wage}
                     onChange={(v) => setSalaryForm({ ...salaryForm, wage: v })}
                   />
@@ -442,7 +490,32 @@ export default function EmployeeProfileViewPage() {
                     value={salaryForm.workingDaysPerWeek}
                     onChange={(v) => setSalaryForm({ ...salaryForm, workingDaysPerWeek: v })}
                   />
+                  <TextInput
+                    type="number"
+                    label="Break Time (mins)"
+                    value={salaryForm.breakTimeMinutes}
+                    onChange={(v) => setSalaryForm({ ...salaryForm, breakTimeMinutes: v })}
+                  />
                 </div>
+
+                <div>
+                  <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Salary Components</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {COMPONENT_FIELDS.map(({ key, label, unit }) => (
+                      <TextInput
+                        key={key}
+                        type="number"
+                        label={`${label} (${unit})`}
+                        value={salaryForm[key]}
+                        onChange={(v) => setSalaryForm({ ...salaryForm, [key]: v })}
+                      />
+                    ))}
+                  </div>
+                  <p className="font-label-sm text-label-sm text-on-surface-variant mt-2">
+                    Fixed Allowance is calculated automatically as the balance of the wage after the components above.
+                  </p>
+                </div>
+
                 <div className="flex justify-end gap-3">
                   <button type="button" onClick={() => setEditingSalary(false)} className="px-4 py-2 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-highest">
                     Cancel

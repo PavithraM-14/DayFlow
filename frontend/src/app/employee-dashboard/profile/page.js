@@ -4,6 +4,7 @@ import { useState } from 'react';
 import DashboardShell from '@/components/DashboardShell';
 import DocumentsPanel from '@/components/DocumentsPanel';
 import TagListEditor from '@/components/TagListEditor';
+import AvatarUploader from '@/components/AvatarUploader';
 import { useAuth } from '@/context/AuthContext';
 import { updateEmployee } from '@/services/employees';
 
@@ -126,9 +127,13 @@ export default function EmployeeProfile() {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter mt-gutter">
         <div className="md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xl">
-              {(user?.name || '?').charAt(0).toUpperCase()}
-            </div>
+            <AvatarUploader
+              employeeId={user?._id}
+              name={user?.name}
+              canEdit
+              className="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xl shrink-0"
+              textClassName="text-xl"
+            />
             <div>
               <span className="inline-block px-2 py-1 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm uppercase mb-1">Active</span>
               <p className="font-label-sm text-label-sm text-on-surface-variant">Login ID: {user?.loginId || '—'}</p>

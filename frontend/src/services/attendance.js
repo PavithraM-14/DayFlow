@@ -20,6 +20,26 @@ export const companyAttendanceForDay = (date) =>
 export const employeeAttendanceHistory = (employeeId, month, year) =>
   apiClient.get(`${BASE}?employeeId=${employeeId}&month=${month}&year=${year}`);
 
+/**
+ * A tiny cross-component signal so the header check-in widget and the
+ * attendance / dashboard pages stay in sync: whoever changes attendance
+ * (checks in or out) fires this, and the others re-fetch. Avoids threading
+ * shared state through the layout for what is a single, simple event.
+ */
+export const ATTENDANCE_CHANGED_EVENT = "dayflow:attendance-changed";
+
+export const emitAttendanceChanged = () => {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent(ATTENDANCE_CHANGED_EVENT));
+  }
+};
+
+export const onAttendanceChanged = (handler) => {
+  if (typeof window === "undefined") return () => {};
+  window.addEventListener(ATTENDANCE_CHANGED_EVENT, handler);
+  return () => window.removeEventListener(ATTENDANCE_CHANGED_EVENT, handler);
+};
+
 export const attendanceService = {
   checkIn,
   checkOut,
