@@ -31,13 +31,21 @@ const pendingSignupSchema = new mongoose.Schema(
     role: { type: String, enum: ["hr", "employee"], required: true },
     passwordHash: { type: String, required: true, select: false },
 
-    // Company being registered (HR flow only — employees will instead
-    // reference an existing company once that flow is built).
+    // Company being registered — HR flow only, where the company does not
+    // exist yet and is created on verification.
     companyName: { type: String, trim: true },
     logo: {
       data: Buffer,
       contentType: String,
       fileName: String,
+    },
+
+    // Company being joined — employee flow, where the company already
+    // exists and verification produces a request to join it instead.
+    company: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+      default: null,
     },
 
     // OTP state
