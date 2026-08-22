@@ -29,6 +29,7 @@ node_modules/
 # machine — safe to delete, not part of the project
 _scaffold_tmp/
 _to_delete/
+_pull/
 
 # Locally-fiddled diagram export — keep the checked-in version stable
 docs/flow.svg

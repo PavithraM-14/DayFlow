@@ -201,13 +201,14 @@ export default function DashboardShell({
             </div>
           </div>
           <div className="flex items-center gap-4 ml-auto">
-            {/* Persistent check-in/out systray — employees can punch in or
-                out from any page, per the wireframe's header widget. */}
-            {variant === "employee" && (
-              <div className="pr-1 border-r border-outline-variant mr-1">
-                <CheckInWidget />
-              </div>
-            )}
+            {/* Persistent check-in/out systray — every signed-in user
+                (employee or HR) can punch in or out from any page, per
+                the wireframe's header widget. HR needs this too: they are
+                employees of the company as well and their own attendance
+                should be trackable the same way. */}
+            <div className="pr-1 border-r border-outline-variant mr-1">
+              <CheckInWidget />
+            </div>
 
             <button
               className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant relative"

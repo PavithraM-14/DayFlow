@@ -2,6 +2,12 @@ const jwt = require("jsonwebtoken");
 
 const DEFAULT_EXPIRES_IN = "7d";
 
+// Password-reset tokens are short-lived and single-purpose: the
+// `purpose` claim keeps a reset token from ever being accepted anywhere
+// a normal auth token is expected, and vice versa.
+const RESET_TOKEN_PURPOSE = "password-reset";
+const RESET_TOKEN_EXPIRES_IN = "45m";
+
 // Only ever used when JWT_SECRET is unset outside production, so the login
 // flow is testable on a fresh clone. Tokens signed with it are worthless,
 // which is the point — assertJwtSecret() blocks it in production.
@@ -77,8 +83,38 @@ const verifyAuthToken = (token) => {
   }
 };
 
+/**
+ * A short-lived, single-purpose token emailed as the "reset password"
+ * link. Signed with the same secret as the session token, but carries a
+ * `purpose` claim so it can never be replayed as a session token.
+ */
+const signResetToken = (user) =>
+  jwt.sign(
+    { sub: String(user._id), purpose: RESET_TOKEN_PURPOSE },
+    getSecret(),
+    { expiresIn: RESET_TOKEN_EXPIRES_IN }
+  );
+
+/**
+ * Returns the decoded payload only for a token that is valid, unexpired,
+ * AND carries the password-reset purpose claim — null otherwise. This is
+ * what keeps a session token (or anyone else's token) from being usable
+ * to reset a password.
+ */
+const verifyResetToken = (token) => {
+  try {
+    const payload = jwt.verify(token, getSecret());
+    if (payload.purpose !== RESET_TOKEN_PURPOSE) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+};
+
 module.exports = {
   assertJwtSecret,
   signAuthToken,
   verifyAuthToken,
+  signResetToken,
+  verifyResetToken,
 };

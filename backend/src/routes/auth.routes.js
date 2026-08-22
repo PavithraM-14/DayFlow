@@ -16,6 +16,12 @@ router.post("/login", loginLimiter, authController.login);
 // Re-validates a stored token on page load and returns fresh user details.
 router.get("/me", requireAuth, authController.me);
 
+// Forgot / reset password. otpRequestLimiter is reused here rather than
+// adding a new limiter — it already caps repeated requests per IP across
+// different target emails, which is exactly the risk on this endpoint too.
+router.post("/forgot-password", otpRequestLimiter, authController.forgotPassword);
+router.post("/reset-password", otpRequestLimiter, authController.resetPassword);
+
 // HR sign-up — email OTP flow.
 //
 //   1. POST /signup/hr/send-otp     stage the form, email a 6-digit code

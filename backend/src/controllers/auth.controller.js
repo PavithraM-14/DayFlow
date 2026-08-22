@@ -6,8 +6,8 @@ const User = require("../models/user.model");
 const PendingSignup = require("../models/pendingSignup.model");
 const EmployeeRequest = require("../models/employeeRequest.model");
 const { generateOtp } = require("../utils/otp");
-const { sendSignupOtpEmail } = require("../utils/email");
-const { signAuthToken } = require("../utils/token");
+const { sendSignupOtpEmail, sendPasswordResetEmail } = require("../utils/email");
+const { signAuthToken, signResetToken, verifyResetToken } = require("../utils/token");
 const {
   isValidEmail,
   validatePassword,
@@ -794,6 +794,115 @@ const me = async (req, res, next) => {
   }
 };
 
+/**
+ * POST /api/auth/forgot-password   { email }
+ *
+ * Always responds with the same generic success message regardless of
+ * whether the email matches an account — mirrors login's single
+ * INVALID_CREDENTIALS message in spirit, so this endpoint cannot be used
+ * to enumerate registered addresses. Only emails a reset link when a
+ * user actually exists.
+ */
+const forgotPassword = async (req, res, next) => {
+  try {
+    if (req.body.email !== undefined && typeof req.body.email !== "string") {
+      return fail(res, 400, "Enter a valid email address");
+    }
+
+    const email = (req.body.email || "").trim().toLowerCase();
+
+    if (!email) return fail(res, 400, "Email is required");
+    if (!isValidEmail(email)) {
+      return fail(res, 400, "Enter a valid email address");
+    }
+
+    const GENERIC_MESSAGE =
+      "If an account exists for that email, we've sent a password reset link.";
+
+    const user = await User.findOne({ email });
+
+    if (user) {
+      const resetToken = signResetToken(user);
+      const resetLink = `${
+        process.env.CLIENT_ORIGIN || "http://localhost:3000"
+      }/reset-password?token=${resetToken}`;
+
+      try {
+        await sendPasswordResetEmail({
+          email: user.email,
+          name: user.name,
+          resetLink,
+        });
+      } catch (error) {
+        // Don't let an SMTP hiccup leak through as a 502 that would tell
+        // an attacker "that email exists but the send failed" — log it
+        // and still return the generic message.
+        console.error(
+          "[AUTH] Failed to send password reset email:",
+          error.message
+        );
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: GENERIC_MESSAGE,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+/**
+ * POST /api/auth/reset-password   { token, password }
+ *
+ * Verifies the short-lived reset token (see utils/token.js) and, if
+ * valid, sets the new password. No separate invalidation store — the
+ * token's own expiry (45 minutes) is the only guard, which is enough for
+ * this flow's threat model and keeps this simple.
+ */
+const resetPassword = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+    const password = req.body.password;
+
+    if (!token || typeof token !== "string") {
+      return fail(res, 400, "Reset link is missing or invalid");
+    }
+
+    const passwordCheck = validatePassword(password);
+    if (!passwordCheck.isValid) return fail(res, 400, passwordCheck.message);
+
+    const payload = verifyResetToken(token);
+    if (!payload) {
+      return fail(
+        res,
+        400,
+        "This reset link is invalid or has expired. Please request a new one."
+      );
+    }
+
+    const user = await User.findById(payload.sub);
+    if (!user) {
+      return fail(
+        res,
+        400,
+        "This reset link is invalid or has expired. Please request a new one."
+      );
+    }
+
+    user.passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Your password has been reset. You can now sign in.",
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   sendHrSignupOtp,
   resendHrSignupOtp,
@@ -803,6 +912,8 @@ module.exports = {
   verifyEmployeeSignupOtp,
   login,
   me,
+  forgotPassword,
+  resetPassword,
   assertOtpDevExposureSafety,
   // Reused by employee.controller.js for the same dev-secret-exposure
   // tradeoff when emailing a temp password for an HR-created account.

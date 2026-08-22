@@ -84,6 +84,23 @@ export const login = ({ email, password }) =>
 /** Revalidates the stored token and returns fresh user details. */
 export const fetchCurrentUser = () => apiClient.get("/auth/me");
 
+/**
+ * Requests a password-reset email. Always resolves with a generic
+ * success message from the backend, whether or not the address is
+ * registered — nothing to branch on here beyond network/validation
+ * failures.
+ */
+export const forgotPassword = (email) =>
+  apiClient.post("/auth/forgot-password", { email }, { auth: false });
+
+/** Submits the token from the reset link plus the chosen new password. */
+export const resetPassword = (token, newPassword) =>
+  apiClient.post(
+    "/auth/reset-password",
+    { token, password: newPassword },
+    { auth: false }
+  );
+
 export const authService = {
   sendHrSignupOtp,
   resendHrSignupOtp,
@@ -93,6 +110,8 @@ export const authService = {
   verifyEmployeeSignupOtp,
   login,
   fetchCurrentUser,
+  forgotPassword,
+  resetPassword,
 };
 
 export default authService;

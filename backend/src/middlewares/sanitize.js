@@ -32,6 +32,12 @@ const stripOperators = (value, depth = 0) => {
 };
 
 const sanitizeInput = (req, res, next) => {
+  // express.json()/express.urlencoded() only ever set req.body when the
+  // request's Content-Type matches — a bodyless request (e.g. a PATCH with
+  // no fields to send) leaves it undefined, which then throws in any
+  // controller that reads a property off it (`req.body.comments`, etc.).
+  // Normalizing here, once, means no controller has to guard for it.
+  if (!req.body) req.body = {};
   if (isPlainObject(req.body)) stripOperators(req.body);
   if (isPlainObject(req.params)) stripOperators(req.params);
   next();

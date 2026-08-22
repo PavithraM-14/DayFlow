@@ -5,11 +5,12 @@ import Link from 'next/link';
 import DashboardShell from '@/components/DashboardShell';
 import { createEmployee, listEmployees } from '@/services/employees';
 
+// Dot colors for present/half-day/absent/unmarked. "leave" is rendered as an
+// airplane icon (see the card markup below) instead of a colored dot.
 const STATUS_DOT = {
   present: 'bg-[#2e7d32]',
   'half-day': 'bg-[#d97706]',
-  leave: 'bg-primary',
-  absent: 'bg-error',
+  absent: 'bg-[var(--color-warning)]',
   unmarked: 'bg-outline-variant',
 };
 
@@ -189,10 +190,19 @@ export default function EmployeeDirectoryPage() {
                 <div className="w-20 h-20 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-display-lg text-[28px] border border-outline-variant shadow-sm">
                   {initials(emp.name)}
                 </div>
-                <span
-                  className={`absolute bottom-0 right-0 w-4 h-4 border-2 border-surface-container-lowest rounded-full ${STATUS_DOT[emp.todayStatus] || STATUS_DOT.unmarked}`}
-                  title={STATUS_LABEL[emp.todayStatus] || 'Unmarked'}
-                ></span>
+                {emp.todayStatus === 'leave' ? (
+                  <span
+                    className="material-symbols-outlined absolute bottom-0 right-0 w-4 h-4 flex items-center justify-center text-[11px] leading-none text-primary bg-surface-container-lowest border-2 border-surface-container-lowest rounded-full"
+                    title={STATUS_LABEL.leave}
+                  >
+                    flight
+                  </span>
+                ) : (
+                  <span
+                    className={`absolute bottom-0 right-0 w-4 h-4 border-2 border-surface-container-lowest rounded-full ${STATUS_DOT[emp.todayStatus] || STATUS_DOT.unmarked}`}
+                    title={STATUS_LABEL[emp.todayStatus] || 'Unmarked'}
+                  ></span>
+                )}
               </div>
               <h3 className="font-title-md text-title-md text-on-surface mb-1">{emp.name}</h3>
               <p className="font-body-sm text-body-sm text-on-surface-variant mb-3">{emp.jobPosition || (emp.role === 'hr' ? 'HR' : 'Employee')}</p>

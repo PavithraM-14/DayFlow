@@ -5,14 +5,36 @@ import Link from "next/link";
 import AuthCard from "@/components/AuthCard";
 import TextField from "@/components/TextField";
 import SubmitButton from "@/components/SubmitButton";
+import AlertMessage from "@/components/AlertMessage";
+import { forgotPassword } from "@/services/auth";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: wire up to POST /api/auth/forgot-password once the backend endpoint exists.
+    setError("");
+
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
+      setError("Enter your account email.");
+      return;
+    }
+
+    setSubmitting(true);
+    const response = await forgotPassword(trimmedEmail);
+    setSubmitting(false);
+
+    if (!response.success) {
+      setError(response.message || "Could not send the reset link.");
+      return;
+    }
+
+    // The backend always returns the same generic message whether or not
+    // the email is registered, so there is nothing else to branch on here.
     setSent(true);
   };
 
@@ -28,6 +50,8 @@ export default function ForgotPasswordPage() {
     >
       {!sent && (
         <form onSubmit={handleSubmit}>
+          <AlertMessage tone="error">{error}</AlertMessage>
+
           <TextField
             id="email"
             label="Email"
@@ -38,7 +62,9 @@ export default function ForgotPasswordPage() {
             autoComplete="email"
             required
           />
-          <SubmitButton>Send Reset Link</SubmitButton>
+          <SubmitButton loading={submitting} loadingLabel="Sending...">
+            Send Reset Link
+          </SubmitButton>
         </form>
       )}
     </AuthCard>

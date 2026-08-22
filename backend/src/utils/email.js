@@ -101,9 +101,43 @@ const sendTempPasswordEmail = async ({ email, name, tempPassword, loginId, compa
   });
 };
 
+/**
+ * Emails the password-reset link. Deliberately does not confirm or deny
+ * whether the account exists in its own copy — the controller only
+ * calls this when a matching user was found, and the generic "if an
+ * account exists..." response is what the caller sees either way.
+ */
+const sendPasswordResetEmail = async ({ email, name, resetLink, expiryMinutes = 45 }) => {
+  const greeting = name ? `Hi ${name},` : "Hi,";
+
+  return sendMail({
+    to: email,
+    subject: `Reset your ${APP_NAME} password`,
+    text:
+      `${greeting}\n\nWe received a request to reset your ${APP_NAME} password.\n` +
+      `Use this link to choose a new one: ${resetLink}\n\n` +
+      `This link expires in ${expiryMinutes} minutes.\n\n` +
+      `If you didn't request this, you can safely ignore this email.`,
+    html: `
+      <div style="font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 560px; margin: 0 auto; color: #1f1b1e;">
+        <h2 style="color: #714b67; margin: 0 0 12px;">${APP_NAME} — reset your password</h2>
+        <p style="margin: 0 0 20px; line-height: 1.5;">${greeting} we received a request to reset your ${APP_NAME} password.</p>
+        <div style="text-align: center; margin: 0 0 20px;">
+          <a href="${resetLink}" style="display: inline-block; background: #714b67; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 8px; font-weight: 600;">Reset password</a>
+        </div>
+        <p style="margin: 0 0 8px; line-height: 1.5;">This link expires in ${expiryMinutes} minutes.</p>
+        <p style="margin: 0; color: #6b6570; font-size: 13px; line-height: 1.5;">
+          If you didn't request this, you can safely ignore this email.
+        </p>
+      </div>
+    `,
+  });
+};
+
 module.exports = {
   sendMail,
   sendSignupOtpEmail,
   sendTempPasswordEmail,
+  sendPasswordResetEmail,
   isSmtpConfigured: isConfigured,
 };
