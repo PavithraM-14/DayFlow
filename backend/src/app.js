@@ -31,14 +31,21 @@ app.use("/api", routes);
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ message: "Not found" });
+  res.status(404).json({ success: false, message: "Not found" });
 });
 
-// Central error handler — feature-specific errors can extend this
+// Central error handler — feature-specific errors can extend this.
+// Errors thrown with a `status` (see controllers/auth.controller.js) keep
+// their own message; anything else is reported generically so internals
+// are never exposed to the client.
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(err.status || 500).json({
-    message: err.message || "Internal Server Error",
+
+  const status = err.status || 500;
+
+  res.status(status).json({
+    success: false,
+    message: status >= 500 ? "Internal Server Error" : err.message,
   });
 });
 
