@@ -18,6 +18,16 @@ const companySchema = new mongoose.Schema(
       trim: true,
       maxlength: [120, "Company name cannot exceed 120 characters"],
     },
+    // Short prefix used in every employee Login ID at this company (see
+    // utils/loginId.js) — e.g. "Odoo India" -> "OI". Derived once at
+    // creation so already-issued Login IDs stay stable if the company is
+    // renamed later.
+    code: {
+      type: String,
+      trim: true,
+      uppercase: true,
+      maxlength: 6,
+    },
     logo: {
       data: Buffer,
       contentType: String,
@@ -33,6 +43,23 @@ companySchema.index(
   { name: 1 },
   { unique: true, collation: { locale: "en", strength: 2 } }
 );
+
+/** "Odoo India" -> "OI", "Acme" -> "AC". Falls back to "CO" for edge cases. */
+const deriveCompanyCode = (name) => {
+  const words = String(name || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase();
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase().padEnd(2, "X");
+  return "CO";
+};
+
+companySchema.pre("validate", function assignCode(next) {
+  if (!this.code) this.code = deriveCompanyCode(this.name);
+  next();
+});
 
 companySchema.virtual("hasLogo").get(function () {
   return Boolean(this.logo && this.logo.data && this.logo.data.length);

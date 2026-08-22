@@ -1,238 +1,233 @@
 'use client';
 
-import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+import DashboardShell from '@/components/DashboardShell';
+import { applyForLeave, myLeaves } from '@/services/timeOff';
+
+const TYPE_LABEL = { paid: 'Paid Time Off', sick: 'Sick Leave', unpaid: 'Unpaid Leave' };
+const STATUS_STYLES = {
+  pending: 'bg-tertiary-fixed text-on-tertiary-fixed-variant',
+  approved: 'bg-secondary-container text-on-secondary-container',
+  rejected: 'bg-error-container text-on-error-container',
+};
+
+const formatDate = (value) => {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? '—'
+    : date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+};
+
+const emptyForm = { type: 'paid', startDate: '', endDate: '', remarks: '' };
 
 export default function EmployeeTimeOff() {
+  const [requests, setRequests] = useState([]);
+  const [balances, setBalances] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+
+  const [form, setForm] = useState(emptyForm);
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
+
+  const load = useCallback(async ({ quiet = false } = {}) => {
+    if (!quiet) setLoading(true);
+    const response = await myLeaves();
+    if (response.success) {
+      setRequests(response.data?.requests || []);
+      setBalances(response.data?.balances || null);
+      setError('');
+    } else {
+      setError(response.message || 'Could not load your leave requests.');
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const submit = async (event) => {
+    event.preventDefault();
+    setFormError('');
+
+    if (!form.startDate || !form.endDate) {
+      setFormError('Choose a start and end date.');
+      return;
+    }
+
+    setSubmitting(true);
+    const response = await applyForLeave(form);
+    setSubmitting(false);
+
+    if (!response.success) {
+      setFormError(response.message || 'Could not submit that request.');
+      return;
+    }
+
+    setForm(emptyForm);
+    setNotice(response.message || 'Request submitted.');
+    load({ quiet: true });
+  };
+
   return (
-    <div className="bg-surface text-on-surface font-body-md min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
-      {/* Side Navigation (Desktop) */}
-<nav className="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 py-unit-base px-4 border-r border-outline-variant bg-surface-container-low z-40">
-<div className="mb-8 px-4 py-4">
-<h1 className="font-headline-lg text-headline-lg text-primary">Dayflow</h1>
-<p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">HR Portal</p>
-</div>
-<div className="flex-1 space-y-2">
-<Link href="/employee-dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span>Dashboard</span>
-</Link>
-<Link href="/employee-dashboard/attendance" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="event_available">event_available</span>
-<span>Attendance</span>
-</Link>
-<Link href="/employee-dashboard/time-off" className="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all font-title-md text-title-md scale-100 shadow-sm border border-secondary-fixed" >
-<span className="material-symbols-outlined" data-icon="calendar_today" data-weight="fill" style={{fontVariationSettings: "'FILL' 1"}}>calendar_today</span>
-<span>Time Off</span>
-</Link>
-<Link href="/employee-dashboard/profile" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="person">person</span>
-<span>My Profile</span>
-</Link>
-<Link href="/employee-dashboard/payroll" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="payments">payments</span>
-<span>Payroll</span>
-</Link>
-</div>
-<div className="mt-auto pt-4 border-t border-outline-variant space-y-2">
-<Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="help">help</span>
-<span>Help</span>
-</Link>
-<Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
-<span className="material-symbols-outlined" data-icon="logout">logout</span>
-<span>Logout</span>
-</Link>
-</div>
-</nav>
-{/* Main Content Area */}
-<main className="flex-1 md:ml-64 flex flex-col min-h-screen max-w-[1120px] mx-auto w-full">
-{/* Top App Bar (Mobile & Desktop overrides) */}
-{/* TopNavBar (Mobile) */}
-<header className="md:hidden flex items-center justify-between p-4 bg-surface border-b border-outline-variant sticky top-0 z-50">
-  <div className="flex items-center gap-2">
-    <span className="material-symbols-outlined text-primary">menu</span>
-    <h1 className="font-title-md text-primary">Dayflow</h1>
-  </div>
-  <img alt="Profile photo" className="w-8 h-8 rounded-full border border-outline-variant bg-surface-container object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrJ1l9JGS0deg42HpVQSStp3WuLg6cFZW2FeG26-gaOuYdb6ndlwrx2AuaA27pg_mwg-16BH0vLFVhbSYT_mV6myPlpU4qy2NJ_opECPnYffJnHomg15Xs2ms4GmmLi3nl8qphGPoWWcyhhYNSJTjr42ac6VRMY6AFBrSr5ALG3Pt2PH4hMFAMsCFMQTOCwpWDb_wcsXAldmDawt7V86kvLeq6kxCD7Yttk5p3P4saztOMOfhirc7mSQ" />
-</header>
-{/* TopNavBar (Desktop) */}
-<header className="bg-surface flex justify-between items-center h-16 px-gutter border-b border-outline-variant sticky top-0 z-40 hidden md:flex">
-  <div className="flex items-center gap-4 flex-grow max-w-md">
-    <div className="relative w-full">
-      <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
-      <input className="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-[10px] focus:ring-2 focus:ring-primary-container focus:border-primary focus:outline-none transition-colors text-body-sm font-body-sm" placeholder="Search employees, documents..." type="text" />
-    </div>
-  </div>
-  <div className="flex items-center gap-4 ml-auto">
-    <button className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant relative">
-      <span className="material-symbols-outlined">notifications</span>
-      <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
-    </button>
-    <button className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant">
-      <span className="material-symbols-outlined">apps</span>
-    </button>
-    <div className="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
-      <img alt="Profile" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrJ1l9JGS0deg42HpVQSStp3WuLg6cFZW2FeG26-gaOuYdb6ndlwrx2AuaA27pg_mwg-16BH0vLFVhbSYT_mV6myPlpU4qy2NJ_opECPnYffJnHomg15Xs2ms4GmmLi3nl8qphGPoWWcyhhYNSJTjr42ac6VRMY6AFBrSr5ALG3Pt2PH4hMFAMsCFMQTOCwpWDb_wcsXAldmDawt7V86kvLeq6kxCD7Yttk5p3P4saztOMOfhirc7mSQ" />
-    </div>
-  </div>
-</header>
-{/* Page Content */}
-<div className="p-margin-mobile md:p-gutter flex-1 space-y-gutter">
-<div className="mb-8">
-<h2 className="font-display-lg text-display-lg text-on-surface mb-2">Time Off</h2>
-<p className="font-body-md text-body-md text-on-surface-variant">Manage your leave requests and view balances.</p>
-</div>
-{/* Bento Grid Layout */}
-<div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-{/* Balances Section (Spans 8 columns on desktop) */}
-<div className="md:col-span-8 flex flex-col gap-gutter">
-<div className="glass-card rounded-xl p-6 relative overflow-hidden group hover:shadow-[0_4px_12px_rgba(87,52,79,0.05)] transition-shadow">
-<div className="absolute top-0 right-0 w-32 h-32 bg-primary-fixed opacity-20 rounded-full blur-2xl -mr-10 -mt-10 group-hover:opacity-40 transition-opacity duration-500"></div>
-<h3 className="font-title-md text-title-md text-on-surface mb-6 flex items-center gap-2">
-<span className="material-symbols-outlined text-primary">account_balance_wallet</span>
-                            Current Balances
-                        </h3>
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-{/* PTO Balance */}
-<div className="p-4 rounded-lg bg-surface-container border border-surface-variant">
-<p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Paid Time Off</p>
-<div className="flex items-end gap-2">
-<span className="font-headline-lg text-headline-lg text-primary marker-highlight">14.5</span>
-<span className="font-body-sm text-body-sm text-on-surface-variant mb-1">days available</span>
-</div>
-<div className="w-full bg-surface-dim rounded-full h-1.5 mt-4">
-<div className="bg-primary h-1.5 rounded-full" style={{width: '65%'}}></div>
-</div>
-</div>
-{/* Sick Leave Balance */}
-<div className="p-4 rounded-lg bg-surface-container border border-surface-variant">
-<p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Sick Leave</p>
-<div className="flex items-end gap-2">
-<span className="font-headline-lg text-headline-lg text-secondary">6.0</span>
-<span className="font-body-sm text-body-sm text-on-surface-variant mb-1">days available</span>
-</div>
-<div className="w-full bg-surface-dim rounded-full h-1.5 mt-4">
-<div className="bg-secondary h-1.5 rounded-full" style={{width: '40%'}}></div>
-</div>
-</div>
-</div>
-</div>
-{/* Recent Requests Table */}
-<div className="glass-card rounded-xl border border-outline-variant overflow-hidden">
-<div className="p-6 border-b border-surface-variant flex justify-between items-center bg-[#FAF8FA]">
-<h3 className="font-title-md text-title-md text-on-surface">Recent Requests</h3>
-<button className="text-primary font-label-sm text-label-sm uppercase hover:underline">View All</button>
-</div>
-<div className="overflow-x-auto">
-<table className="w-full text-left border-collapse">
-<thead>
-<tr className="bg-[#FAF8FA] border-b border-outline-variant">
-<th className="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase font-medium">Type</th>
-<th className="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase font-medium">Dates</th>
-<th className="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase font-medium">Duration</th>
-<th className="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase font-medium">Status</th>
-</tr>
-</thead>
-<tbody className="font-body-sm text-body-sm">
-<tr className="border-b border-surface-variant hover:bg-surface-container-low transition-colors h-[48px]">
-<td className="py-2 px-6 text-on-surface font-medium">PTO</td>
-<td className="py-2 px-6 text-on-surface-variant">Oct 12 - Oct 14</td>
-<td className="py-2 px-6 text-on-surface-variant">3 Days</td>
-<td className="py-2 px-6">
-<span className="inline-flex items-center px-2 py-1 rounded-full bg-secondary-fixed/20 text-on-secondary-container font-label-sm text-label-sm">
-                                                Approved
-                                            </span>
-</td>
-</tr>
-<tr className="border-b border-surface-variant hover:bg-surface-container-low transition-colors h-[48px]">
-<td className="py-2 px-6 text-on-surface font-medium">Sick Leave</td>
-<td className="py-2 px-6 text-on-surface-variant">Sep 05</td>
-<td className="py-2 px-6 text-on-surface-variant">1 Day</td>
-<td className="py-2 px-6">
-<span className="inline-flex items-center px-2 py-1 rounded-full bg-secondary-fixed/20 text-on-secondary-container font-label-sm text-label-sm">
-                                                Approved
-                                            </span>
-</td>
-</tr>
-<tr className="hover:bg-surface-container-low transition-colors h-[48px]">
-<td className="py-2 px-6 text-on-surface font-medium">PTO</td>
-<td className="py-2 px-6 text-on-surface-variant">Nov 20 - Nov 24</td>
-<td className="py-2 px-6 text-on-surface-variant">5 Days</td>
-<td className="py-2 px-6">
-<span className="inline-flex items-center px-2 py-1 rounded-full bg-primary-fixed-dim/20 text-on-primary-fixed-variant font-label-sm text-label-sm">
-                                                Pending
-                                            </span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-{/* Request Form Section (Spans 4 columns on desktop) */}
-<div className="md:col-span-4">
-<div className="glass-card rounded-xl p-6 h-full flex flex-col">
-<h3 className="font-title-md text-title-md text-on-surface mb-6 flex items-center gap-2">
-<span className="material-symbols-outlined text-secondary">edit_calendar</span>
-                            Request Time Off
-                        </h3>
-<form className="flex-1 flex flex-col gap-4">
-{/* Leave Type */}
-<div>
-<label className="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-1" htmlFor="leave_type">Leave Type</label>
-<select className="w-full bg-surface border border-outline-variant rounded-[10px] py-2 px-3 text-on-surface font-body-md focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim focus:outline-none transition-all" id="leave_type" name="leave_type">
-<option>Paid Time Off (PTO)</option>
-<option>Sick Leave</option>
-<option>Unpaid Leave</option>
-</select>
-</div>
-{/* Date Range */}
-<div className="grid grid-cols-2 gap-4">
-<div>
-<label className="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-1" htmlFor="start_date">Start Date</label>
-<input className="w-full bg-surface border border-outline-variant rounded-[10px] py-2 px-3 text-on-surface font-body-md focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim focus:outline-none transition-all" id="start_date" name="start_date" type="date"/>
-</div>
-<div>
-<label className="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-1" htmlFor="end_date">End Date</label>
-<input className="w-full bg-surface border border-outline-variant rounded-[10px] py-2 px-3 text-on-surface font-body-md focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim focus:outline-none transition-all" id="end_date" name="end_date" type="date"/>
-</div>
-</div>
-{/* Reason */}
-<div className="flex-1">
-<label className="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-1" htmlFor="reason">Reason (Optional)</label>
-<textarea className="w-full h-full min-h-[100px] bg-surface border border-outline-variant rounded-[10px] py-2 px-3 text-on-surface font-body-md focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim focus:outline-none transition-all resize-none" id="reason" name="reason" placeholder="Briefly describe your request..." rows="3"></textarea>
-</div>
-{/* Submit Button */}
-<div className="mt-4 pt-4 border-t border-outline-variant">
-<button className="w-full bg-secondary hover:bg-secondary/90 text-on-secondary font-title-md text-title-md py-3 rounded-lg transition-colors flex items-center justify-center gap-2" type="button">
-<span className="material-symbols-outlined font-light text-[20px]">send</span>
-                                    Submit Request
-                                </button>
-<p className="text-center font-accent-marker text-accent-marker text-on-surface-variant mt-3 opacity-70">
-                                    Needs manager approval
-                                </p>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</main>
-{/* Bottom Navigation (Mobile Only) */}
-<nav className="md:hidden fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant z-50 flex justify-around items-center h-16 pb-safe">
-<Link href="/employee-dashboard" className="flex flex-col items-center justify-center w-full h-full text-on-surface-variant" >
-<span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span className="font-label-sm text-label-sm mt-1">Dashboard</span>
-</Link>
-<Link href="/employee-dashboard/time-off" className="flex flex-col items-center justify-center w-full h-full text-primary border-t-2 border-primary bg-primary-container/10" >
-<span className="material-symbols-outlined" data-icon="calendar_today" data-weight="fill" style={{fontVariationSettings: "'FILL' 1"}}>calendar_today</span>
-<span className="font-label-sm text-label-sm mt-1 font-bold">Time Off</span>
-</Link>
-<Link href="/employee-dashboard/profile" className="flex flex-col items-center justify-center w-full h-full text-on-surface-variant" >
-<span className="material-symbols-outlined" data-icon="person">person</span>
-<span className="font-label-sm text-label-sm mt-1">Profile</span>
-</Link>
-</nav>
-    </div>
+    <DashboardShell variant="employee">
+      <div className="mb-8">
+        <h2 className="font-display-lg text-display-lg text-on-surface mb-2">Time Off</h2>
+        <p className="font-body-md text-body-md text-on-surface-variant">Manage your leave requests and view balances.</p>
+      </div>
+
+      {notice && (
+        <div className="mb-6 flex items-start gap-2 p-3 rounded-lg bg-secondary-container text-on-secondary-container font-body-sm text-body-sm" role="status">
+          <span className="material-symbols-outlined text-[18px]">check_circle</span>
+          <span>{notice}</span>
+        </div>
+      )}
+      {error && (
+        <div className="mb-6 flex items-start gap-2 p-3 rounded-lg bg-error-container text-on-error-container font-body-sm text-body-sm" role="alert">
+          <span className="material-symbols-outlined text-[18px]">error</span>
+          <span>{error}</span>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+        <div className="md:col-span-8 flex flex-col gap-gutter">
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+            <h3 className="font-title-md text-title-md text-on-surface mb-6 flex items-center gap-2">
+              <span className="material-symbols-outlined text-primary">account_balance_wallet</span>
+              Current Balances
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-lg bg-surface-container border border-surface-variant">
+                <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Paid Time Off</p>
+                <div className="flex items-end gap-2">
+                  <span className="font-headline-lg text-headline-lg text-primary">{balances ? balances.paid.available : '—'}</span>
+                  <span className="font-body-sm text-body-sm text-on-surface-variant mb-1">
+                    of {balances ? balances.paid.allocated : '—'} days available
+                  </span>
+                </div>
+              </div>
+              <div className="p-4 rounded-lg bg-surface-container border border-surface-variant">
+                <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Sick Leave</p>
+                <div className="flex items-end gap-2">
+                  <span className="font-headline-lg text-headline-lg text-secondary">{balances ? balances.sick.available : '—'}</span>
+                  <span className="font-body-sm text-body-sm text-on-surface-variant mb-1">
+                    of {balances ? balances.sick.allocated : '—'} days available
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+            <div className="p-6 border-b border-surface-variant flex justify-between items-center bg-[#FAF8FA]">
+              <h3 className="font-title-md text-title-md text-on-surface">Recent Requests</h3>
+            </div>
+            {loading ? (
+              <div className="p-6 text-center text-on-surface-variant font-body-sm text-body-sm">Loading…</div>
+            ) : requests.length === 0 ? (
+              <div className="p-6 text-center text-on-surface-variant font-body-sm text-body-sm">No requests yet.</div>
+            ) : (
+              <div className="divide-y divide-outline-variant">
+                {requests.map((request) => (
+                  <div key={request._id} className="p-4 flex items-center justify-between gap-4">
+                    <div>
+                      <p className="font-body-sm text-body-sm font-medium text-on-surface">{TYPE_LABEL[request.type] || request.type}</p>
+                      <p className="font-label-sm text-label-sm text-on-surface-variant mt-0.5">
+                        {formatDate(request.startDate)} – {formatDate(request.endDate)} ({request.days}d)
+                      </p>
+                    </div>
+                    <span className={`inline-block px-2.5 py-1 rounded-full font-label-sm text-label-sm ${STATUS_STYLES[request.status] || ''}`}>
+                      {request.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="md:col-span-4">
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 h-full flex flex-col">
+            <h3 className="font-title-md text-title-md text-on-surface mb-6 flex items-center gap-2">
+              <span className="material-symbols-outlined text-secondary">edit_calendar</span>
+              Request Time Off
+            </h3>
+            <form onSubmit={submit} className="flex-1 flex flex-col gap-4">
+              {formError && (
+                <div className="flex items-start gap-2 p-3 rounded-lg bg-error-container text-on-error-container font-body-sm text-body-sm" role="alert">
+                  <span className="material-symbols-outlined text-[18px]">error</span>
+                  <span>{formError}</span>
+                </div>
+              )}
+              <div>
+                <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-1" htmlFor="leave_type">Leave Type</label>
+                <select
+                  className="w-full bg-surface border border-outline-variant rounded-[10px] py-2 px-3 text-on-surface font-body-md focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim focus:outline-none transition-all"
+                  id="leave_type"
+                  name="leave_type"
+                  value={form.type}
+                  onChange={(e) => setForm({ ...form, type: e.target.value })}
+                >
+                  <option value="paid">Paid Time Off</option>
+                  <option value="sick">Sick Leave</option>
+                  <option value="unpaid">Unpaid Leave</option>
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-1" htmlFor="start_date">Start Date</label>
+                  <input
+                    className="w-full bg-surface border border-outline-variant rounded-[10px] py-2 px-3 text-on-surface font-body-md focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim focus:outline-none transition-all"
+                    id="start_date"
+                    name="start_date"
+                    type="date"
+                    value={form.startDate}
+                    onChange={(e) => setForm({ ...form, startDate: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-1" htmlFor="end_date">End Date</label>
+                  <input
+                    className="w-full bg-surface border border-outline-variant rounded-[10px] py-2 px-3 text-on-surface font-body-md focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim focus:outline-none transition-all"
+                    id="end_date"
+                    name="end_date"
+                    type="date"
+                    value={form.endDate}
+                    onChange={(e) => setForm({ ...form, endDate: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="flex-1">
+                <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-1" htmlFor="reason">Remarks (Optional)</label>
+                <textarea
+                  className="w-full h-full min-h-[100px] bg-surface border border-outline-variant rounded-[10px] py-2 px-3 text-on-surface font-body-md focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim focus:outline-none transition-all resize-none"
+                  id="reason"
+                  name="reason"
+                  placeholder="Briefly describe your request..."
+                  rows="3"
+                  value={form.remarks}
+                  onChange={(e) => setForm({ ...form, remarks: e.target.value })}
+                ></textarea>
+              </div>
+              <div className="mt-4 pt-4 border-t border-outline-variant">
+                <button
+                  className="w-full bg-secondary hover:bg-secondary/90 text-on-secondary font-title-md text-title-md py-3 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
+                  type="submit"
+                  disabled={submitting}
+                >
+                  <span className="material-symbols-outlined font-light text-[20px]">send</span>
+                  {submitting ? 'Submitting…' : 'Submit Request'}
+                </button>
+                <p className="text-center font-accent-marker text-accent-marker text-on-surface-variant mt-3 opacity-70">
+                  Needs HR approval
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </DashboardShell>
   );
 }

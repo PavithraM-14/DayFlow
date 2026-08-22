@@ -81,9 +81,23 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  /**
+   * Re-fetches /auth/me and updates both state and the cached session, so
+   * a profile edit (self or HR editing their own record) shows up
+   * immediately without asking the user to sign in again.
+   */
+  const refreshUser = useCallback(async () => {
+    const response = await fetchCurrentUser();
+    if (response.success && response.data?.user) {
+      setUser(response.data.user);
+      saveSession({ user: response.data.user });
+    }
+    return response;
+  }, []);
+
   const value = useMemo(
-    () => ({ user, ready, isAuthenticated: Boolean(user), signIn, signOut }),
-    [user, ready, signIn, signOut]
+    () => ({ user, ready, isAuthenticated: Boolean(user), signIn, signOut, refreshUser }),
+    [user, ready, signIn, signOut, refreshUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

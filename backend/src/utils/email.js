@@ -68,4 +68,42 @@ const sendSignupOtpEmail = async ({ email, otp, name, expiryMinutes = 10 }) => {
   return result;
 };
 
-module.exports = { sendMail, sendSignupOtpEmail, isSmtpConfigured: isConfigured };
+/**
+ * Emails the one-time temporary password for an HR-created employee
+ * account (see employee.controller.js's createEmployee). The password is
+ * never put anywhere else — not the API response, not a log line —
+ * unless SMTP delivery fails, in which case the caller decides whether
+ * to fall back to the same dev-only console echo the sign-up OTP uses.
+ */
+const sendTempPasswordEmail = async ({ email, name, tempPassword, loginId, companyName }) => {
+  const greeting = name ? `Hi ${name},` : "Hi,";
+  const company = companyName || APP_NAME;
+
+  return sendMail({
+    to: email,
+    subject: `Your ${APP_NAME} account is ready`,
+    text:
+      `${greeting}\n\nAn account was created for you at ${company} on ${APP_NAME}.\n` +
+      (loginId ? `Your employee ID is ${loginId}.\n` : "") +
+      `Sign in with this email and the temporary password: ${tempPassword}\n\n` +
+      `Please sign in and change your password as soon as you can.`,
+    html: `
+      <div style="font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 560px; margin: 0 auto; color: #1f1b1e;">
+        <h2 style="color: #714b67; margin: 0 0 12px;">${APP_NAME} — your account is ready</h2>
+        <p style="margin: 0 0 8px; line-height: 1.5;">${greeting} an account was created for you at ${company}.</p>
+        ${loginId ? `<p style="margin: 0 0 8px; line-height: 1.5;">Your employee ID: <strong>${loginId}</strong></p>` : ""}
+        <p style="margin: 0 0 20px; line-height: 1.5;">Sign in with this email address and the temporary password below, then change it as soon as you can.</p>
+        <div style="background: #f5eef3; border: 1px solid #e8e3e7; border-radius: 10px; padding: 22px; text-align: center; margin: 0 0 20px;">
+          <div style="font-size: 22px; font-weight: 700; letter-spacing: 2px; color: #714b67;">${tempPassword}</div>
+        </div>
+      </div>
+    `,
+  });
+};
+
+module.exports = {
+  sendMail,
+  sendSignupOtpEmail,
+  sendTempPasswordEmail,
+  isSmtpConfigured: isConfigured,
+};

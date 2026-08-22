@@ -20,7 +20,36 @@ const MAX_OTP_ATTEMPTS = 5; // wrong codes before a resend is required
 const MAX_OTP_SENDS = 5; // sends per staged sign-up
 const BCRYPT_ROUNDS = 10;
 
-const isDev = () => process.env.NODE_ENV !== "production";
+const isProduction = () => process.env.NODE_ENV === "production";
+
+// Dev-only convenience: when SMTP isn't configured, the code can be
+// printed to the console and echoed back as `devOtp` so the sign-up flow
+// is testable without real credentials. This is gated on TWO independent
+// conditions, both of which must hold:
+//   1) NODE_ENV must not be "production", and
+//   2) EXPOSE_DEV_OTP must be explicitly set to "true".
+// A single misconfigured/unset NODE_ENV can no longer leak a real
+// verification code — someone would also have to deliberately opt in via
+// EXPOSE_DEV_OTP. In production this is hard-disabled regardless of
+// EXPOSE_DEV_OTP (see assertOtpDevExposureSafety, called at boot).
+const devOtpExposureEnabled = () =>
+  !isProduction() && process.env.EXPOSE_DEV_OTP === "true";
+
+/**
+ * Refuses to start if a production deploy has EXPOSE_DEV_OTP=true, so a
+ * copy-pasted or leftover .env value can never leak real sign-up codes in
+ * a live environment. Mirrors assertJwtSecret()'s fail-fast-at-boot shape.
+ */
+const assertOtpDevExposureSafety = () => {
+  if (isProduction() && process.env.EXPOSE_DEV_OTP === "true") {
+    console.error(
+      "[AUTH] EXPOSE_DEV_OTP=true in production. Refusing to start — this " +
+        "would leak sign-up verification codes in API responses and logs. " +
+        "Remove EXPOSE_DEV_OTP from the production environment."
+    );
+    process.exit(1);
+  }
+};
 
 const fail = (res, status, message, extra = {}) =>
   res.status(status).json({ success: false, message, ...extra });
@@ -28,9 +57,10 @@ const fail = (res, status, message, extra = {}) =>
 /**
  * Puts a freshly generated code on the staged sign-up and emails it.
  *
- * When SMTP is not configured (local development) the code is logged to
- * the server console and echoed back as `devOtp` so the flow is testable
- * without credentials. Both of those are suppressed in production.
+ * When SMTP is not configured (local development) the code can be logged
+ * to the server console and echoed back as `devOtp` so the flow is
+ * testable without credentials — but only when devOtpExposureEnabled()
+ * says so. See that function for the two-condition gate.
  */
 const issueOtp = async (pending, { name, email }) => {
   const otp = generateOtp();
@@ -60,14 +90,24 @@ const issueOtp = async (pending, { name, email }) => {
   }
 
   if (!delivered) {
-    console.log(
-      `[AUTH] SMTP not configured — verification code for ${email} is ${otp}`
-    );
+    if (devOtpExposureEnabled()) {
+      console.log(
+        `[AUTH] SMTP not configured — verification code for ${email} is ${otp}`
+      );
+    } else {
+      // Never print the raw code when exposure isn't explicitly enabled —
+      // not even in development — so a stray log aggregator or shared
+      // terminal can't leak it. Enable EXPOSE_DEV_OTP=true locally (see
+      // .env.example) to see codes without real SMTP credentials.
+      console.log(
+        `[AUTH] SMTP not configured — verification email for ${email} was not sent`
+      );
+    }
   }
 
   return {
     emailDelivered: delivered,
-    ...(isDev() && !delivered ? { devOtp: otp } : {}),
+    ...(devOtpExposureEnabled() && !delivered ? { devOtp: otp } : {}),
   };
 };
 
@@ -751,6 +791,10 @@ module.exports = {
   verifyEmployeeSignupOtp,
   login,
   me,
+  assertOtpDevExposureSafety,
+  // Reused by employee.controller.js for the same dev-secret-exposure
+  // tradeoff when emailing a temp password for an HR-created account.
+  devOtpExposureEnabled,
   // exported for tests / reuse
   OTP_EXPIRY_MINUTES,
   MAX_OTP_ATTEMPTS,

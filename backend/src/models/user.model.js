@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const { generateLoginId } = require("../utils/loginId");
+
 const ROLES = ["hr", "employee"];
 
 /**
@@ -52,6 +54,70 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+
+    // --- HRMS profile fields (frontend/docs/*.pdf & the excalidraw wireframe) ---
+
+    // Display-only reference id (see utils/loginId.js). NOT a sign-in
+    // credential — sign-in is still email + password (auth.controller.js).
+    loginId: { type: String, trim: true, index: true },
+
+    // Job info
+    department: { type: String, trim: true, default: "" },
+    jobPosition: { type: String, trim: true, default: "" },
+    manager: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
+    location: { type: String, trim: true, default: "" },
+    dateOfJoining: { type: Date, default: null },
+
+    // Personal details
+    dateOfBirth: { type: Date, default: null },
+    gender: { type: String, trim: true, default: "" },
+    maritalStatus: { type: String, trim: true, default: "" },
+    nationality: { type: String, trim: true, default: "" },
+    personalEmail: { type: String, trim: true, lowercase: true, default: "" },
+    address: { type: String, trim: true, default: "" },
+    about: { type: String, trim: true, maxlength: 2000, default: "" },
+    skills: { type: [String], default: [] },
+
+    avatar: {
+      data: Buffer,
+      contentType: String,
+    },
+
+    bankDetails: {
+      bankName: { type: String, trim: true, default: "" },
+      accountNumber: { type: String, trim: true, default: "" },
+      ifscCode: { type: String, trim: true, default: "" },
+      uanNumber: { type: String, trim: true, default: "" },
+      panNumber: { type: String, trim: true, default: "" },
+    },
+
+    // Salary structure. `components` holds only the overrides an HR has
+    // set for this person — anything omitted falls back to the defaults
+    // in utils/payroll.js (DEFAULTS), which mirror the spec's example.
+    salary: {
+      wage: { type: Number, default: 0, min: 0 },
+      wageType: { type: String, enum: ["fixed"], default: "fixed" },
+      workingDaysPerWeek: { type: Number, default: 5, min: 1, max: 7 },
+      breakTimeMinutes: { type: Number, default: 60, min: 0 },
+      components: {
+        basicPercentOfWage: Number,
+        hraPercentOfBasic: Number,
+        standardAllowanceFlat: Number,
+        performanceBonusPercentOfBasic: Number,
+        ltaPercentOfBasic: Number,
+        pfEmployeePercentOfBasic: Number,
+        pfEmployerPercentOfBasic: Number,
+        professionalTaxFlat: Number,
+      },
+    },
+
+    // Annual leave allocation, per the spec's example balances ("24 Days
+    // Available" paid, "07 Days Available" sick). HR can adjust per
+    // employee; unpaid leave is deliberately unbounded (no allocation).
+    leaveAllocation: {
+      paid: { type: Number, default: 24, min: 0 },
+      sick: { type: Number, default: 7, min: 0 },
+    },
   },
   { timestamps: true }
 );
@@ -59,8 +125,42 @@ const userSchema = new mongoose.Schema(
 userSchema.set("toJSON", {
   transform: (doc, ret) => {
     delete ret.passwordHash;
+    if (ret.avatar) {
+      ret.avatar = { contentType: ret.avatar.contentType, hasAvatar: Boolean(ret.avatar.contentType) };
+    }
     return ret;
   },
+});
+
+/**
+ * Assigns the display Login ID once, on first creation. Requires
+ * `require("../utils/loginId")` rather than requiring the Company model
+ * directly here to avoid a require cycle — the id it needs (code) is
+ * fetched through a plain query instead.
+ */
+userSchema.pre("save", async function assignLoginId(next) {
+  if (!this.isNew || this.loginId) return next();
+
+  try {
+    if (!this.dateOfJoining) this.dateOfJoining = new Date();
+
+    const Company = mongoose.model("Company");
+    const company = await Company.findById(this.company).select("code").lean();
+
+    this.loginId = await generateLoginId({
+      User: this.constructor,
+      company,
+      name: this.name,
+      dateOfJoining: this.dateOfJoining,
+    });
+  } catch (error) {
+    // A Login ID is a display convenience, not a security boundary — if
+    // it can't be generated for some reason, the account should still be
+    // created rather than blocking sign-up/approval on it.
+    console.error("[USER] Could not generate loginId:", error.message);
+  }
+
+  next();
 });
 
 const User = mongoose.model("User", userSchema);
