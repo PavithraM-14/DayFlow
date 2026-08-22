@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import DashboardShell from '@/components/DashboardShell';
-import { attendanceSummary, companyAttendanceForDay } from '@/services/attendance';
+import { companyAttendanceForDay } from '@/services/attendance';
 
 const STATUS_CHIP = {
   present: 'on-time',
@@ -26,32 +26,63 @@ const formatTime = (value) => {
     : date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
 };
 
+// Attendance is keyed by UTC day on the backend (see attendance.model.js),
+// so navigation is done in UTC to stay consistent with check-in/out.
+const isoDay = (date) => date.toISOString().slice(0, 10);
+const TODAY_ISO = isoDay(new Date());
+
+const shiftDay = (iso, delta) => {
+  const [y, m, d] = iso.split('-').map(Number);
+  const next = new Date(Date.UTC(y, m - 1, d + delta));
+  return isoDay(next);
+};
+
+const labelForDay = (iso) => {
+  const [y, m, d] = iso.split('-').map(Number);
+  const date = new Date(Date.UTC(y, m - 1, d));
+  return date.toLocaleDateString(undefined, {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+};
+
 export default function HRAttendancePage() {
-  const [summary, setSummary] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(TODAY_ISO);
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
 
+  const isToday = selectedDay === TODAY_ISO;
+  const isFuture = selectedDay >= TODAY_ISO;
+
   const load = useCallback(async () => {
     setLoading(true);
-    const [summaryResponse, dayResponse] = await Promise.all([
-      attendanceSummary(),
-      companyAttendanceForDay(),
-    ]);
-    if (summaryResponse.success) setSummary(summaryResponse.data);
+    const dayResponse = await companyAttendanceForDay(selectedDay);
     if (dayResponse.success) {
       setRows(dayResponse.data?.rows || []);
       setError('');
     } else {
-      setError(dayResponse.message || 'Could not load today’s attendance.');
+      setError(dayResponse.message || 'Could not load attendance for that day.');
     }
     setLoading(false);
-  }, []);
+  }, [selectedDay]);
 
   useEffect(() => {
     load();
   }, [load]);
+
+  // Counts reflect the *selected* day, computed from the rows so they stay
+  // correct as HR navigates back through history.
+  const counts = useMemo(() => {
+    const present = rows.filter((r) => ['present', 'half-day'].includes(r.status)).length;
+    const onLeave = rows.filter((r) => r.status === 'leave').length;
+    const absent = rows.filter((r) => r.status === 'absent').length;
+    return { present, onLeave, absent, total: rows.length };
+  }, [rows]);
 
   const filteredRows = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -64,19 +95,56 @@ export default function HRAttendancePage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
           <h2 className="font-headline-lg text-headline-lg md:text-[32px] md:leading-[40px] text-on-surface mb-1">
-            Attendance Log <span className="font-accent-marker text-accent-marker text-secondary ml-2 marker-highlight">Today</span>
+            Attendance Log{' '}
+            {isToday && (
+              <span className="font-accent-marker text-accent-marker text-secondary ml-2 marker-highlight">Today</span>
+            )}
           </h2>
           <p className="font-body-md text-body-md text-on-surface-variant">Track and monitor daily employee attendance and punctuality.</p>
         </div>
-        <button
-          onClick={load}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-highest hover:bg-surface-container-high text-on-surface transition-colors font-body-sm text-body-sm font-medium border border-outline-variant"
-          type="button"
-        >
-          <span className="material-symbols-outlined text-[18px]">refresh</span>
-          Refresh
-        </button>
+
+        {/* Day navigator — the wireframe's <- Day/Date -> control. */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setSelectedDay((d) => shiftDay(d, -1))}
+            className="w-9 h-9 rounded-lg border border-outline-variant hover:bg-surface-container-highest text-on-surface-variant flex items-center justify-center transition-colors"
+            title="Previous day"
+            type="button"
+          >
+            <span className="material-symbols-outlined text-[20px]">chevron_left</span>
+          </button>
+          <input
+            type="date"
+            value={selectedDay}
+            max={TODAY_ISO}
+            onChange={(event) => event.target.value && setSelectedDay(event.target.value)}
+            className="bg-surface border border-outline-variant rounded-lg px-3 py-1.5 font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-2 focus:ring-primary-container outline-none transition-all"
+            aria-label="Attendance date"
+          />
+          <button
+            onClick={() => setSelectedDay((d) => shiftDay(d, 1))}
+            disabled={isFuture}
+            className="w-9 h-9 rounded-lg border border-outline-variant hover:bg-surface-container-highest text-on-surface-variant flex items-center justify-center transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            title="Next day"
+            type="button"
+          >
+            <span className="material-symbols-outlined text-[20px]">chevron_right</span>
+          </button>
+          {!isToday && (
+            <button
+              onClick={() => setSelectedDay(TODAY_ISO)}
+              className="px-3 h-9 rounded-lg border border-outline-variant hover:bg-surface-container-highest text-on-surface font-body-sm text-body-sm transition-colors"
+              type="button"
+            >
+              Today
+            </button>
+          )}
+        </div>
       </div>
+
+      <p className="font-body-sm text-body-sm text-on-surface-variant -mt-4 mb-6">
+        Showing <span className="font-medium text-on-surface">{labelForDay(selectedDay)}</span>
+      </p>
 
       {error && (
         <div className="mb-4 flex items-start gap-2 p-3 rounded-lg bg-error-container text-on-error-container font-body-sm text-body-sm" role="alert">
@@ -93,8 +161,8 @@ export default function HRAttendancePage() {
             </div>
           </div>
           <div>
-            <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Present Today</p>
-            <p className="font-display-lg text-display-lg text-on-surface">{loading ? '—' : summary?.presentToday ?? 0}</p>
+            <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Present</p>
+            <p className="font-display-lg text-display-lg text-on-surface">{loading ? '—' : counts.present}</p>
           </div>
         </div>
         <div className="card-base card-hover p-5 flex flex-col justify-between">
@@ -104,8 +172,8 @@ export default function HRAttendancePage() {
             </div>
           </div>
           <div>
-            <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">On Leave Today</p>
-            <p className="font-display-lg text-display-lg text-on-surface">{loading ? '—' : summary?.onLeaveToday ?? 0}</p>
+            <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">On Leave</p>
+            <p className="font-display-lg text-display-lg text-on-surface">{loading ? '—' : counts.onLeave}</p>
           </div>
         </div>
         <div className="card-base card-hover p-5 flex flex-col justify-between">
@@ -113,11 +181,11 @@ export default function HRAttendancePage() {
             <div className="p-2 bg-error-container rounded-lg text-on-error-container">
               <span className="material-symbols-outlined">person_off</span>
             </div>
-            <span className="font-body-sm text-body-sm text-on-surface-variant font-medium">Out of {summary?.totalStaff ?? 0} Staff</span>
+            <span className="font-body-sm text-body-sm text-on-surface-variant font-medium">Out of {counts.total} Staff</span>
           </div>
           <div>
-            <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Total Absences Today</p>
-            <p className="font-display-lg text-display-lg text-on-surface">{loading ? '—' : summary?.absentToday ?? 0}</p>
+            <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Total Absences</p>
+            <p className="font-display-lg text-display-lg text-on-surface">{loading ? '—' : counts.absent}</p>
           </div>
         </div>
       </div>
@@ -144,15 +212,16 @@ export default function HRAttendancePage() {
                 <th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Department</th>
                 <th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Check In</th>
                 <th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Check Out</th>
-                <th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Total Hours</th>
+                <th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Work Hours</th>
+                <th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Extra Hours</th>
                 <th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Status</th>
               </tr>
             </thead>
             <tbody className="font-body-sm text-body-sm text-on-surface divide-y divide-outline-variant">
               {loading ? (
-                <tr><td colSpan={6} className="py-6 px-4 text-center text-on-surface-variant">Loading…</td></tr>
+                <tr><td colSpan={7} className="py-6 px-4 text-center text-on-surface-variant">Loading…</td></tr>
               ) : filteredRows.length === 0 ? (
-                <tr><td colSpan={6} className="py-6 px-4 text-center text-on-surface-variant">No records for today.</td></tr>
+                <tr><td colSpan={7} className="py-6 px-4 text-center text-on-surface-variant">No records for this day.</td></tr>
               ) : (
                 filteredRows.map((row) => (
                   <tr key={row.employee?._id || row.employee} className="hover:bg-surface-container-lowest transition-all duration-150 h-12 bg-surface">
@@ -161,6 +230,7 @@ export default function HRAttendancePage() {
                     <td className="py-2 px-4 font-medium">{formatTime(row.checkIn)}</td>
                     <td className="py-2 px-4 text-on-surface-variant">{formatTime(row.checkOut)}</td>
                     <td className="py-2 px-4 text-on-surface-variant">{row.workHoursLabel || '--'}</td>
+                    <td className="py-2 px-4 text-on-surface-variant">{row.extraHoursLabel || '0h 0m'}</td>
                     <td className="py-2 px-4">
                       <span className={`status-chip ${STATUS_CHIP[row.status] || 'late'}`}>{STATUS_LABEL[row.status] || row.status}</span>
                     </td>

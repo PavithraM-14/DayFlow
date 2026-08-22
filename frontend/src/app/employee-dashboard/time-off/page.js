@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import DashboardShell from '@/components/DashboardShell';
-import { applyForLeave, myLeaves } from '@/services/timeOff';
+import { applyForLeave, myLeaves, openAttachment } from '@/services/timeOff';
 
 const TYPE_LABEL = { paid: 'Paid Time Off', sick: 'Sick Leave', unpaid: 'Unpaid Leave' };
 const STATUS_STYLES = {
@@ -28,6 +28,8 @@ export default function EmployeeTimeOff() {
   const [notice, setNotice] = useState('');
 
   const [form, setForm] = useState(emptyForm);
+  const [attachmentFile, setAttachmentFile] = useState(null);
+  const fileInputRef = useRef(null);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
 
@@ -58,7 +60,7 @@ export default function EmployeeTimeOff() {
     }
 
     setSubmitting(true);
-    const response = await applyForLeave(form);
+    const response = await applyForLeave({ ...form, attachment: attachmentFile });
     setSubmitting(false);
 
     if (!response.success) {
@@ -67,8 +69,15 @@ export default function EmployeeTimeOff() {
     }
 
     setForm(emptyForm);
+    setAttachmentFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
     setNotice(response.message || 'Request submitted.');
     load({ quiet: true });
+  };
+
+  const viewAttachment = async (id) => {
+    const response = await openAttachment(id);
+    if (!response.success) setError(response.message || 'Could not open the attachment.');
   };
 
   return (
@@ -131,14 +140,29 @@ export default function EmployeeTimeOff() {
             ) : (
               <div className="divide-y divide-outline-variant">
                 {requests.map((request) => (
-                  <div key={request._id} className="p-4 flex items-center justify-between gap-4">
-                    <div>
+                  <div key={request._id} className="p-4 flex items-start justify-between gap-4">
+                    <div className="min-w-0">
                       <p className="font-body-sm text-body-sm font-medium text-on-surface">{TYPE_LABEL[request.type] || request.type}</p>
                       <p className="font-label-sm text-label-sm text-on-surface-variant mt-0.5">
                         {formatDate(request.startDate)} – {formatDate(request.endDate)} ({request.days}d)
                       </p>
+                      {request.attachment?.fileName && (
+                        <button
+                          type="button"
+                          onClick={() => viewAttachment(request._id)}
+                          className="mt-1.5 inline-flex items-center gap-1 font-label-sm text-label-sm text-primary hover:underline"
+                        >
+                          <span className="material-symbols-outlined text-[14px]">attach_file</span>
+                          {request.attachment.fileName}
+                        </button>
+                      )}
+                      {request.reviewComments && (
+                        <p className="mt-1.5 font-label-sm text-label-sm text-on-surface-variant italic">
+                          HR note: {request.reviewComments}
+                        </p>
+                      )}
                     </div>
-                    <span className={`inline-block px-2.5 py-1 rounded-full font-label-sm text-label-sm ${STATUS_STYLES[request.status] || ''}`}>
+                    <span className={`shrink-0 inline-block px-2.5 py-1 rounded-full font-label-sm text-label-sm ${STATUS_STYLES[request.status] || ''}`}>
                       {request.status}
                     </span>
                   </div>
@@ -210,6 +234,25 @@ export default function EmployeeTimeOff() {
                   value={form.remarks}
                   onChange={(e) => setForm({ ...form, remarks: e.target.value })}
                 ></textarea>
+              </div>
+              <div>
+                <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-1" htmlFor="attachment">
+                  Attachment {form.type === 'sick' ? '(sick leave certificate)' : '(optional)'}
+                </label>
+                <input
+                  ref={fileInputRef}
+                  className="w-full bg-surface border border-outline-variant rounded-[10px] py-2 px-3 text-on-surface font-body-sm text-body-sm file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:bg-secondary-container file:text-on-secondary-container file:font-label-sm file:text-label-sm hover:file:opacity-90 focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim focus:outline-none transition-all"
+                  id="attachment"
+                  name="attachment"
+                  type="file"
+                  accept="image/png,image/jpeg,image/jpg,image/webp,application/pdf"
+                  onChange={(e) => setAttachmentFile(e.target.files?.[0] || null)}
+                />
+                {attachmentFile && (
+                  <p className="font-label-sm text-label-sm text-on-surface-variant mt-1 truncate">
+                    {attachmentFile.name}
+                  </p>
+                )}
               </div>
               <div className="mt-4 pt-4 border-t border-outline-variant">
                 <button

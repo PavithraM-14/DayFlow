@@ -1,4 +1,6 @@
 import apiClient from "./apiClient";
+import { API_BASE_URL } from "@/config";
+import { getAuthToken } from "@/utils/authSession";
 
 const BASE = "/employees";
 
@@ -25,6 +27,40 @@ export const avatarUrlFor = (id) => {
   return `${base}${BASE}/${id}/avatar`;
 };
 
-export const employeesService = { listEmployees, getEmployee, updateEmployee, createEmployee };
+/** Uploads a new profile photo (multipart, field "avatar"). Self or HR. */
+export const updateAvatar = (id, file) => {
+  const formData = new FormData();
+  formData.append("avatar", file);
+  return apiClient.patch(`${BASE}/${id}/avatar`, formData);
+};
+
+/**
+ * The avatar endpoint is behind auth, so a plain <img src> gets a 401 —
+ * fetch it with the token and hand back an object URL (or null when the
+ * employee has no photo). Callers must revoke the URL when done.
+ */
+export const fetchAvatarBlobUrl = async (id) => {
+  if (!id) return null;
+  const token = getAuthToken();
+  try {
+    const response = await fetch(`${API_BASE_URL}${BASE}/${id}/avatar`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    if (!response.ok) return null;
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  } catch {
+    return null;
+  }
+};
+
+export const employeesService = {
+  listEmployees,
+  getEmployee,
+  updateEmployee,
+  createEmployee,
+  updateAvatar,
+  fetchAvatarBlobUrl,
+};
 
 export default employeesService;

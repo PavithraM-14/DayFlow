@@ -73,10 +73,52 @@ const uploadAvatar = (req, res, next) => {
   });
 };
 
+const MAX_ATTACHMENT_BYTES = Number(
+  process.env.MAX_ATTACHMENT_BYTES || 5 * 1024 * 1024
+); // 5 MB
+
+// Leave certificates are commonly scanned PDFs as well as photos, so this
+// endpoint accepts PDF on top of the image types the others allow.
+const ATTACHMENT_MIME_TYPES = [...ALLOWED_MIME_TYPES, "application/pdf"];
+
+const attachmentUpload = multer({
+  storage,
+  limits: { fileSize: MAX_ATTACHMENT_BYTES, files: 1 },
+  fileFilter: (req, file, cb) => {
+    if (!ATTACHMENT_MIME_TYPES.includes(file.mimetype)) {
+      return cb(new Error("Attachment must be a PDF or image (PNG, JPG, WEBP)"));
+    }
+    return cb(null, true);
+  },
+});
+
+/**
+ * Accepts an optional single "attachment" file for a leave request (the
+ * wireframe's "sick leave certificate" upload). Optional: a request with
+ * no file still goes through.
+ */
+const uploadLeaveAttachment = (req, res, next) => {
+  attachmentUpload.single("attachment")(req, res, (err) => {
+    if (!err) return next();
+
+    const message =
+      err.code === "LIMIT_FILE_SIZE"
+        ? `Attachment must be smaller than ${Math.round(
+            MAX_ATTACHMENT_BYTES / 1024 / 1024
+          )} MB`
+        : err.message || "Attachment upload failed";
+
+    return res.status(400).json({ success: false, message });
+  });
+};
+
 module.exports = {
   uploadCompanyLogo,
   uploadAvatar,
+  uploadLeaveAttachment,
   MAX_LOGO_BYTES,
   MAX_AVATAR_BYTES,
+  MAX_ATTACHMENT_BYTES,
   ALLOWED_MIME_TYPES,
+  ATTACHMENT_MIME_TYPES,
 };

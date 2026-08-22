@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import DashboardShell from '@/components/DashboardShell';
 import { useAuth } from '@/context/AuthContext';
-import { checkIn, checkOut } from '@/services/attendance';
+import { checkIn, checkOut, emitAttendanceChanged, onAttendanceChanged } from '@/services/attendance';
 import { dashboardSummary } from '@/services/dashboard';
 
 const formatTime = (value) => {
@@ -49,6 +49,8 @@ export default function EmployeeDashboard() {
 
   useEffect(() => {
     load();
+    // Stay in sync with the header check-in widget (and any other surface).
+    return onAttendanceChanged(() => load({ quiet: true }));
   }, [load]);
 
   const handleCheckIn = async () => {
@@ -58,6 +60,7 @@ export default function EmployeeDashboard() {
     setBusy(false);
     if (response.success) {
       load({ quiet: true });
+      emitAttendanceChanged();
     } else {
       setError(response.message || 'Could not check in.');
     }
@@ -70,6 +73,7 @@ export default function EmployeeDashboard() {
     setBusy(false);
     if (response.success) {
       load({ quiet: true });
+      emitAttendanceChanged();
     } else {
       setError(response.message || 'Could not check out.');
     }

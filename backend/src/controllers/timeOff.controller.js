@@ -95,7 +95,7 @@ const applyForLeave = async (req, res, next) => {
       }
     }
 
-    const request = await TimeOff.create({
+    const doc = {
       employee: req.auth.sub,
       company: req.auth.company,
       type,
@@ -103,7 +103,20 @@ const applyForLeave = async (req, res, next) => {
       endDate,
       days,
       remarks: remarks || "",
-    });
+    };
+
+    // Optional supporting document (e.g. a sick-leave certificate). Handled
+    // by the uploadLeaveAttachment multer middleware, which leaves it on
+    // req.file when present.
+    if (req.file) {
+      doc.attachment = {
+        data: req.file.buffer,
+        contentType: req.file.mimetype,
+        fileName: req.file.originalname,
+      };
+    }
+
+    const request = await TimeOff.create(doc);
 
     return res.status(201).json({
       success: true,
@@ -124,7 +137,11 @@ const myLeaves = async (req, res, next) => {
   try {
     const employee = await User.findById(req.auth.sub);
     const [requests, balances] = await Promise.all([
-      TimeOff.find({ employee: req.auth.sub }).sort({ createdAt: -1 }).limit(100).lean(),
+      TimeOff.find({ employee: req.auth.sub })
+        .select("-attachment.data")
+        .sort({ createdAt: -1 })
+        .limit(100)
+        .lean(),
       getBalances(employee),
     ]);
 
@@ -154,6 +171,7 @@ const listCompanyLeaves = async (req, res, next) => {
     else if (requested !== "all") filter.status = "pending";
 
     const requests = await TimeOff.find(filter)
+      .select("-attachment.data")
       .populate("employee", "name email department")
       .populate("reviewedBy", "name")
       .sort({ createdAt: -1 })
@@ -276,11 +294,51 @@ const rejectLeave = async (req, res, next) => {
   }
 };
 
+/**
+ * GET /api/time-off/:id/attachment
+ *
+ * Streams the supporting document back. "Self or HR" — an employee can
+ * only fetch their own request's attachment; HR can fetch any at their
+ * company. The `toJSON` transform strips the raw buffer from list/detail
+ * responses, so this is the only way the file bytes leave the server.
+ */
+const getAttachment = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) return fail(res, 400, "Invalid request id");
+
+    const request = await TimeOff.findOne({ _id: id, company: req.auth.company }).select(
+      "employee attachment"
+    );
+    if (!request || !request.attachment?.data) {
+      return fail(res, 404, "No attachment found");
+    }
+
+    if (req.auth.role !== "hr" && String(request.employee) !== String(req.auth.sub)) {
+      return fail(res, 403, "You can only view your own attachments");
+    }
+
+    const bytes = Buffer.from(request.attachment.data);
+    res.type(request.attachment.contentType || "application/octet-stream");
+    if (request.attachment.fileName) {
+      res.set(
+        "Content-Disposition",
+        `inline; filename="${request.attachment.fileName.replace(/"/g, "")}"`
+      );
+    }
+    res.set("Cache-Control", "private, max-age=86400");
+    return res.end(bytes);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   applyForLeave,
   myLeaves,
   listCompanyLeaves,
   approveLeave,
   rejectLeave,
+  getAttachment,
   getBalances,
 };

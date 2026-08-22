@@ -2,16 +2,9 @@
 
 import { useState } from 'react';
 import DashboardShell from '@/components/DashboardShell';
+import AvatarUploader from '@/components/AvatarUploader';
 import { useAuth } from '@/context/AuthContext';
 import { updateEmployee } from '@/services/employees';
-
-const initials = (name) =>
-  (name || '')
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join('') || '?';
 
 export default function HRSelfProfilePage() {
   const { user, refreshUser } = useAuth();
@@ -59,9 +52,13 @@ export default function HRSelfProfilePage() {
       <div className="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden relative">
         <div className="h-32 bg-gradient-to-r from-primary-container to-secondary-container opacity-20 absolute w-full top-0"></div>
         <div className="p-gutter relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 mt-8">
-          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-display-lg text-[40px] border-4 border-surface-container-lowest shadow-sm">
-            {initials(user?.name)}
-          </div>
+          <AvatarUploader
+            employeeId={user?._id}
+            name={user?.name}
+            canEdit
+            className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-display-lg text-[40px] border-4 border-surface-container-lowest shadow-sm shrink-0"
+            textClassName="font-display-lg text-[40px]"
+          />
           <div className="flex-1">
             <h2 className="font-headline-lg text-headline-lg text-on-background">{user?.name || 'My Profile'}</h2>
             <p className="font-title-md text-title-md text-on-surface-variant mb-1">{user?.company?.name || 'HR'}</p>
