@@ -68,31 +68,37 @@ export default function EmployeePayroll() {
 {/* Main Content Area */}
 <div className="flex-1 flex flex-col md:ml-64 w-full h-full bg-background overflow-hidden">
 {/* TopNavBar (Mobile) */}
-<header className="md:hidden flex justify-between items-center px-container-padding w-full h-16 sticky top-0 z-50 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline">
-<div className="flex items-center gap-2">
-<div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary font-bold">D</div>
-<h1 className="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">Dayflow</h1>
-</div>
-<div className="flex items-center gap-4">
-<button className="text-on-surface-variant cursor-pointer active:opacity-80 transition-all p-2 rounded-full hover:bg-surface-container">
-<span className="material-symbols-outlined">notifications</span>
-</button>
-<img alt="Employee Profile Avatar" className="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of a female employee in a modern corporate setting, soft lighting, warm tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOYoCYHPmFAUjovkw2x54y2Kaa_K-rUD-ryUngyaW_ZkC1BsyBzpxZI2v0UiMDlIFJuGYFyOhmArmLBK2M0dwFHLN2iqdQOuP1TK9E0WnVocX-2ixwXAehu81h9rrvyS1eBBVB-bxRN2Y7xuQE5J-z-FqcVe0EGUHdtwix3GM2QlXrozyY0XTtDzOyJfcYJrZlgx5WgoelhYWQomiNDP2ZBgW08jAzXrx1fAZOVHnphoT0mNdga5HW_w"/>
-</div>
+{/* TopNavBar (Mobile) */}
+<header className="md:hidden flex items-center justify-between p-4 bg-surface border-b border-outline-variant sticky top-0 z-50">
+  <div className="flex items-center gap-2">
+    <span className="material-symbols-outlined text-primary">menu</span>
+    <h1 className="font-title-md text-primary">Dayflow</h1>
+  </div>
+  <img alt="Profile photo" className="w-8 h-8 rounded-full border border-outline-variant bg-surface-container object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrJ1l9JGS0deg42HpVQSStp3WuLg6cFZW2FeG26-gaOuYdb6ndlwrx2AuaA27pg_mwg-16BH0vLFVhbSYT_mV6myPlpU4qy2NJ_opECPnYffJnHomg15Xs2ms4GmmLi3nl8qphGPoWWcyhhYNSJTjr42ac6VRMY6AFBrSr5ALG3Pt2PH4hMFAMsCFMQTOCwpWDb_wcsXAldmDawt7V86kvLeq6kxCD7Yttk5p3P4saztOMOfhirc7mSQ" />
 </header>
 {/* TopNavBar (Desktop) */}
-<header className="hidden md:flex justify-between items-center px-container-padding w-full h-16 sticky top-0 z-30 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline">
-<div className="flex-1"></div> {/* Spacer since search is not specified in prompt for this view */}
-<div className="flex items-center gap-4">
-<button className="text-on-surface-variant cursor-pointer active:opacity-80 transition-all p-2 rounded-full hover:bg-surface-container">
-<span className="material-symbols-outlined">notifications</span>
-</button>
-<button className="text-on-surface-variant cursor-pointer active:opacity-80 transition-all p-2 rounded-full hover:bg-surface-container">
-<span className="material-symbols-outlined">settings</span>
-</button>
-<img alt="Employee Profile Avatar" className="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of a female employee in a modern corporate setting, soft lighting, warm tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1UOHcmjj8ms9hkHVlkGTAQ-Cr5VqOODWwddjE3sxqYQjgpR0zIXr9f-fnr7HiZuS1qPS4QSfnhC-8XJjSHG3qLVTMaUiA-f_OKvknSdxd7g4RngmmjV80TyqElrOTbQsNIy-uQL6nld8eflb_xyfUccXPXtdMNhbtsfRsaib3nlogNlU8UpcVjazUddGRNpR_d9rrCVDyoHGiXVx_lUaTHhBXd7w8qMnnkmwt-Z3siouc2Ctny3FbLw"/>
-</div>
+<header className="bg-surface flex justify-between items-center h-16 px-gutter border-b border-outline-variant sticky top-0 z-40 hidden md:flex">
+  <div className="flex items-center gap-4 flex-grow max-w-md">
+    <div className="relative w-full">
+      <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+      <input className="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-[10px] focus:ring-2 focus:ring-primary-container focus:border-primary focus:outline-none transition-colors text-body-sm font-body-sm" placeholder="Search employees, documents..." type="text" />
+    </div>
+  </div>
+  <div className="flex items-center gap-4 ml-auto">
+    <button className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant relative">
+      <span className="material-symbols-outlined">notifications</span>
+      <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+    </button>
+    <button className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant">
+      <span className="material-symbols-outlined">apps</span>
+    </button>
+    <div className="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+      <img alt="Profile" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrJ1l9JGS0deg42HpVQSStp3WuLg6cFZW2FeG26-gaOuYdb6ndlwrx2AuaA27pg_mwg-16BH0vLFVhbSYT_mV6myPlpU4qy2NJ_opECPnYffJnHomg15Xs2ms4GmmLi3nl8qphGPoWWcyhhYNSJTjr42ac6VRMY6AFBrSr5ALG3Pt2PH4hMFAMsCFMQTOCwpWDb_wcsXAldmDawt7V86kvLeq6kxCD7Yttk5p3P4saztOMOfhirc7mSQ" />
+    </div>
+  </div>
 </header>
+{/* TopNavBar (Desktop) */}
+
 {/* Scrollable Canvas */}
 <main className="flex-1 overflow-y-auto p-margin-mobile md:p-gutter lg:p-container-padding">
 <div className="max-w-[1120px] mx-auto space-y-gutter">

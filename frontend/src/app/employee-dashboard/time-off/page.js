@@ -47,22 +47,34 @@ export default function EmployeeTimeOff() {
 {/* Main Content Area */}
 <main className="flex-1 md:ml-64 flex flex-col min-h-screen max-w-[1120px] mx-auto w-full">
 {/* Top App Bar (Mobile & Desktop overrides) */}
-<header className="flex justify-between items-center px-container-padding w-full sticky top-0 z-50 bg-surface h-16 md:border-none border-b border-outline-variant backdrop-blur-md bg-opacity-90">
-<div className="md:hidden">
-<h1 className="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Dayflow</h1>
-</div>
-<div className="hidden md:block">
-{/* Empty spacer for desktop flex */}
-</div>
-<div className="flex items-center gap-4">
-<button className="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors active:opacity-80">
-<span className="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-<button className="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors active:opacity-80">
-<span className="material-symbols-outlined" data-icon="settings">settings</span>
-</button>
-<img alt="Employee Profile Avatar" className="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="A small, professional circular avatar showing a smiling person in a modern office environment. Soft, diffused lighting. Modern corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIohrOB8NUKrTYdwR0HgauUreON0i0nQTa1nj8DKLrDu9nTzFP7LB731r7tR9KpYjVepu8bjqsePW-uotEYvieGTcAxGvPdqdn0nuuCJIF7LsOL0EJe0yIoASSn-CBcG9eiTGMJdBAq2-rn8n7Pof-7MCWfAn6j5-qpoV2BMJUmyd_volQou3G2RTj39eDEsNpVjs6OhB1TmcbVHR_Z7VOgyxSxQfDDQRxwN5-CR8puro0YeGNmYAnSQ"/>
-</div>
+{/* TopNavBar (Mobile) */}
+<header className="md:hidden flex items-center justify-between p-4 bg-surface border-b border-outline-variant sticky top-0 z-50">
+  <div className="flex items-center gap-2">
+    <span className="material-symbols-outlined text-primary">menu</span>
+    <h1 className="font-title-md text-primary">Dayflow</h1>
+  </div>
+  <img alt="Profile photo" className="w-8 h-8 rounded-full border border-outline-variant bg-surface-container object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrJ1l9JGS0deg42HpVQSStp3WuLg6cFZW2FeG26-gaOuYdb6ndlwrx2AuaA27pg_mwg-16BH0vLFVhbSYT_mV6myPlpU4qy2NJ_opECPnYffJnHomg15Xs2ms4GmmLi3nl8qphGPoWWcyhhYNSJTjr42ac6VRMY6AFBrSr5ALG3Pt2PH4hMFAMsCFMQTOCwpWDb_wcsXAldmDawt7V86kvLeq6kxCD7Yttk5p3P4saztOMOfhirc7mSQ" />
+</header>
+{/* TopNavBar (Desktop) */}
+<header className="bg-surface flex justify-between items-center h-16 px-gutter border-b border-outline-variant sticky top-0 z-40 hidden md:flex">
+  <div className="flex items-center gap-4 flex-grow max-w-md">
+    <div className="relative w-full">
+      <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+      <input className="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-[10px] focus:ring-2 focus:ring-primary-container focus:border-primary focus:outline-none transition-colors text-body-sm font-body-sm" placeholder="Search employees, documents..." type="text" />
+    </div>
+  </div>
+  <div className="flex items-center gap-4 ml-auto">
+    <button className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant relative">
+      <span className="material-symbols-outlined">notifications</span>
+      <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+    </button>
+    <button className="w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant">
+      <span className="material-symbols-outlined">apps</span>
+    </button>
+    <div className="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+      <img alt="Profile" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrJ1l9JGS0deg42HpVQSStp3WuLg6cFZW2FeG26-gaOuYdb6ndlwrx2AuaA27pg_mwg-16BH0vLFVhbSYT_mV6myPlpU4qy2NJ_opECPnYffJnHomg15Xs2ms4GmmLi3nl8qphGPoWWcyhhYNSJTjr42ac6VRMY6AFBrSr5ALG3Pt2PH4hMFAMsCFMQTOCwpWDb_wcsXAldmDawt7V86kvLeq6kxCD7Yttk5p3P4saztOMOfhirc7mSQ" />
+    </div>
+  </div>
 </header>
 {/* Page Content */}
 <div className="p-margin-mobile md:p-gutter flex-1 space-y-gutter">
