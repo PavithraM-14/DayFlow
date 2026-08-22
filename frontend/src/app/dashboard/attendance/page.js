@@ -1,289 +1,302 @@
+'use client';
+
+import Link from 'next/link';
+
 export default function Page() {
+  const active = 'attendance';
   return (
-    <div className="bg-background text-on-background font-body-md min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
-      <style dangerouslySetInnerHTML={{ __html: `.glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(123, 116, 134, 0.2);
-        }` }} />
+    <div className="bg-surface text-on-surface font-body-md h-screen flex overflow-hidden">
       
-{/*  SideNavBar (Desktop)  */}
-<nav className="hidden md:flex flex-col h-full p-md fixed left-0 top-0 w-[240px] border-r border-outline-variant bg-surface-container z-50">
-<div className="mb-xl flex items-center gap-sm">
-<div className="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center shrink-0">
-<span className="material-symbols-outlined text-on-primary-container" data-icon="corporate_fare" data-weight="fill" style={{ fontVariationSettings: '\'FILL\' 1' }}>corporate_fare</span>
-</div>
-<div>
-<h1 className="font-headline-md text-headline-md text-primary">Dayflow</h1>
-<p className="font-label-sm text-label-sm text-on-surface-variant">Enterprise HRMS</p>
-</div>
-</div>
-<ul className="flex flex-col gap-base flex-1">
-<li>
-<a className="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
-<span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span>Dashboard</span>
-</a>
-</li>
-<li>
-<a className="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
-<span className="material-symbols-outlined" data-icon="group">group</span>
-<span>Employees</span>
-</a>
-</li>
-<li>
-<a className="flex items-center gap-sm px-sm py-sm bg-secondary-container text-on-secondary-container font-bold rounded-lg transition-colors duration-200" href="#">
-<span className="material-symbols-outlined" data-icon="event_available">event_available</span>
-<span>Attendance</span>
-</a>
-</li>
-<li>
-<a className="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
-<span className="material-symbols-outlined" data-icon="event_busy">event_busy</span>
-<span>Time Off</span>
-</a>
-</li>
-<li>
-<a className="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
-<span className="material-symbols-outlined" data-icon="payments">payments</span>
-<span>Payroll</span>
-</a>
-</li>
-<li>
-<a className="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
-<span className="material-symbols-outlined" data-icon="analytics">analytics</span>
-<span>Reports</span>
-</a>
-</li>
-</ul>
-<div className="mt-auto flex flex-col gap-base">
-<a className="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
-<span className="material-symbols-outlined" data-icon="account_circle">account_circle</span>
-<span>My Profile</span>
-</a>
-<a className="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
-<span className="material-symbols-outlined" data-icon="settings">settings</span>
-<span>Settings</span>
-</a>
-</div>
-</nav>
-{/*  Main Content Area  */}
-<main className="flex-1 flex flex-col min-h-screen md:ml-[240px] w-full">
-{/*  TopAppBar  */}
-<header className="flex justify-between items-center h-16 px-margin-desktop bg-surface border-b border-outline-variant docked full-width top-0 sticky z-40">
-<div className="flex-1 max-w-md hidden md:flex items-center relative">
-<span className="material-symbols-outlined absolute left-sm text-on-surface-variant" data-icon="search">search</span>
-<input className="w-full bg-surface-container border-outline-variant rounded-lg pl-xl pr-sm py-sm focus:ring-2 focus:ring-primary focus:border-primary text-on-surface transition-all" placeholder="Search employees, reports..." type="text"/>
-</div>
-<div className="md:hidden flex items-center">
-<h2 className="font-headline-md text-headline-md font-bold text-primary">Dayflow</h2>
-</div>
-<div className="flex items-center gap-md">
-<button className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-colors duration-200">
-<span className="material-symbols-outlined" data-icon="notifications">notifications</span>
+      {/* SideNavBar */}
+      <nav className="hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant h-screen w-64 fixed left-0 py-6 px-4 z-50">
+        <div className="flex items-center gap-3 mb-8 px-2">
+          <div className="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+            <span className="material-symbols-outlined">water_drop</span>
+          </div>
+          <div>
+            <h1 className="text-title-md font-title-md font-black text-primary">Dayflow</h1>
+            <p className="font-label-sm text-label-sm text-on-surface-variant">HR Management</p>
+          </div>
+        </div>
+
+        <ul className="flex flex-col gap-1 flex-grow">
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/hr">
+              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>dashboard</span>
+              <span>Dashboard</span>
+            </Link>
+          </li>
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/employee">
+              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>groups</span>
+              <span>Employees</span>
+            </Link>
+          </li>
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/attendance">
+              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>pending_actions</span>
+              <span>Attendance</span>
+            </Link>
+          </li>
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/time-off">
+              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>calendar_today</span>
+              <span>Time Off</span>
+            </Link>
+          </li>
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/payroll">
+              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>payments</span>
+              <span>Payroll</span>
+            </Link>
+          </li>
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'attendance' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/reports">
+              <span className="material-symbols-outlined" style={active === 'attendance' ? { fontVariationSettings: "'FILL' 1" } : {}}>assessment</span>
+              <span>Reports</span>
+            </Link>
+          </li>
+        </ul>
+
+        <div className="mt-auto border-t border-outline-variant pt-4">
+          <ul className="flex flex-col gap-1">
+            <li>
+              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+                <span className="material-symbols-outlined">settings</span>
+                <span>Settings</span>
+              </Link>
+            </li>
+            <li>
+              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+                <span className="material-symbols-outlined">help_outline</span>
+                <span>Help</span>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      {/* Attendance - Dayflow */}
+<div className="flex-1 md:ml-64 flex flex-col min-h-screen">
+{/* Shared Component: TopAppBar */}
+<header className="flex justify-between items-center h-16 px-gutter bg-surface sticky top-0 z-40 border-b border-outline-variant">
+{/* Left Side: Mobile Menu & Breadcrumb */}
+<div className="flex items-center gap-4">
+<button className="md:hidden text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors focus:ring-2 ring-primary-container outline-none">
+<span className="material-symbols-outlined">menu</span>
 </button>
-<button className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-colors duration-200">
-<span className="material-symbols-outlined" data-icon="light_mode">light_mode</span>
+<div className="hidden sm:flex items-center gap-2 text-sm text-on-surface-variant">
+<span>Dayflow</span>
+<span className="material-symbols-outlined text-[16px]">chevron_right</span>
+<span className="font-medium text-on-surface">Attendance Log</span>
+</div>
+</div>
+{/* Right Side: Search & Actions */}
+<div className="flex items-center gap-3">
+<button className="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors focus:ring-2 ring-primary-container outline-none">
+<span className="material-symbols-outlined">search</span>
 </button>
-<div className="w-10 h-10 rounded-full overflow-hidden border border-outline-variant shrink-0 cursor-pointer">
-<img alt="User Avatar" className="w-full h-full object-cover" data-alt="Professional headshot of a corporate employee on a dark, moody background, modern corporate style, highly detailed portrait, soft dramatic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcVtiHFghyWzET730Sv-k11WV0EyUabSMU60LJAO37iz2EmEnqielE3KMVVqju27bMJjvoz2p-zKY3pGbyvQwLVcvdYyEE47uO3KCebwWxQ7fh0gr1bNhEZIjqmpLLuF_yZl8QKvJqZgUqA5oYJWnCrqObPOG4RMR9PMKOAcKw9Cp0KK35aI6DoGSA0adrCw-Ny1Sa2BsxvQpyHheOgrnanRX62TiQ8UDHcy1WwyiBjqqedV0MfamYDQ"/>
+<button className="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors focus:ring-2 ring-primary-container outline-none relative">
+<span className="material-symbols-outlined">notifications</span>
+<span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button className="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors focus:ring-2 ring-primary-container outline-none">
+<span className="material-symbols-outlined">apps</span>
+</button>
+<div className="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-2 shrink-0">
+<img alt="Administrator Profile" className="w-full h-full object-cover" data-alt="Professional corporate headshot of a diverse female executive with warm, bright lighting and an approachable smile. Modern office background out of focus. High-key light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjxbXNV55YTHkNXvTnuimjX8WD8nqqbABQr7jb72MtodLMW7jnQQiBNLsb7WY8_yfpBJAKRwu2nRlg8foKbHC6f7ZRv62_CuyVLEC_I2FrdQObDdd2t-VgKDlU2E2JWnJ0ZGR9NfCjzO6s1XloBUqbQ5IL4gcH7QtEO3Su2ddUjx7TTCm6fFE7AU44j-nR5i5mVtXAUEc440E69hCJa4JlQx3sO5GuJTOfemKTM6ZLnCKv229xVtqZHg" />
 </div>
 </div>
 </header>
-{/*  Canvas  */}
-<div className="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto">
-{/*  Header & Filters  */}
-<div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-md mb-xl">
+{/* Page Content Canvas */}
+<main className="flex-1 p-gutter max-w-[1120px] w-full mx-auto">
+{/* Page Header */}
+<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
 <div>
-<h2 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg font-bold text-on-surface">Attendance Log</h2>
-<p className="font-body-md text-body-md text-on-surface-variant mt-xs">Track and manage employee attendance records.</p>
+<h2 className="font-headline-lg text-headline-lg md:text-[32px] md:leading-[40px] text-on-surface mb-1">
+                        Attendance Log <span className="font-accent-marker text-accent-marker text-secondary ml-2 marker-highlight">Today</span>
+</h2>
+<p className="font-body-md text-body-md text-on-surface-variant">Track and monitor daily employee attendance and punctuality.</p>
 </div>
-<div className="flex flex-wrap items-center gap-sm w-full lg:w-auto">
-<div className="relative w-full sm:w-auto">
-<select className="w-full sm:w-auto appearance-none bg-surface-container border border-outline-variant rounded-lg px-sm pr-xl py-sm focus:ring-2 focus:ring-primary focus:border-primary text-on-surface transition-all outline-none">
-<option>All Departments</option>
-<option>Engineering</option>
-<option>Design</option>
-<option>Marketing</option>
-<option>Sales</option>
-</select>
-<span className="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" data-icon="arrow_drop_down">arrow_drop_down</span>
-</div>
-<div className="relative w-full sm:w-auto">
-<select className="w-full sm:w-auto appearance-none bg-surface-container border border-outline-variant rounded-lg px-sm pr-xl py-sm focus:ring-2 focus:ring-primary focus:border-primary text-on-surface transition-all outline-none">
-<option>October 2023</option>
-<option>September 2023</option>
-<option>August 2023</option>
-</select>
-<span className="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" data-icon="arrow_drop_down">arrow_drop_down</span>
-</div>
-<button className="bg-primary text-on-primary font-label-sm px-md py-sm rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-colors flex items-center gap-xs w-full sm:w-auto justify-center">
-<span className="material-symbols-outlined text-sm" data-icon="download">download</span>
-                        Export
+<div className="flex items-center gap-3">
+<button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-highest hover:bg-surface-container-high text-on-surface transition-colors font-body-sm text-body-sm font-medium border border-outline-variant">
+<span className="material-symbols-outlined text-[18px]">filter_list</span>
+                        Filter
+                    </button>
+<button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary/90 text-on-primary transition-colors font-body-sm text-body-sm font-medium shadow-sm">
+<span className="material-symbols-outlined text-[18px]">download</span>
+                        Export Log
                     </button>
 </div>
 </div>
-{/*  Summary Bento Grid  */}
-<div className="grid grid-cols-1 md:grid-cols-3 gap-md mb-xl">
-<div className="glass-card rounded-xl p-lg flex flex-col gap-sm hover:border-primary/30 transition-colors">
-<div className="flex justify-between items-center text-on-surface-variant">
-<span className="font-label-sm text-label-sm uppercase tracking-wider">Avg Working Hours</span>
-<span className="material-symbols-outlined text-tertiary" data-icon="schedule">schedule</span>
+{/* Summary Bento Grid */}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+{/* Bento Card 1: Avg Working Hours */}
+<div className="card-base card-hover p-5 flex flex-col justify-between">
+<div className="flex justify-between items-start mb-4">
+<div className="p-2 bg-surface-container rounded-lg text-primary">
+<span className="material-symbols-outlined">schedule</span>
 </div>
-<div className="font-display-lg text-display-lg font-bold text-on-surface">8h 15m</div>
-<div className="font-label-sm text-label-sm text-status-green flex items-center gap-xs">
-<span className="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span>
-                        +2% vs last month
-                    </div>
+<span className="status-chip on-time">+15m vs avg</span>
 </div>
-<div className="glass-card rounded-xl p-lg flex flex-col gap-sm hover:border-primary/30 transition-colors">
-<div className="flex justify-between items-center text-on-surface-variant">
-<span className="font-label-sm text-label-sm uppercase tracking-wider">Punctuality Rate</span>
-<span className="material-symbols-outlined text-tertiary" data-icon="task_alt">task_alt</span>
-</div>
-<div className="font-display-lg text-display-lg font-bold text-on-surface">94%</div>
-<div className="font-label-sm text-label-sm text-status-green flex items-center gap-xs">
-<span className="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span>
-                        +1.5% vs last month
-                    </div>
-</div>
-<div className="glass-card rounded-xl p-lg flex flex-col gap-sm hover:border-primary/30 transition-colors">
-<div className="flex justify-between items-center text-on-surface-variant">
-<span className="font-label-sm text-label-sm uppercase tracking-wider">Total Absences</span>
-<span className="material-symbols-outlined text-status-red" data-icon="event_busy">event_busy</span>
-</div>
-<div className="font-display-lg text-display-lg font-bold text-on-surface">12</div>
-<div className="font-label-sm text-label-sm text-status-red flex items-center gap-xs">
-<span className="material-symbols-outlined text-[16px]" data-icon="trending_down">trending_down</span>
-                        -3 vs last month
-                    </div>
+<div>
+<p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Avg Working Hours</p>
+<p className="font-display-lg text-display-lg text-on-surface">8h 45m</p>
 </div>
 </div>
-{/*  Attendance Data Table  */}
-<div className="bg-surface-container border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+{/* Bento Card 2: Punctuality Rate */}
+<div className="card-base card-hover p-5 flex flex-col justify-between">
+<div className="flex justify-between items-start mb-4">
+<div className="p-2 bg-secondary-container rounded-lg text-on-secondary-container">
+<span className="material-symbols-outlined">fact_check</span>
+</div>
+<span className="status-chip late">-2.5% vs last week</span>
+</div>
+<div>
+<p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Punctuality Rate</p>
+<p className="font-display-lg text-display-lg text-on-surface">94.2%</p>
+</div>
+</div>
+{/* Bento Card 3: Total Absences */}
+<div className="card-base card-hover p-5 flex flex-col justify-between">
+<div className="flex justify-between items-start mb-4">
+<div className="p-2 bg-error-container rounded-lg text-on-error-container">
+<span className="material-symbols-outlined">person_off</span>
+</div>
+<span className="font-body-sm text-body-sm text-on-surface-variant font-medium">Out of 142 Staff</span>
+</div>
+<div>
+<p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Total Absences Today</p>
+<p className="font-display-lg text-display-lg text-on-surface">3</p>
+</div>
+</div>
+</div>
+{/* Detailed Data Table */}
+<div className="card-base overflow-hidden">
+<div className="p-4 border-b border-outline-variant bg-surface flex justify-between items-center">
+<h3 className="font-title-md text-title-md text-on-surface">Detailed Log</h3>
+{/* Search Input */}
+<div className="relative w-full max-w-xs hidden sm:block">
+<span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input className="w-full pl-9 pr-3 py-1.5 bg-surface border border-outline-variant rounded-lg text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-container outline-none transition-all placeholder:text-on-surface-variant" placeholder="Search employees..." type="text" />
+</div>
+</div>
 <div className="overflow-x-auto">
 <table className="w-full text-left border-collapse">
 <thead>
-<tr className="border-b border-outline-variant bg-surface-container-high">
-<th className="p-sm font-label-sm text-label-sm text-on-surface-variant font-medium">Employee</th>
-<th className="p-sm font-label-sm text-label-sm text-on-surface-variant font-medium">Date</th>
-<th className="p-sm font-label-sm text-label-sm text-on-surface-variant font-medium">Check In</th>
-<th className="p-sm font-label-sm text-label-sm text-on-surface-variant font-medium">Check Out</th>
-<th className="p-sm font-label-sm text-label-sm text-on-surface-variant font-medium">Total Hours</th>
-<th className="p-sm font-label-sm text-label-sm text-on-surface-variant font-medium">Status</th>
-<th className="p-sm font-label-sm text-label-sm text-on-surface-variant font-medium">Actions</th>
+<tr className="bg-[#FAF8FA] border-b border-outline-variant">
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Employee</th>
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Date</th>
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Check In</th>
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Check Out</th>
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Total Hours</th>
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap">Status</th>
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase whitespace-nowrap text-right">Actions</th>
 </tr>
 </thead>
-<tbody className="divide-y divide-outline-variant">
-{/*  Row 1  */}
-<tr className="hover:bg-surface-container-high transition-colors group">
-<td className="p-sm flex items-center gap-sm">
-<div className="w-8 h-8 rounded-full bg-surface-variant overflow-hidden shrink-0">
-<img className="w-full h-full object-cover" data-alt="Portrait of an Asian female software engineer, professional lighting, dark corporate background, modern tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOsp2tCqlgckuzYm-Vm0p-Q4F54yLEWEOJRNTJYiwmgliCNB5BNGFLSWsuVhNwV9neGXuGr6HtVVENJE_jHQqsy2CdSR_iJeEyBHDzZELRxxHgnaEtgZHnBOFTyILK83IH4-eWstAqU1BPe3VNuwJYo1S0yTEFT5nmAwu0s8_G_VqsZ_1nduZz3MedLa3a9XTf2enVkXhMoXafJUuN4v6ZbzUwPsh_i3Xpu8DFR_oZZL1wM2lvfHPEtw"/>
-</div>
+<tbody className="font-body-sm text-body-sm text-on-surface divide-y divide-outline-variant">
+{/* Row 1 */}
+<tr className="hover:bg-surface-container-lowest hover:shadow-[inset_4px_0_0_0_#57344f] transition-all duration-150 h-12 bg-surface">
+<td className="py-2 px-4">
+<div className="flex items-center gap-3">
+<img alt="Alex Chen" className="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="Professional corporate headshot of a young male software engineer with warm, bright lighting. Modern office background out of focus. High-key light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAauWQLwzmPvTM9ap5tJkcLTE4sSSPNJ-K4L0iP8LyQDd4jsZOZWdnYN3uoO-3a5f4a5ZR_0MjqrGxdraoErifdUTcWqXSVnwG_MuzDpW3UqJRTOxaxzgnVY0_-UnNV-AF5F8WgNIpQgvHrns1-PwkltChAeI7bWBNffZAYqEZykFcZzhPO5iIVWcKrDZ5yEnRJ9mPGTB1tdY_2GSwhWP0BNApKFvHbi0yxqXRgwFBPgGj_xrutrbOsbA" />
 <div>
-<div className="font-body-md text-body-md text-on-surface font-medium">Elena Rostova</div>
-<div className="font-label-sm text-label-sm text-on-surface-variant">Engineering</div>
+<p className="font-medium">Alex Chen</p>
+<p className="text-xs text-on-surface-variant">Engineering</p>
+</div>
 </div>
 </td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface">Oct 24, 2023</td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface">08:45 AM</td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface">05:15 PM</td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface">8h 30m</td>
-<td className="p-sm">
-<span className="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-status-green/10 text-status-green border border-status-green/20">On Time</span>
-</td>
-<td className="p-sm">
-<button className="text-on-surface-variant hover:text-primary transition-colors">
-<span className="material-symbols-outlined" data-icon="more_vert">more_vert</span>
-</button>
+<td className="py-2 px-4 text-on-surface-variant">Oct 24, 2023</td>
+<td className="py-2 px-4 font-medium">08:45 AM</td>
+<td className="py-2 px-4 text-on-surface-variant">--:--</td>
+<td className="py-2 px-4 text-on-surface-variant">--</td>
+<td className="py-2 px-4"><span className="status-chip on-time">On Time</span></td>
+<td className="py-2 px-4 text-right">
+<button className="text-on-surface-variant hover:text-primary p-1 rounded transition-colors"><span className="material-symbols-outlined text-[20px]">more_vert</span></button>
 </td>
 </tr>
-{/*  Row 2  */}
-<tr className="hover:bg-surface-container-high transition-colors group">
-<td className="p-sm flex items-center gap-sm">
-<div className="w-8 h-8 rounded-full bg-surface-variant overflow-hidden shrink-0">
-<img className="w-full h-full object-cover" data-alt="Portrait of a Black male marketing manager, professional lighting, dark corporate background, modern tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf_j-lLhebG2PY-pfsW6mwjFlpu5cxT8qfosSsu-Ehs7k1-dZ3K4dySNXY7_euD8SH5sePfCxYBfONczrSIWKA1fVune6vj3Wsz7ZBNhrt63mfb7DX_fjg9Ol8cqFcSYDSOT8q2i80QeolJWqrWEtiifJgnsa3FJLtgUcoOAQLmDurghjfj2zWnOdm-E8L89Yy2cuKB4cj5Py-ub_3SEZh3Q0BnMEo0V19UzJagdBz8W_2Ze2Dwa4HRQ"/>
-</div>
+{/* Row 2 */}
+<tr className="hover:bg-surface-container-lowest hover:shadow-[inset_4px_0_0_0_#57344f] transition-all duration-150 h-12 bg-surface">
+<td className="py-2 px-4">
+<div className="flex items-center gap-3">
+<div className="w-8 h-8 rounded-full bg-surface-tint text-on-primary flex items-center justify-center font-bold text-xs border border-outline-variant">SJ</div>
 <div>
-<div className="font-body-md text-body-md text-on-surface font-medium">Marcus Johnson</div>
-<div className="font-label-sm text-label-sm text-on-surface-variant">Marketing</div>
+<p className="font-medium">Sarah Jenkins</p>
+<p className="text-xs text-on-surface-variant">Marketing</p>
+</div>
 </div>
 </td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface">Oct 24, 2023</td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface">09:15 AM</td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface">06:00 PM</td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface">8h 45m</td>
-<td className="p-sm">
-<span className="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-status-amber/10 text-status-amber border border-status-amber/20">Late</span>
-</td>
-<td className="p-sm">
-<button className="text-on-surface-variant hover:text-primary transition-colors">
-<span className="material-symbols-outlined" data-icon="more_vert">more_vert</span>
-</button>
+<td className="py-2 px-4 text-on-surface-variant">Oct 24, 2023</td>
+<td className="py-2 px-4 font-medium text-error">09:15 AM</td>
+<td className="py-2 px-4 text-on-surface-variant">--:--</td>
+<td className="py-2 px-4 text-on-surface-variant">--</td>
+<td className="py-2 px-4"><span className="status-chip late">Late</span></td>
+<td className="py-2 px-4 text-right">
+<button className="text-on-surface-variant hover:text-primary p-1 rounded transition-colors"><span className="material-symbols-outlined text-[20px]">more_vert</span></button>
 </td>
 </tr>
-{/*  Row 3  */}
-<tr className="hover:bg-surface-container-high transition-colors group">
-<td className="p-sm flex items-center gap-sm">
-<div className="w-8 h-8 rounded-full bg-surface-variant overflow-hidden shrink-0">
-<img className="w-full h-full object-cover" data-alt="Portrait of a Caucasian female designer, professional lighting, dark corporate background, modern tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUm0oifQiPATNOKLgMVEjLfvr3GLNlIbIU_yrTIjQzP0T7L1NXipcye2RSkkCddARfK_RYikctBKIpRCW6Qw2AHrw7qN08Qe-SFUclFk70gHyZBY3r7lTu8LrjJZgaArzbJk3tfmYqy1RFBwFYU01z2EQPkHHGaQ2zA809QMUCzMVsB9P1BmekPAZsaoxT-W7tbxpGWM8pQT2SddFCgeLGtDpvmBuWOr5zlRqWttXhRj0TuQs-N8Ytiw"/>
-</div>
+{/* Row 3 */}
+<tr className="hover:bg-surface-container-lowest hover:shadow-[inset_4px_0_0_0_#57344f] transition-all duration-150 h-12 bg-surface">
+<td className="py-2 px-4">
+<div className="flex items-center gap-3">
+<img alt="Maria Garcia" className="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="Professional corporate headshot of a mature female HR manager with warm, bright lighting. Modern office background out of focus. High-key light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjiVlRC6bhAPoyaoaD3fO1LrsbDVH7qaBHKNVsDHvy_hGturcRt3V5NRVYQ-NKkQn-Lzo6oLfCiThj1f_ZckQkp_57VxPk0JrNjufvhxRMCcwwub_mpWEdYZetRxAzpZ00DVKG1ADI75eLJIzYwQweplTQoATFnXaPrCCR0paGkdWT94Rbwd2RK-O8ngtGqNsVws-So2Xmm5OihfIxvja6Ff-1mK9M6tm5JeMMY7iSSG3HIvhPatMDgA" />
 <div>
-<div className="font-body-md text-body-md text-on-surface font-medium">Sarah Jenkins</div>
-<div className="font-label-sm text-label-sm text-on-surface-variant">Design</div>
+<p className="font-medium">Maria Garcia</p>
+<p className="text-xs text-on-surface-variant">HR</p>
+</div>
 </div>
 </td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface">Oct 24, 2023</td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface-variant">--:-- --</td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface-variant">--:-- --</td>
-<td className="p-sm font-data-mono text-data-mono text-on-surface-variant">0h 0m</td>
-<td className="p-sm">
-<span className="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-label-sm bg-status-red/10 text-status-red border border-status-red/20">Absent</span>
+<td className="py-2 px-4 text-on-surface-variant">Oct 23, 2023</td>
+<td className="py-2 px-4 font-medium">08:55 AM</td>
+<td className="py-2 px-4 text-on-surface-variant">05:10 PM</td>
+<td className="py-2 px-4 font-medium">8h 15m</td>
+<td className="py-2 px-4"><span className="status-chip on-time">On Time</span></td>
+<td className="py-2 px-4 text-right">
+<button className="text-on-surface-variant hover:text-primary p-1 rounded transition-colors"><span className="material-symbols-outlined text-[20px]">more_vert</span></button>
 </td>
-<td className="p-sm">
-<button className="text-on-surface-variant hover:text-primary transition-colors">
-<span className="material-symbols-outlined" data-icon="more_vert">more_vert</span>
-</button>
+</tr>
+{/* Row 4 */}
+<tr className="hover:bg-surface-container-lowest hover:shadow-[inset_4px_0_0_0_#57344f] transition-all duration-150 h-12 bg-[#FAF8FA]/50">
+<td className="py-2 px-4">
+<div className="flex items-center gap-3">
+<div className="w-8 h-8 rounded-full bg-outline text-on-primary flex items-center justify-center font-bold text-xs border border-outline-variant">DT</div>
+<div>
+<p className="font-medium text-on-surface-variant">David Thompson</p>
+<p className="text-xs text-on-surface-variant">Sales</p>
+</div>
+</div>
+</td>
+<td className="py-2 px-4 text-on-surface-variant">Oct 24, 2023</td>
+<td className="py-2 px-4 text-on-surface-variant">--:--</td>
+<td className="py-2 px-4 text-on-surface-variant">--:--</td>
+<td className="py-2 px-4 text-on-surface-variant">0h</td>
+<td className="py-2 px-4"><span className="status-chip absent">Absent</span></td>
+<td className="py-2 px-4 text-right">
+<button className="text-on-surface-variant hover:text-primary p-1 rounded transition-colors"><span className="material-symbols-outlined text-[20px]">more_vert</span></button>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-{/*  Pagination  */}
-<div className="p-sm border-t border-outline-variant flex items-center justify-between bg-surface-container">
-<span className="font-label-sm text-label-sm text-on-surface-variant">Showing 1 to 10 of 45 entries</span>
-<div className="flex gap-xs">
-<button className="p-1 rounded hover:bg-surface-variant text-on-surface-variant transition-colors disabled:opacity-50">
-<span className="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+{/* Pagination Footer */}
+<div className="p-4 border-t border-outline-variant bg-surface flex items-center justify-between">
+<p className="font-body-sm text-body-sm text-on-surface-variant">Showing 1 to 4 of 142 entries</p>
+<div className="flex gap-1">
+<button className="p-1 rounded text-on-surface-variant hover:bg-surface-container-high transition-colors disabled:opacity-50" disabled>
+<span className="material-symbols-outlined text-[20px]">chevron_left</span>
 </button>
-<button className="p-1 rounded hover:bg-surface-variant text-on-surface-variant transition-colors">
-<span className="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+<button className="w-8 h-8 rounded bg-primary text-on-primary font-medium text-sm flex items-center justify-center">1</button>
+<button className="w-8 h-8 rounded hover:bg-surface-container-high text-on-surface font-medium text-sm flex items-center justify-center transition-colors">2</button>
+<button className="w-8 h-8 rounded hover:bg-surface-container-high text-on-surface font-medium text-sm flex items-center justify-center transition-colors">3</button>
+<span className="w-8 h-8 flex items-center justify-center text-on-surface-variant">...</span>
+<button className="p-1 rounded text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span className="material-symbols-outlined text-[20px]">chevron_right</span>
 </button>
-</div>
 </div>
 </div>
 </div>
 </main>
-{/*  BottomNavBar (Mobile)  */}
-<nav className="md:hidden fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant flex justify-around items-center h-16 pb-safe z-50">
-<a className="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span className="font-label-sm text-[10px] mt-1">Dashboard</span>
-</a>
-<a className="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span className="material-symbols-outlined" data-icon="group">group</span>
-<span className="font-label-sm text-[10px] mt-1">Employees</span>
-</a>
-<a className="flex flex-col items-center justify-center w-full h-full text-primary" href="#">
-<span className="material-symbols-outlined" data-icon="event_available">event_available</span>
-<span className="font-label-sm text-[10px] mt-1 font-bold">Attendance</span>
-</a>
-<a className="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span className="material-symbols-outlined" data-icon="account_circle">account_circle</span>
-<span className="font-label-sm text-[10px] mt-1">Profile</span>
-</a>
-</nav>
+</div>
 
     </div>
   );

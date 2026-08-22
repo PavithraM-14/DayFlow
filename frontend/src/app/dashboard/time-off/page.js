@@ -1,255 +1,326 @@
+'use client';
+
+import Link from 'next/link';
+
 export default function Page() {
+  const active = 'time-off';
   return (
-    <div className="bg-background text-on-surface flex min-h-screen">
-      <style dangerouslySetInnerHTML={{ __html: `body { font-family: 'Inter', sans-serif; }` }} />
+    <div className="bg-surface text-on-surface font-body-md h-screen flex overflow-hidden">
       
-{/*  SideNavBar  */}
-<nav className="fixed left-0 top-0 h-full w-[240px] bg-surface-container dark:bg-surface-container border-r border-outline-variant dark:border-outline-variant flex flex-col p-md z-50">
-<div className="mb-xl flex items-center gap-sm px-xs">
-<div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-md">
-                D
-            </div>
-<div>
-<h1 className="font-headline-md text-headline-md font-bold text-primary dark:text-primary">Dayflow</h1>
-<p className="font-label-sm text-label-sm text-on-surface-variant">Enterprise HRMS</p>
+      {/* SideNavBar */}
+      <nav className="hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant h-screen w-64 fixed left-0 py-6 px-4 z-50">
+        <div className="flex items-center gap-3 mb-8 px-2">
+          <div className="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+            <span className="material-symbols-outlined">water_drop</span>
+          </div>
+          <div>
+            <h1 className="text-title-md font-title-md font-black text-primary">Dayflow</h1>
+            <p className="font-label-sm text-label-sm text-on-surface-variant">HR Management</p>
+          </div>
+        </div>
+
+        <ul className="flex flex-col gap-1 flex-grow">
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/hr">
+              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>dashboard</span>
+              <span>Dashboard</span>
+            </Link>
+          </li>
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/employee">
+              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>groups</span>
+              <span>Employees</span>
+            </Link>
+          </li>
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/attendance">
+              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>pending_actions</span>
+              <span>Attendance</span>
+            </Link>
+          </li>
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/time-off">
+              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>calendar_today</span>
+              <span>Time Off</span>
+            </Link>
+          </li>
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/payroll">
+              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>payments</span>
+              <span>Payroll</span>
+            </Link>
+          </li>
+          <li>
+            <Link className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active === 'time-off' ? 'text-on-secondary-container bg-secondary-container font-bold scale-[0.98]' : 'text-on-surface-variant hover:bg-surface-container-highest'}`} href="/dashboard/reports">
+              <span className="material-symbols-outlined" style={active === 'time-off' ? { fontVariationSettings: "'FILL' 1" } : {}}>assessment</span>
+              <span>Reports</span>
+            </Link>
+          </li>
+        </ul>
+
+        <div className="mt-auto border-t border-outline-variant pt-4">
+          <ul className="flex flex-col gap-1">
+            <li>
+              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+                <span className="material-symbols-outlined">settings</span>
+                <span>Settings</span>
+              </Link>
+            </li>
+            <li>
+              <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+                <span className="material-symbols-outlined">help_outline</span>
+                <span>Help</span>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      {/* Time Off - Dayflow */}
+<div className="flex-1 flex flex-col md:ml-64 relative min-h-screen">
+{/* TopAppBar */}
+<header className="bg-surface dark:bg-surface-dim sticky top-0 w-full z-40 border-b border-outline-variant dark:border-outline h-16 px-gutter flex justify-between items-center transition-colors">
+<div className="flex-1 flex items-center gap-4 max-w-md">
+<div className="relative w-full hidden md:block">
+<span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+<input className="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg text-body-sm font-body-sm focus:ring-2 focus:ring-primary-container focus:border-primary-container outline-none transition-shadow text-on-surface" placeholder="Search employees, requests..." type="text" />
 </div>
-</div>
-<ul className="flex flex-col gap-base mt-md">
-<li>
-<a className="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 font-body-md text-body-md" href="#">
-<span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-                    Dashboard
-                </a>
-</li>
-<li>
-<a className="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 font-body-md text-body-md" href="#">
-<span className="material-symbols-outlined" data-icon="group">group</span>
-                    Employees
-                </a>
-</li>
-<li>
-<a className="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 font-body-md text-body-md" href="#">
-<span className="material-symbols-outlined" data-icon="event_available">event_available</span>
-                    Attendance
-                </a>
-</li>
-<li>
-<a className="flex items-center gap-sm px-md py-sm rounded-lg bg-secondary-container dark:bg-secondary-container text-on-secondary-container font-bold font-body-md text-body-md" href="#">
-<span className="material-symbols-outlined" data-icon="event_busy">event_busy</span>
-                    Time Off
-                </a>
-</li>
-<li>
-<a className="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 font-body-md text-body-md" href="#">
-<span className="material-symbols-outlined" data-icon="payments">payments</span>
-                    Payroll
-                </a>
-</li>
-<li>
-<a className="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 font-body-md text-body-md" href="#">
-<span className="material-symbols-outlined" data-icon="analytics">analytics</span>
-                    Reports
-                </a>
-</li>
-<li className="mt-auto">
-<a className="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 font-body-md text-body-md" href="#">
-<span className="material-symbols-outlined" data-icon="account_circle">account_circle</span>
-                    My Profile
-                </a>
-</li>
-<li>
-<a className="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 font-body-md text-body-md" href="#">
-<span className="material-symbols-outlined" data-icon="settings">settings</span>
-                    Settings
-                </a>
-</li>
-</ul>
-</nav>
-{/*  Main Content Area  */}
-<div className="flex-1 ml-[240px] flex flex-col min-h-screen overflow-hidden">
-{/*  TopAppBar  */}
-<header className="docked full-width top-0 sticky z-40 bg-surface dark:bg-surface border-b border-outline-variant dark:border-outline-variant flex justify-between items-center h-16 px-margin-desktop">
-<div className="flex items-center gap-md">
-<div className="relative focus-within:ring-2 focus-within:ring-primary rounded-full bg-surface-container-high px-sm py-xs flex items-center">
-<span className="material-symbols-outlined text-on-surface-variant mr-xs">search</span>
-<input className="bg-transparent border-none outline-none text-body-md font-body-md text-on-surface placeholder:text-on-surface-variant w-64" placeholder="Search employees..." type="text"/>
-</div>
-</div>
-<div className="flex items-center gap-md">
-<button className="p-xs text-on-surface-variant hover:text-primary transition-colors duration-200 rounded-full hover:bg-surface-container-high">
-<span className="material-symbols-outlined" data-icon="notifications">notifications</span>
+<button className="md:hidden text-on-surface-variant p-2 rounded-full hover:bg-surface-container-low transition-colors">
+<span className="material-symbols-outlined">menu</span>
 </button>
-<button className="p-xs text-on-surface-variant hover:text-primary transition-colors duration-200 rounded-full hover:bg-surface-container-high">
-<span className="material-symbols-outlined" data-icon="light_mode">light_mode</span>
+</div>
+<div className="flex items-center gap-2 md:gap-4">
+<button className="text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors p-2 rounded-full relative">
+<span className="material-symbols-outlined">notifications</span>
+<span className="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full ring-2 ring-surface"></span>
 </button>
-<img alt="User Avatar" className="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of an HR administrator, modern corporate setting, soft lighting, professional attire, engaging smile, dark mode UI compatible portrait." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCfxCaKkfns0CvIoqT0Bi3BbUze62TeeaIibZ9Pg1FSnL1N7zOd7JueazEYt4wP1jTD4giIoOJ0d2IdmZn-Zuw5YllhEBzbGflwK9dW7WR0bktUuWHLjIavMFayTfirzVmJ-K9vUbo1o3esIDreAvfr_1R4QQB83rDnjieEq55IgqVw77aMu4oR206a_UfB6XcvevmeO9t8bE7zQuCjCdDE-B9fzDiuypI3BZGT6YXy3c_57W_xuvVAg"/>
+<button className="text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors p-2 rounded-full hidden sm:block">
+<span className="material-symbols-outlined">apps</span>
+</button>
+<div className="h-8 w-px bg-outline-variant mx-2 hidden sm:block"></div>
+<button className="flex items-center gap-2 focus:ring-2 focus:ring-primary-container outline-none rounded-full overflow-hidden border border-outline-variant">
+<img alt="Administrator Profile" className="w-8 h-8 object-cover rounded-full bg-surface-container-high" data-alt="A professional headshot of a corporate HR administrator, looking friendly and approachable, modern well-lit office background, high quality photography, professional humanist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDm0Arlux9LDS02wq-3ccxiorgGEn9Jq7yHVwrTVImM_BUIvUw9Zckhk4uY961_ferIKz2Ggmlhveol7D-fsbb-Bj-OfklT9w9FcZF05aXw4ulDbPWIDKN_BX6yFP_LGQYVRHi5GzB1csdc1RqgWrtTTOjak9PKVIubLLjGxZOsYpaPndwVut5eIy980JEJ0tx0w8dh98Tsv-ImcbedBiPNxRqJOnlXBKttxhFXNOsY4hE8z7aQ4VLU0A" />
+</button>
 </div>
 </header>
-{/*  Canvas  */}
-<main className="flex-1 p-margin-desktop overflow-y-auto">
-<div className="mb-xl flex justify-between items-end">
+{/* Canvas */}
+<main className="flex-1 overflow-y-auto p-4 md:p-gutter lg:p-container-padding">
+<div className="max-w-[1120px] mx-auto w-full">
+{/* Page Header */}
+<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
 <div>
-<h2 className="font-display-lg text-display-lg text-on-surface mb-xs">Leave Management</h2>
-<p className="font-body-md text-body-md text-on-surface-variant">Review and manage employee time-off requests.</p>
+<h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background">Time Off Management</h2>
+<p className="font-body-md text-body-md text-on-surface-variant mt-1">Review and manage employee leave requests.</p>
 </div>
-<button className="bg-primary text-on-primary font-body-md text-body-md px-md py-sm rounded-lg hover:bg-primary-fixed transition-colors flex items-center gap-xs">
-<span className="material-symbols-outlined text-[18px]">add</span>
-                    New Request
-                </button>
+<button className="bg-primary text-on-primary px-4 py-2.5 rounded-lg font-title-md text-title-md flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+<span className="material-symbols-outlined text-xl">add</span>
+                        New Request
+                    </button>
 </div>
-{/*  Bento Grid Layout  */}
-<div className="grid grid-cols-12 gap-lg">
-{/*  Balance Overview (Left Column)  */}
-<div className="col-span-12 xl:col-span-4 flex flex-col gap-lg">
-<div className="bg-surface-container rounded-xl p-lg border border-outline-variant">
-<h3 className="font-headline-md text-headline-md text-on-surface mb-md">Company Leave Overview</h3>
-<div className="space-y-md">
-{/*  Metric 1  */}
-<div className="p-md bg-surface-container-high rounded-lg border border-outline-variant hover:border-primary/30 transition-colors">
-<div className="flex justify-between items-center mb-sm">
-<span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Annual Leave Pool</span>
-<span className="material-symbols-outlined text-primary">flight_takeoff</span>
-</div>
-<div className="flex items-end gap-sm">
-<span className="font-display-lg-mobile text-display-lg-mobile text-on-surface">1,240</span>
-<span className="font-body-md text-body-md text-on-surface-variant pb-1">days remaining</span>
-</div>
-<div className="w-full bg-surface mt-sm rounded-full h-1.5">
-<div className="bg-primary h-1.5 rounded-full" style={{ width: '65%' }}></div>
+{/* Summary Cards Bento */}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+{/* Pending Approvals */}
+<div className="bg-surface-container-lowest border border-outline-variant rounded-[10px] p-5 relative overflow-hidden group hover:shadow-[0_4px_12px_rgba(87,52,79,0.05)] transition-shadow">
+<div className="absolute top-0 left-0 w-1 h-full bg-[#f59e0b]"></div>
+<div className="flex justify-between items-start mb-4">
+<h3 className="font-title-md text-title-md text-on-surface">Pending Approvals</h3>
+<div className="w-10 h-10 rounded-full bg-[#fef3c7] text-[#d97706] flex items-center justify-center">
+<span className="material-symbols-outlined">hourglass_empty</span>
 </div>
 </div>
-{/*  Metric 2  */}
-<div className="p-md bg-surface-container-high rounded-lg border border-outline-variant hover:border-primary/30 transition-colors">
-<div className="flex justify-between items-center mb-sm">
-<span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Sick Leave Usage</span>
-<span className="material-symbols-outlined text-status-amber">medical_services</span>
+<div className="flex items-end gap-3">
+<span className="font-display-lg text-display-lg text-on-background">12</span>
+<span className="font-body-sm text-body-sm text-error bg-error/10 px-2 py-0.5 rounded flex items-center gap-1 mb-2">
+<span className="material-symbols-outlined text-[14px]">arrow_upward</span> 3 new
+                            </span>
 </div>
-<div className="flex items-end gap-sm">
-<span className="font-display-lg-mobile text-display-lg-mobile text-on-surface">342</span>
-<span className="font-body-md text-body-md text-on-surface-variant pb-1">days used</span>
+<p className="font-label-sm text-label-sm text-on-surface-variant uppercase mt-1 tracking-wider">Requires attention</p>
 </div>
-<div className="w-full bg-surface mt-sm rounded-full h-1.5">
-<div className="bg-status-amber h-1.5 rounded-full" style={{ width: '25%' }}></div>
-</div>
-</div>
-{/*  Metric 3  */}
-<div className="p-md bg-surface-container-high rounded-lg border border-outline-variant hover:border-primary/30 transition-colors">
-<div className="flex justify-between items-center mb-sm">
-<span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Pending Approvals</span>
-<span className="material-symbols-outlined text-status-blue">pending_actions</span>
-</div>
-<div className="flex items-end gap-sm">
-<span className="font-display-lg-mobile text-display-lg-mobile text-on-surface">12</span>
-<span className="font-body-md text-body-md text-on-surface-variant pb-1">requests</span>
+{/* Upcoming Leaves */}
+<div className="bg-surface-container-lowest border border-outline-variant rounded-[10px] p-5 hover:shadow-[0_4px_12px_rgba(87,52,79,0.05)] transition-shadow">
+<div className="flex justify-between items-start mb-4">
+<h3 className="font-title-md text-title-md text-on-surface">Upcoming Leaves</h3>
+<div className="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span className="material-symbols-outlined">event_upcoming</span>
 </div>
 </div>
+<div className="flex items-end gap-3">
+<span className="font-display-lg text-display-lg text-on-background">24</span>
+<span className="font-body-sm text-body-sm text-on-surface-variant mb-2">this week</span>
+</div>
+<p className="font-label-sm text-label-sm text-on-surface-variant uppercase mt-1 tracking-wider">Scheduled absences</p>
+</div>
+{/* Team Availability */}
+<div className="bg-surface-container-lowest border border-outline-variant rounded-[10px] p-5 hover:shadow-[0_4px_12px_rgba(87,52,79,0.05)] transition-shadow relative">
+{/* Marker Highlight Accent */}
+<div className="absolute -top-3 -right-2 transform rotate-12 bg-tertiary-fixed-dim/50 px-2 py-0.5 rounded-sm pointer-events-none">
+<span className="font-accent-marker text-accent-marker text-primary">All hands!</span>
+</div>
+<div className="flex justify-between items-start mb-4">
+<h3 className="font-title-md text-title-md text-on-surface">Team Availability Today</h3>
+<div className="w-10 h-10 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center">
+<span className="material-symbols-outlined">group</span>
 </div>
 </div>
-</div>
-{/*  Pending Requests List (Right Column)  */}
-<div className="col-span-12 xl:col-span-8">
-<div className="bg-surface-container rounded-xl p-lg border border-outline-variant h-full flex flex-col">
-<div className="flex justify-between items-center mb-lg">
-<h3 className="font-headline-md text-headline-md text-on-surface">Pending Requests</h3>
-<button className="text-primary hover:text-primary-fixed-dim font-label-sm text-label-sm transition-colors">View All</button>
-</div>
-<div className="flex-1 overflow-auto pr-sm -mr-sm space-y-sm">
-{/*  Request Card 1  */}
-<div className="bg-surface-container-high rounded-lg p-md border border-outline-variant hover:border-primary/20 transition-all group">
-<div className="flex justify-between items-start gap-md">
-<div className="flex items-center gap-md">
-<img className="w-12 h-12 rounded-full object-cover border border-outline-variant" data-alt="A corporate portrait of a female software engineer, professional lighting, modern office background, dark mode UI compatible portrait avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0OMqCj5MUuZOettjQkOxysDiX06TIXqnoN3FASOLFhzd54JdC0t7GcVGKIhtmn-NiZ4yw81rSEPjavRQgZcY1VfmUpz6IV35U361d7d329l0yi_0VEgaSrcDaBIyHDQNIqN2UDJnk01P1ehy2k-LnKfzHW8XC3xmCEbHwT6lsKklAeL3jJ25EHUMmLVsAQu6KGHRXavtLCVVK3eHz9ogmd4M_z7KF10aEyKu88pXBY7xNSvsDLnzZPQ"/>
-<div>
-<h4 className="font-body-lg text-body-lg text-on-surface font-semibold">Sarah Jenkins</h4>
-<p className="font-body-md text-body-md text-on-surface-variant">Senior Developer • Engineering</p>
-</div>
-</div>
-<div className="px-sm py-1 bg-status-blue/10 text-status-blue rounded font-label-sm text-label-sm border border-status-blue/20">
-                                        Annual Leave
-                                    </div>
-</div>
-<div className="mt-md grid grid-cols-2 gap-md">
-<div>
-<p className="font-label-sm text-label-sm text-on-surface-variant mb-1">Duration</p>
-<p className="font-body-md text-body-md text-on-surface flex items-center gap-xs">
-<span className="material-symbols-outlined text-[16px] text-on-surface-variant">calendar_today</span>
-                                            Oct 12 - Oct 15 (4 days)
-                                        </p>
+<div className="flex items-center gap-4">
+<div className="relative w-16 h-16">
+<svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+<path className="text-surface-variant" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="4"></path>
+<path className="text-secondary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray="85, 100" strokeWidth="4"></path>
+</svg>
+<div className="absolute inset-0 flex items-center justify-center font-title-md text-title-md">
+                                    85%
+                                </div>
 </div>
 <div>
-<p className="font-label-sm text-label-sm text-on-surface-variant mb-1">Reason</p>
-<p className="font-body-md text-body-md text-on-surface truncate">Family vacation to the mountains.</p>
+<p className="font-body-sm text-body-sm text-on-surface-variant">142/165 Present</p>
+<p className="font-body-sm text-body-sm text-on-surface-variant">23 On Leave</p>
 </div>
 </div>
-<div className="mt-md flex justify-end gap-sm border-t border-outline-variant pt-md">
-<button className="px-md py-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-bright font-label-sm text-label-sm transition-colors">Reject</button>
-<button className="px-md py-sm rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim font-label-sm text-label-sm transition-colors">Approve</button>
 </div>
 </div>
-{/*  Request Card 2  */}
-<div className="bg-surface-container-high rounded-lg p-md border border-outline-variant hover:border-primary/20 transition-all group">
-<div className="flex justify-between items-start gap-md">
-<div className="flex items-center gap-md">
-<img className="w-12 h-12 rounded-full object-cover border border-outline-variant" data-alt="A corporate portrait of a male marketing manager, professional lighting, warm ambient background, dark mode UI compatible portrait avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5fIL2kbGrPnq65cyqZBEEHRXEeBx6ZB8YhEcXvTTKmXKDaMmdUfgknpbkJ7QdjgOtQ2Y3Iq3P56degu9IErfnaemAOhy1zTM2FhgKbGGbAZJDcFARkcQ6L-ahKBChZtn01ROnbHfI2uekQIx75KeeXTUJeD2YX9hOH__OnIViX_yTfqdEWbQwkj5imMg-aT78g75dTx1y1A8eKKjsQ37Xd-3nLJ3pGtzt82ezEM7NgeE-tmyHQ0PzDA"/>
+{/* Requests Table Section */}
+<div className="bg-surface-container-lowest border border-outline-variant rounded-[10px] overflow-hidden">
+<div className="p-4 border-b border-outline-variant flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#FAF8FA]">
+<h3 className="font-title-md text-title-md text-on-surface">Recent Requests</h3>
+<div className="flex gap-2 w-full sm:w-auto">
+<select className="bg-surface border border-outline-variant text-body-sm font-body-sm rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-primary-container outline-none text-on-surface flex-1 sm:flex-none">
+<option>All Statuses</option>
+<option>Pending</option>
+<option>Approved</option>
+<option>Rejected</option>
+</select>
+<button className="p-1.5 border border-outline-variant rounded-lg bg-surface text-on-surface-variant hover:bg-surface-container-low transition-colors">
+<span className="material-symbols-outlined text-xl">filter_list</span>
+</button>
+</div>
+</div>
+<div className="overflow-x-auto">
+<table className="w-full text-left border-collapse">
+<thead>
+<tr className="bg-[#FAF8FA] border-b border-outline-variant">
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Employee</th>
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Type</th>
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Dates</th>
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider hidden md:table-cell">Duration</th>
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider hidden lg:table-cell">Reason</th>
+<th className="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody className="divide-y divide-outline-variant">
+{/* Row 1: Pending */}
+<tr className="hover:bg-surface-container-lowest transition-colors group h-12">
+<td className="py-3 px-4">
+<div className="flex items-center gap-3">
+<div className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-title-md text-sm">
+                                                JD
+                                            </div>
 <div>
-<h4 className="font-body-lg text-body-lg text-on-surface font-semibold">David Chen</h4>
-<p className="font-body-md text-body-md text-on-surface-variant">Marketing Lead • Marketing</p>
+<p className="font-body-sm text-body-sm font-medium text-on-surface">Jane Doe</p>
+<p className="font-label-sm text-label-sm text-on-surface-variant">Engineering</p>
 </div>
 </div>
-<div className="px-sm py-1 bg-status-amber/10 text-status-amber rounded font-label-sm text-label-sm border border-status-amber/20">
-                                        Sick Leave
-                                    </div>
+</td>
+<td className="py-3 px-4">
+<span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-surface-container text-on-surface">Annual</span>
+</td>
+<td className="py-3 px-4">
+<p className="font-body-sm text-body-sm text-on-surface">Oct 24 - Oct 28</p>
+</td>
+<td className="py-3 px-4 hidden md:table-cell">
+<p className="font-body-sm text-body-sm text-on-surface">5 days</p>
+</td>
+<td className="py-3 px-4 hidden lg:table-cell max-w-[200px] truncate text-on-surface-variant font-body-sm text-body-sm">
+                                        Family vacation to the mountains...
+                                    </td>
+<td className="py-3 px-4 text-right">
+<div className="flex justify-end gap-2">
+<button className="w-8 h-8 rounded border border-secondary text-secondary hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-colors" title="Approve">
+<span className="material-symbols-outlined text-[18px]">check</span>
+</button>
+<button className="w-8 h-8 rounded border border-outline-variant text-on-surface-variant hover:bg-error hover:border-error hover:text-on-error flex items-center justify-center transition-colors" title="Reject">
+<span className="material-symbols-outlined text-[18px]">close</span>
+</button>
 </div>
-<div className="mt-md grid grid-cols-2 gap-md">
+</td>
+</tr>
+{/* Row 2: Pending Sick */}
+<tr className="hover:bg-surface-container-lowest transition-colors group h-12">
+<td className="py-3 px-4">
+<div className="flex items-center gap-3">
+<div className="w-8 h-8 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-title-md text-sm">
+                                                MS
+                                            </div>
 <div>
-<p className="font-label-sm text-label-sm text-on-surface-variant mb-1">Duration</p>
-<p className="font-body-md text-body-md text-on-surface flex items-center gap-xs">
-<span className="material-symbols-outlined text-[16px] text-on-surface-variant">calendar_today</span>
-                                            Oct 05 (1 day)
-                                        </p>
+<p className="font-body-sm text-body-sm font-medium text-on-surface">Michael Smith</p>
+<p className="font-label-sm text-label-sm text-on-surface-variant">Marketing</p>
 </div>
+</div>
+</td>
+<td className="py-3 px-4">
+<span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-error/10 text-error">Sick</span>
+</td>
+<td className="py-3 px-4">
+<p className="font-body-sm text-body-sm text-on-surface">Oct 18</p>
+</td>
+<td className="py-3 px-4 hidden md:table-cell">
+<p className="font-body-sm text-body-sm text-on-surface">1 day</p>
+</td>
+<td className="py-3 px-4 hidden lg:table-cell max-w-[200px] truncate text-on-surface-variant font-body-sm text-body-sm">
+                                        Not feeling well, fever.
+                                    </td>
+<td className="py-3 px-4 text-right">
+<div className="flex justify-end gap-2">
+<button className="w-8 h-8 rounded border border-secondary text-secondary hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-colors" title="Approve">
+<span className="material-symbols-outlined text-[18px]">check</span>
+</button>
+<button className="w-8 h-8 rounded border border-outline-variant text-on-surface-variant hover:bg-error hover:border-error hover:text-on-error flex items-center justify-center transition-colors" title="Reject">
+<span className="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</td>
+</tr>
+{/* Row 3: Approved */}
+<tr className="hover:bg-surface-container-lowest transition-colors group h-12 bg-surface-bright/50">
+<td className="py-3 px-4">
+<div className="flex items-center gap-3">
+<img className="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A small circular avatar of a female professional employee, subtle corporate background, bright and clear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCcro5iaMFnHr1xOT4fpEceJ-LwfBKVaLTm-jkguNuVvo78MwPdbXqFQmfrCluLBTWpIi8EU8W_jk0-162_xU0c5KSDiqBrOaqYOIxjYVlD0jUwYbs4UaG0bjZRHUMCRuvwEsTpyZR3JmUletnBpTQa4GWUb2BGhyLYyE3clwKGVtH43l3lJLETE0Kc7JmVzHkx0tBcaHTEhw5ggenflO8Ba_OjlgnsII6ZtnhO06GohyHr2H18Px8Qg" />
 <div>
-<p className="font-label-sm text-label-sm text-on-surface-variant mb-1">Reason</p>
-<p className="font-body-md text-body-md text-on-surface truncate">Doctor's appointment and recovery.</p>
+<p className="font-body-sm text-body-sm font-medium text-on-surface">Sarah Connor</p>
+<p className="font-label-sm text-label-sm text-on-surface-variant">Sales</p>
 </div>
 </div>
-<div className="mt-md flex justify-end gap-sm border-t border-outline-variant pt-md">
-<button className="px-md py-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-bright font-label-sm text-label-sm transition-colors">Reject</button>
-<button className="px-md py-sm rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim font-label-sm text-label-sm transition-colors">Approve</button>
+</td>
+<td className="py-3 px-4">
+<span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-surface-container text-on-surface">Casual</span>
+</td>
+<td className="py-3 px-4">
+<p className="font-body-sm text-body-sm text-on-surface">Oct 20</p>
+</td>
+<td className="py-3 px-4 hidden md:table-cell">
+<p className="font-body-sm text-body-sm text-on-surface">0.5 days</p>
+</td>
+<td className="py-3 px-4 hidden lg:table-cell max-w-[200px] truncate text-on-surface-variant font-body-sm text-body-sm">
+                                        Personal errands in the afternoon.
+                                    </td>
+<td className="py-3 px-4 text-right">
+<span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-secondary/10 text-secondary border border-secondary/20">
+<span className="material-symbols-outlined text-[14px]">done_all</span> Approved
+                                        </span>
+</td>
+</tr>
+</tbody>
+</table>
 </div>
-</div>
-{/*  Request Card 3  */}
-<div className="bg-surface-container-high rounded-lg p-md border border-outline-variant hover:border-primary/20 transition-all group">
-<div className="flex justify-between items-start gap-md">
-<div className="flex items-center gap-md">
-<img className="w-12 h-12 rounded-full object-cover border border-outline-variant" data-alt="A corporate portrait of a female financial analyst, professional lighting, abstract subtle background, dark mode UI compatible portrait avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfBJL-fbp0J56qGmopo_qhsaZrTBZqLSlsQbnUC5mfxwO_WI3drm7gvcQo_yIb5da64A6p3m2gFB6Nn2J6Z7g2BNp_i17SLAZOZf6SCp8wK96R41HY0S6__-F8PriXwS63g0DHJy3Gp-_Uj5XCA6R4S_9-v-p_W9tVABBE47geZ82X_0y4GGw69LWtGSXOGqVmFmR3Z8Izd2GP3l0F8FigOCq0E9Ngff1H5bRqgn7ij1cO0MEkR_Q5Iw"/>
-<div>
-<h4 className="font-body-lg text-body-lg text-on-surface font-semibold">Emily Davis</h4>
-<p className="font-body-md text-body-md text-on-surface-variant">Financial Analyst • Finance</p>
-</div>
-</div>
-<div className="px-sm py-1 bg-tertiary/10 text-tertiary rounded font-label-sm text-label-sm border border-tertiary/20">
-                                        Casual Leave
-                                    </div>
-</div>
-<div className="mt-md grid grid-cols-2 gap-md">
-<div>
-<p className="font-label-sm text-label-sm text-on-surface-variant mb-1">Duration</p>
-<p className="font-body-md text-body-md text-on-surface flex items-center gap-xs">
-<span className="material-symbols-outlined text-[16px] text-on-surface-variant">calendar_today</span>
-                                            Oct 20 - Oct 21 (2 days)
-                                        </p>
-</div>
-<div>
-<p className="font-label-sm text-label-sm text-on-surface-variant mb-1">Reason</p>
-<p className="font-body-md text-body-md text-on-surface truncate">Personal errands and house moving.</p>
-</div>
-</div>
-<div className="mt-md flex justify-end gap-sm border-t border-outline-variant pt-md">
-<button className="px-md py-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-bright font-label-sm text-label-sm transition-colors">Reject</button>
-<button className="px-md py-sm rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim font-label-sm text-label-sm transition-colors">Approve</button>
-</div>
-</div>
+<div className="p-4 border-t border-outline-variant flex justify-between items-center bg-[#FAF8FA]">
+<p className="font-label-sm text-label-sm text-on-surface-variant">Showing 1 to 3 of 12 requests</p>
+<div className="flex gap-1">
+<button className="p-1 rounded text-on-surface-variant hover:bg-surface-container-high disabled:opacity-50" disabled>
+<span className="material-symbols-outlined">chevron_left</span>
+</button>
+<button className="p-1 rounded text-on-surface-variant hover:bg-surface-container-high">
+<span className="material-symbols-outlined">chevron_right</span>
+</button>
 </div>
 </div>
 </div>
