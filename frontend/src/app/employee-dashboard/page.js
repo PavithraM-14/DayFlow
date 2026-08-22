@@ -19,32 +19,28 @@ export default function EmployeeDashboard() {
 {/* Main Nav */}
 <nav className="flex-1 flex flex-col gap-1">
 {/* Active Tab: Dashboard */}
-<a className="text-primary font-bold bg-primary-container/10 rounded-lg flex items-center gap-3 px-3 py-2.5 active:scale-95 duration-200 group relative" href="#">
+<Link className="text-primary font-bold bg-primary-container/10 rounded-lg flex items-center gap-3 px-3 py-2.5 active:scale-95 duration-200 group relative" href="/employee-dashboard">
 <span className="material-symbols-outlined" data-icon="dashboard" data-weight="fill" style={{fontVariationSettings: "'FILL' 1"}}>dashboard</span>
 <span className="font-label-sm text-label-sm">Dashboard</span>
 {/* Active Indicator Line */}
 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-primary rounded-r-full"></div>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="#">
-<span className="material-symbols-outlined" data-icon="groups">groups</span>
-<span className="font-label-sm text-label-sm">Employees</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="#">
+</Link>
+<Link className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="/employee-dashboard/attendance">
 <span className="material-symbols-outlined" data-icon="timer">timer</span>
 <span className="font-label-sm text-label-sm">Attendance</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="#">
+</Link>
+<Link className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="/employee-dashboard/time-off">
 <span className="material-symbols-outlined" data-icon="event_busy">event_busy</span>
 <span className="font-label-sm text-label-sm">Time Off</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="#">
+</Link>
+<Link className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="/employee-dashboard/profile">
+<span className="material-symbols-outlined" data-icon="person">person</span>
+<span className="font-label-sm text-label-sm">My Profile</span>
+</Link>
+<Link className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="/employee-dashboard/payroll">
 <span className="material-symbols-outlined" data-icon="payments">payments</span>
 <span className="font-label-sm text-label-sm">Payroll</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-3 px-3 py-2.5 rounded-lg active:scale-95 duration-200" href="#">
-<span className="material-symbols-outlined" data-icon="assessment">assessment</span>
-<span className="font-label-sm text-label-sm">Reports</span>
-</a>
+</Link>
 </nav>
 {/* CTA */}
 <button className="mt-auto bg-primary text-on-primary rounded-lg py-2.5 px-4 font-label-sm text-label-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mb-4 w-full active:scale-95 duration-200">

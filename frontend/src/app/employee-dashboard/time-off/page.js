@@ -12,36 +12,36 @@ export default function EmployeeTimeOff() {
 <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">HR Portal</p>
 </div>
 <div className="flex-1 space-y-2">
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" href="#">
+<Link href="/employee-dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
 <span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
 <span>Dashboard</span>
-</a>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" href="#">
+</Link>
+<Link href="/employee-dashboard/attendance" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
 <span className="material-symbols-outlined" data-icon="event_available">event_available</span>
 <span>Attendance</span>
-</a>
-<a className="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all font-title-md text-title-md scale-100 shadow-sm border border-secondary-fixed" href="#">
+</Link>
+<Link href="/employee-dashboard/time-off" className="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all font-title-md text-title-md scale-100 shadow-sm border border-secondary-fixed" >
 <span className="material-symbols-outlined" data-icon="calendar_today" data-weight="fill" style={{fontVariationSettings: "'FILL' 1"}}>calendar_today</span>
 <span>Time Off</span>
-</a>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" href="#">
+</Link>
+<Link href="/employee-dashboard/profile" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
 <span className="material-symbols-outlined" data-icon="person">person</span>
 <span>My Profile</span>
-</a>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" href="#">
+</Link>
+<Link href="/employee-dashboard/payroll" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
 <span className="material-symbols-outlined" data-icon="payments">payments</span>
 <span>Payroll</span>
-</a>
+</Link>
 </div>
 <div className="mt-auto pt-4 border-t border-outline-variant space-y-2">
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" href="#">
+<Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
 <span className="material-symbols-outlined" data-icon="help">help</span>
 <span>Help</span>
-</a>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" href="#">
+</Link>
+<Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all font-title-md text-title-md scale-95 hover:scale-100" >
 <span className="material-symbols-outlined" data-icon="logout">logout</span>
 <span>Logout</span>
-</a>
+</Link>
 </div>
 </nav>
 {/* Main Content Area */}
@@ -208,18 +208,18 @@ export default function EmployeeTimeOff() {
 </main>
 {/* Bottom Navigation (Mobile Only) */}
 <nav className="md:hidden fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant z-50 flex justify-around items-center h-16 pb-safe">
-<a className="flex flex-col items-center justify-center w-full h-full text-on-surface-variant" href="#">
+<Link href="/employee-dashboard" className="flex flex-col items-center justify-center w-full h-full text-on-surface-variant" >
 <span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
 <span className="font-label-sm text-label-sm mt-1">Dashboard</span>
-</a>
-<a className="flex flex-col items-center justify-center w-full h-full text-primary border-t-2 border-primary bg-primary-container/10" href="#">
+</Link>
+<Link href="/employee-dashboard/time-off" className="flex flex-col items-center justify-center w-full h-full text-primary border-t-2 border-primary bg-primary-container/10" >
 <span className="material-symbols-outlined" data-icon="calendar_today" data-weight="fill" style={{fontVariationSettings: "'FILL' 1"}}>calendar_today</span>
 <span className="font-label-sm text-label-sm mt-1 font-bold">Time Off</span>
-</a>
-<a className="flex flex-col items-center justify-center w-full h-full text-on-surface-variant" href="#">
+</Link>
+<Link href="/employee-dashboard/profile" className="flex flex-col items-center justify-center w-full h-full text-on-surface-variant" >
 <span className="material-symbols-outlined" data-icon="person">person</span>
 <span className="font-label-sm text-label-sm mt-1">Profile</span>
-</a>
+</Link>
 </nav>
     </div>
   );

@@ -17,50 +17,50 @@ export default function EmployeePayroll() {
 <div className="flex-1 overflow-y-auto mt-4">
 <ul className="space-y-1">
 <li>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+<Link href="/employee-dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined">dashboard</span>
                         Dashboard
-                    </a>
+                    </Link>
 </li>
 <li>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+<Link href="/employee-dashboard/attendance" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined">event_available</span>
                         Attendance
-                    </a>
+                    </Link>
 </li>
 <li>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+<Link href="/employee-dashboard/time-off" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined">calendar_today</span>
                         Time Off
-                    </a>
+                    </Link>
 </li>
 <li>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+<Link href="/employee-dashboard/profile" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined">person</span>
                         My Profile
-                    </a>
+                    </Link>
 </li>
 <li>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+<Link href="/employee-dashboard/payroll" className="flex items-center gap-3 px-4 py-3 rounded-lg bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined">payments</span>
                         Payroll
-                    </a>
+                    </Link>
 </li>
 </ul>
 </div>
 <div className="mt-auto border-t border-outline-variant pt-4">
 <ul className="space-y-1">
 <li>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+<Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined">help</span>
                         Help
-                    </a>
+                    </Link>
 </li>
 <li>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+<Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined">logout</span>
                         Logout
-                    </a>
+                    </Link>
 </li>
 </ul>
 </div>

@@ -15,36 +15,36 @@ export default function EmployeeAttendance() {
 </div>
 </div>
 <div className="flex-1 mt-6 space-y-2">
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+<Link href="/employee-dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
                 Dashboard
-            </a>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary scale-95 active:scale-90 transition-transform font-title-md text-title-md" href="#">
+            </Link>
+<Link href="/employee-dashboard/attendance" className="flex items-center gap-3 px-4 py-3 rounded-lg bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary scale-95 active:scale-90 transition-transform font-title-md text-title-md" >
 <span className="material-symbols-outlined" data-icon="event_available">event_available</span>
                 Attendance
-            </a>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+            </Link>
+<Link href="/employee-dashboard/time-off" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
                 Time Off
-            </a>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+            </Link>
+<Link href="/employee-dashboard/profile" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined" data-icon="person">person</span>
                 My Profile
-            </a>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+            </Link>
+<Link href="/employee-dashboard/payroll" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined" data-icon="payments">payments</span>
                 Payroll
-            </a>
+            </Link>
 </div>
 <div className="mt-auto space-y-2 border-t border-outline-variant pt-4">
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+<Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined" data-icon="help">help</span>
                 Help
-            </a>
-<a className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all scale-95 active:scale-90 font-title-md text-title-md" href="#">
+            </Link>
+<Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all scale-95 active:scale-90 font-title-md text-title-md" >
 <span className="material-symbols-outlined" data-icon="logout">logout</span>
                 Logout
-            </a>
+            </Link>
 </div>
 </nav>
 {/* Main Content Area */}
@@ -196,22 +196,22 @@ export default function EmployeeAttendance() {
 </div>
 {/* BottomNavBar (Mobile Only) */}
 <nav className="md:hidden fixed bottom-0 w-full bg-surface dark:bg-inverse-surface border-t border-outline-variant dark:border-outline z-50 px-2 py-2 flex justify-between items-center shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
-<a className="flex flex-col items-center p-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest rounded-lg transition-colors w-1/4" href="#">
+<Link href="/employee-dashboard" className="flex flex-col items-center p-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest rounded-lg transition-colors w-1/4" >
 <span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
 <span className="text-[10px] mt-1 font-medium">Dashboard</span>
-</a>
-<a className="flex flex-col items-center p-2 text-primary dark:text-primary-fixed bg-primary-container bg-opacity-20 rounded-lg transition-colors w-1/4" href="#">
+</Link>
+<Link href="/employee-dashboard/attendance" className="flex flex-col items-center p-2 text-primary dark:text-primary-fixed bg-primary-container bg-opacity-20 rounded-lg transition-colors w-1/4" >
 <span className="material-symbols-outlined" data-icon="event_available" data-weight="fill">event_available</span>
 <span className="text-[10px] mt-1 font-bold">Attendance</span>
-</a>
-<a className="flex flex-col items-center p-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest rounded-lg transition-colors w-1/4" href="#">
+</Link>
+<Link href="/employee-dashboard/time-off" className="flex flex-col items-center p-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest rounded-lg transition-colors w-1/4" >
 <span className="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
 <span className="text-[10px] mt-1 font-medium">Time Off</span>
-</a>
-<a className="flex flex-col items-center p-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest rounded-lg transition-colors w-1/4" href="#">
+</Link>
+<Link href="/employee-dashboard/profile" className="flex flex-col items-center p-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest rounded-lg transition-colors w-1/4" >
 <span className="material-symbols-outlined" data-icon="person">person</span>
 <span className="text-[10px] mt-1 font-medium">Profile</span>
-</a>
+</Link>
 </nav>
     </div>
   );

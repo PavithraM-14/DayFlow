@@ -12,37 +12,37 @@ export default function EmployeeProfile() {
 <p className="font-label-sm text-label-sm text-on-surface-variant dark:text-outline-variant mt-1 uppercase">HR Portal</p>
 </div>
 <div className="flex-1 space-y-2">
-<a className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" href="#">
+<Link href="/employee-dashboard" className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" >
 <span className="material-symbols-outlined">dashboard</span>
                 Dashboard
-            </a>
-<a className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" href="#">
+            </Link>
+<Link href="/employee-dashboard/attendance" className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" >
 <span className="material-symbols-outlined">event_available</span>
                 Attendance
-            </a>
-<a className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" href="#">
+            </Link>
+<Link href="/employee-dashboard/time-off" className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" >
 <span className="material-symbols-outlined">calendar_today</span>
                 Time Off
-            </a>
+            </Link>
 {/* Active Tab */}
-<a className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary scale-95 active:scale-90 transition-transform" href="#">
+<Link href="/employee-dashboard/profile" className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary scale-95 active:scale-90 transition-transform" >
 <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>person</span>
                 My Profile
-            </a>
-<a className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" href="#">
+            </Link>
+<Link href="/employee-dashboard/payroll" className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" >
 <span className="material-symbols-outlined">payments</span>
                 Payroll
-            </a>
+            </Link>
 </div>
 <div className="mt-auto space-y-2 pt-4 border-t border-outline-variant dark:border-outline">
-<a className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" href="#">
+<Link href="#" className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" >
 <span className="material-symbols-outlined">help</span>
                 Help
-            </a>
-<a className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" href="#">
+            </Link>
+<Link href="#" className="flex items-center gap-3 px-3 py-2 rounded-lg font-title-md text-title-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all scale-95 active:scale-90" >
 <span className="material-symbols-outlined">logout</span>
                 Logout
-            </a>
+            </Link>
 </div>
 </nav>
 {/* Main Content Area */}
