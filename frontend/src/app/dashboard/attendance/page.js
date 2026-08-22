@@ -3,28 +3,28 @@
 import Link from 'next/link';
 
 export default function Page() {
-  const active = 'attendance';
-  return (
-    <>
+ const active = 'attendance';
+ return (
+ <>
 {/* Page Content Canvas */}
 <main className="flex-1 p-gutter max-w-[1120px] w-full mx-auto">
 {/* Page Header */}
 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
 <div>
 <h2 className="font-headline-lg text-headline-lg md:text-[32px] md:leading-[40px] text-on-surface mb-1">
-                        Attendance Log <span className="font-accent-marker text-accent-marker text-secondary ml-2 marker-highlight">Today</span>
+ Attendance Log <span className="font-accent-marker text-accent-marker text-secondary ml-2 marker-highlight">Today</span>
 </h2>
 <p className="font-body-md text-body-md text-on-surface-variant">Track and monitor daily employee attendance and punctuality.</p>
 </div>
 <div className="flex items-center gap-3">
 <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-highest hover:bg-surface-container-high text-on-surface transition-colors font-body-sm text-body-sm font-medium border border-outline-variant">
 <span className="material-symbols-outlined text-[18px]">filter_list</span>
-                        Filter
-                    </button>
+ Filter
+ </button>
 <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary/90 text-on-primary transition-colors font-body-sm text-body-sm font-medium shadow-sm">
 <span className="material-symbols-outlined text-[18px]">download</span>
-                        Export Log
-                    </button>
+ Export Log
+ </button>
 </div>
 </div>
 {/* Summary Bento Grid */}
@@ -194,6 +194,6 @@ export default function Page() {
 </div>
 </div>
 </main>
-    </>
-  );
+ </>
+ );
 }

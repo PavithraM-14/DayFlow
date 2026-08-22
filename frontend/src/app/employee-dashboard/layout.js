@@ -139,7 +139,9 @@ export default function EmployeeDashboardLayout({ children }) {
           </div>
         </header>
 
-        {children}
+        <div className="flex-1 overflow-y-auto relative pb-20 md:pb-0">
+          {children}
+        </div>
 
         {/* BottomNavBar (Mobile Only) */}
         <nav className="md:hidden fixed bottom-0 w-full bg-surface dark:bg-inverse-surface border-t border-outline-variant dark:border-outline z-50 px-2 py-2 flex justify-between items-center shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">

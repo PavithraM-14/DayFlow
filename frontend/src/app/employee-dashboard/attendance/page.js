@@ -3,8 +3,8 @@
 import Link from 'next/link';
 
 export default function EmployeeAttendance() {
-  return (
-    <>
+ return (
+ <>
 <main className="flex-1 p-margin-mobile md:p-container-padding max-w-max-width mx-auto w-full">
 <div className="mb-gutter md:hidden">
 <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-semibold">Attendance Overview</h1>
@@ -72,12 +72,12 @@ export default function EmployeeAttendance() {
 <div className="flex gap-2">
 <button className="px-4 py-2 bg-primary-fixed-dim text-primary rounded-lg font-label-sm text-label-sm flex items-center gap-2 hover:bg-primary-fixed transition-colors">
 <span className="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
-                            Filter
-                        </button>
+ Filter
+ </button>
 <button className="px-4 py-2 bg-primary text-on-primary rounded-lg font-label-sm text-label-sm flex items-center gap-2 hover:opacity-90 transition-opacity">
 <span className="material-symbols-outlined text-sm" data-icon="download">download</span>
-                            Export
-                        </button>
+ Export
+ </button>
 </div>
 </div>
 <div className="overflow-x-auto">
@@ -130,6 +130,6 @@ export default function EmployeeAttendance() {
 </div>
 </section>
 </main>
-    </>
-  );
+ </>
+ );
 }

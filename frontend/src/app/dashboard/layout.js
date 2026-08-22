@@ -136,7 +136,9 @@ export default function HRDashboardLayout({ children }) {
           </div>
         </header>
 
-        {children}
+        <div className="flex-1 overflow-y-auto relative">
+          {children}
+        </div>
       </div>
     </div>
   );

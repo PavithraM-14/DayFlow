@@ -3,8 +3,8 @@
 import Link from 'next/link';
 
 export default function EmployeeDashboard() {
-  return (
-    <>
+ return (
+ <>
 <main className="flex-1 max-w-max-width w-full mx-auto px-margin-mobile md:px-gutter py-gutter flex flex-col gap-6">
 {/* Welcome Header */}
 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
@@ -29,8 +29,8 @@ export default function EmployeeDashboard() {
 <div>
 <h3 className="font-title-md text-title-md text-on-surface flex items-center gap-2">
 <span className="material-symbols-outlined text-outline" data-icon="schedule">schedule</span>
-                                    Today's Attendance
-                                </h3>
+ Today's Attendance
+ </h3>
 <div className="mt-4 flex items-center gap-3">
 <div className="w-3 h-3 rounded-full bg-error animate-pulse"></div>
 <span className="font-body-md text-body-md text-on-surface-variant">Status: <strong className="text-error font-medium">Not Checked In</strong></span>
@@ -38,8 +38,8 @@ export default function EmployeeDashboard() {
 </div>
 <button className="bg-primary text-on-primary font-label-sm text-label-sm px-8 py-3 rounded-lg shadow-sm hover:bg-opacity-90 transition-all active:scale-95 flex items-center gap-2 self-stretch md:self-auto justify-center">
 <span className="material-symbols-outlined text-sm" data-icon="fingerprint">fingerprint</span>
-                                Check In Now
-                            </button>
+ Check In Now
+ </button>
 </div>
 <div className="grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-outline-variant/50">
 <div className="flex flex-col">
@@ -163,6 +163,6 @@ export default function EmployeeDashboard() {
 </div>
 </div>
 </main>
-    </>
-  );
+ </>
+ );
 }

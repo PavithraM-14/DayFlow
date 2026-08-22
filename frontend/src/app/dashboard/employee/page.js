@@ -3,11 +3,11 @@
 import Link from 'next/link';
 
 export default function Page() {
-  const active = 'employee';
-  return (
-    <>
+ const active = 'employee';
+ return (
+ <>
 {/* Page Content */}
-<main className="flex-1 overflow-y-auto bg-surface-container-low px-gutter py-8">
+<main className="flex-1 bg-surface-container-low px-gutter py-8">
 <div className="max-w-[1120px] mx-auto">
 {/* Page Header & Actions */}
 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
@@ -32,8 +32,8 @@ export default function Page() {
 </div>
 <button className="bg-primary text-on-primary px-4 py-2 rounded-[10px] font-label-sm text-label-sm flex items-center gap-2 hover:bg-tertiary-container transition-colors shadow-sm">
 <span className="material-symbols-outlined text-[18px]">add</span>
-                            Add Employee
-                        </button>
+ Add Employee
+ </button>
 </div>
 </div>
 {/* Bento Grid Layout for Employees */}
@@ -110,6 +110,6 @@ export default function Page() {
 </div>
 </div>
 </main>
-    </>
-  );
+ </>
+ );
 }

@@ -3,9 +3,9 @@
 import Link from 'next/link';
 
 export default function EmployeePayroll() {
-  return (
-    <>
-<main className="flex-1 overflow-y-auto p-margin-mobile md:p-gutter lg:p-container-padding">
+ return (
+ <>
+<main className="flex-1 p-margin-mobile md:p-gutter lg:p-container-padding">
 <div className="max-w-[1120px] mx-auto space-y-gutter">
 {/* Header */}
 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -76,8 +76,8 @@ export default function EmployeePayroll() {
 <h3 className="font-title-md text-title-md text-on-surface">Recent Payslips</h3>
 <button className="flex items-center gap-2 px-4 py-2 bg-surface-container text-on-surface-variant font-body-sm text-body-sm rounded-lg hover:bg-surface-variant transition-colors">
 <span className="material-symbols-outlined text-sm">filter_list</span>
-                                Filter
-                            </button>
+ Filter
+ </button>
 </div>
 <div className="overflow-x-auto">
 <table className="w-full text-left border-collapse">
@@ -99,8 +99,8 @@ export default function EmployeePayroll() {
 <td className="px-6 font-medium">$2,810.25</td>
 <td className="px-6">
 <span className="inline-flex items-center px-2 py-1 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm text-label-sm">
-                                                Paid
-                                            </span>
+ Paid
+ </span>
 </td>
 <td className="px-6 text-right">
 <button className="text-primary hover:text-primary-container p-2 rounded-full hover:bg-surface-variant transition-colors" title="Download PDF">
@@ -115,8 +115,8 @@ export default function EmployeePayroll() {
 <td className="px-6 font-medium">$2,810.25</td>
 <td className="px-6">
 <span className="inline-flex items-center px-2 py-1 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm text-label-sm">
-                                                Paid
-                                            </span>
+ Paid
+ </span>
 </td>
 <td className="px-6 text-right">
 <button className="text-primary hover:text-primary-container p-2 rounded-full hover:bg-surface-variant transition-colors" title="Download PDF">
@@ -131,8 +131,8 @@ export default function EmployeePayroll() {
 <td className="px-6 font-medium">$2,810.25</td>
 <td className="px-6">
 <span className="inline-flex items-center px-2 py-1 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm text-label-sm">
-                                                Paid
-                                            </span>
+ Paid
+ </span>
 </td>
 <td className="px-6 text-right">
 <button className="text-primary hover:text-primary-container p-2 rounded-full hover:bg-surface-variant transition-colors" title="Download PDF">
@@ -142,8 +142,8 @@ export default function EmployeePayroll() {
 </tr>
 <tr className="h-12 hover:bg-surface-container-lowest group transition-colors">
 <td className="px-6 relative">
-                                            Aug 16 - Aug 31, 2024
-                                            {/* Marker Highlight Example */}
+ Aug 16 - Aug 31, 2024
+ {/* Marker Highlight Example */}
 <span className="absolute top-1/2 -translate-y-1/2 left-48 font-accent-marker text-accent-marker text-primary z-10 whitespace-nowrap">Bonus included!</span>
 <div className="absolute top-1/2 -translate-y-1/2 left-48 w-32 h-3 bg-primary-fixed opacity-50 -z-10 mt-1 skew-x-12"></div>
 </td>
@@ -152,8 +152,8 @@ export default function EmployeePayroll() {
 <td className="px-6 font-medium">$3,300.50</td>
 <td className="px-6">
 <span className="inline-flex items-center px-2 py-1 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm text-label-sm">
-                                                Paid
-                                            </span>
+ Paid
+ </span>
 </td>
 <td className="px-6 text-right">
 <button className="text-primary hover:text-primary-container p-2 rounded-full hover:bg-surface-variant transition-colors" title="Download PDF">
@@ -171,6 +171,6 @@ export default function EmployeePayroll() {
 </div>
 </div>
 </main>
-    </>
-  );
+ </>
+ );
 }

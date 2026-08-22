@@ -3,10 +3,10 @@
 import Link from 'next/link';
 
 export default function Page() {
-  const active = 'reports';
-  return (
-    <>
-<main className="ml-64 p-gutter max-w-max-width mx-auto pb-24 w-full">
+ const active = 'reports';
+ return (
+ <>
+<main className="p-gutter max-w-max-width mx-auto pb-24 w-full">
 {/* Header */}
 <div className="flex justify-between items-end mb-8">
 <div>
@@ -16,10 +16,10 @@ export default function Page() {
 <div className="flex gap-3">
 <button className="px-4 py-2 bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm rounded-lg hover:bg-surface-container-highest transition-colors border border-outline-variant flex items-center gap-2">
 <span className="material-symbols-outlined text-[18px]">calendar_month</span> Last 30 Days
-                </button>
+ </button>
 <button className="px-4 py-2 bg-primary text-on-primary font-label-sm text-label-sm rounded-lg hover:bg-primary-container transition-colors flex items-center gap-2">
 <span className="material-symbols-outlined text-[18px]">download</span> Export
-                </button>
+ </button>
 </div>
 </div>
 {/* Summary Card Row */}
@@ -32,8 +32,8 @@ export default function Page() {
 </div>
 <div className="bg-green-100 text-green-700 px-2 py-1 rounded-[4px] flex items-center gap-1 font-label-sm text-label-sm">
 <span className="material-symbols-outlined text-[14px]">trending_up</span>
-                        +5.2%
-                    </div>
+ +5.2%
+ </div>
 </div>
 <div className="mt-2">
 <p className="font-body-sm text-body-sm text-on-surface-variant mb-1">Total Headcount</p>
@@ -48,8 +48,8 @@ export default function Page() {
 </div>
 <div className="bg-green-100 text-green-700 px-2 py-1 rounded-[4px] flex items-center gap-1 font-label-sm text-label-sm">
 <span className="material-symbols-outlined text-[14px]">trending_down</span>
-                        -1.1%
-                    </div>
+ -1.1%
+ </div>
 </div>
 <div className="mt-2">
 <p className="font-body-sm text-body-sm text-on-surface-variant mb-1">Turnover Rate</p>
@@ -64,8 +64,8 @@ export default function Page() {
 </div>
 <div className="bg-orange-100 text-orange-700 px-2 py-1 rounded-[4px] flex items-center gap-1 font-label-sm text-label-sm">
 <span className="material-symbols-outlined text-[14px]">arrow_right_alt</span>
-                        0.0%
-                    </div>
+ 0.0%
+ </div>
 </div>
 <div className="mt-2">
 <p className="font-body-sm text-body-sm text-on-surface-variant mb-1">Avg. Attendance</p>
@@ -80,8 +80,8 @@ export default function Page() {
 </div>
 <div className="bg-red-100 text-red-700 px-2 py-1 rounded-[4px] flex items-center gap-1 font-label-sm text-label-sm">
 <span className="material-symbols-outlined text-[14px]">trending_up</span>
-                        +8.4%
-                    </div>
+ +8.4%
+ </div>
 </div>
 <div className="mt-2">
 <p className="font-body-sm text-body-sm text-on-surface-variant mb-1">Monthly Payroll</p>
@@ -272,36 +272,36 @@ export default function Page() {
 <div className="grid grid-cols-12 gap-2 px-4 py-4 items-center hover:bg-surface-bright transition-colors">
 <div className="col-span-6 flex items-center gap-2 text-body-sm text-on-surface">
 <span className="material-symbols-outlined text-secondary text-[18px]">description</span>
-                            Monthly Payroll
-                        </div>
+ Monthly Payroll
+ </div>
 <div className="col-span-3 text-[12px] text-on-surface-variant">Monthly</div>
 <div className="col-span-3 flex justify-end">
 <button className="px-2 py-1 border border-outline-variant rounded-md text-on-surface-variant text-[11px] hover:bg-surface-container transition-colors flex items-center gap-1">
-                                Download <span className="material-symbols-outlined text-[14px]">file_download</span>
+ Download <span className="material-symbols-outlined text-[14px]">file_download</span>
 </button>
 </div>
 </div>
 <div className="grid grid-cols-12 gap-2 px-4 py-4 items-center hover:bg-surface-bright transition-colors">
 <div className="col-span-6 flex items-center gap-2 text-body-sm text-on-surface">
 <span className="material-symbols-outlined text-secondary text-[18px]">groups</span>
-                            Attendance
-                        </div>
+ Attendance
+ </div>
 <div className="col-span-3 text-[12px] text-on-surface-variant">Weekly</div>
 <div className="col-span-3 flex justify-end">
 <button className="px-2 py-1 border border-outline-variant rounded-md text-on-surface-variant text-[11px] hover:bg-surface-container transition-colors flex items-center gap-1">
-                                Download <span className="material-symbols-outlined text-[14px]">file_download</span>
+ Download <span className="material-symbols-outlined text-[14px]">file_download</span>
 </button>
 </div>
 </div>
 <div className="grid grid-cols-12 gap-2 px-4 py-4 items-center hover:bg-surface-bright transition-colors">
 <div className="col-span-6 flex items-center gap-2 text-body-sm text-on-surface">
 <span className="material-symbols-outlined text-secondary text-[18px]">event_available</span>
-                            Leave Utilization
-                        </div>
+ Leave Utilization
+ </div>
 <div className="col-span-3 text-[12px] text-on-surface-variant">Quarterly</div>
 <div className="col-span-3 flex justify-end">
 <button className="px-2 py-1 border border-outline-variant rounded-md text-on-surface-variant text-[11px] hover:bg-surface-container transition-colors flex items-center gap-1">
-                                Download <span className="material-symbols-outlined text-[14px]">file_download</span>
+ Download <span className="material-symbols-outlined text-[14px]">file_download</span>
 </button>
 </div>
 </div>
@@ -310,6 +310,6 @@ export default function Page() {
 </div>
 </div>
 </main>
-    </>
-  );
+ </>
+ );
 }

@@ -3,8 +3,8 @@
 import Link from 'next/link';
 
 export default function EmployeeProfile() {
-  return (
-    <>
+ return (
+ <>
 <main className="flex-1 p-margin-mobile md:p-gutter max-w-[1120px] mx-auto w-full space-y-gutter">
 {/* Page Header */}
 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-outline-variant dark:border-outline pb-4">
@@ -106,8 +106,8 @@ export default function EmployeeProfile() {
 <tr className="border-b border-outline-variant dark:border-outline hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors h-12">
 <td className="py-2 px-4 font-body-sm text-body-sm flex items-center gap-2">
 <span className="material-symbols-outlined text-outline text-sm">description</span>
-                                        2024_W4_Tax_Form.pdf
-                                    </td>
+ 2024_W4_Tax_Form.pdf
+ </td>
 <td className="py-2 px-4 font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">Jan 10, 2024</td>
 <td className="py-2 px-4 font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">Tax</td>
 <td className="py-2 px-4 text-right">
@@ -119,8 +119,8 @@ export default function EmployeeProfile() {
 <tr className="border-b border-outline-variant dark:border-outline hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors h-12">
 <td className="py-2 px-4 font-body-sm text-body-sm flex items-center gap-2">
 <span className="material-symbols-outlined text-outline text-sm">contract</span>
-                                        Signed_Offer_Letter_2021.pdf
-                                    </td>
+ Signed_Offer_Letter_2021.pdf
+ </td>
 <td className="py-2 px-4 font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">Mar 01, 2021</td>
 <td className="py-2 px-4 font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">HR</td>
 <td className="py-2 px-4 text-right">
@@ -132,8 +132,8 @@ export default function EmployeeProfile() {
 <tr className="hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors h-12">
 <td className="py-2 px-4 font-body-sm text-body-sm flex items-center gap-2">
 <span className="material-symbols-outlined text-outline text-sm">verified_user</span>
-                                        Employee_Handbook_Ack.pdf
-                                    </td>
+ Employee_Handbook_Ack.pdf
+ </td>
 <td className="py-2 px-4 font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">Mar 15, 2021</td>
 <td className="py-2 px-4 font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">Compliance</td>
 <td className="py-2 px-4 text-right">
@@ -148,6 +148,6 @@ export default function EmployeeProfile() {
 </div>
 </div>
 </main>
-    </>
-  );
+ </>
+ );
 }

@@ -1,10 +1,10 @@
 export default function Page() {
-  return (
-    <>
-{/*  Scrollable Canvas  */}
-<div className="flex-1 overflow-y-auto p-lg lg:p-xl xl:px-24 xl:py-12 scroll-smooth">
+ return (
+ <>
+{/* Scrollable Canvas */}
+<div className="flex-1 p-lg lg:p-xl xl:px-24 xl:py-12 scroll-smooth">
 <div className="max-w-7xl mx-auto space-y-8">
-{/*  Page Header  */}
+{/* Page Header */}
 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
 <div>
 <h2 className="font-display-lg text-display-lg text-on-surface mb-2">Employees</h2>
@@ -13,11 +13,11 @@ export default function Page() {
 <div className="flex items-center gap-4">
 <button className="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-on-primary rounded-xl font-headline-md text-headline-md font-medium hover:bg-primary/90 transition-colors shadow-sm">
 <span className="material-symbols-outlined">add</span>
-                            Add Employee
-                        </button>
+ Add Employee
+ </button>
 </div>
 </div>
-{/*  Controls Bar  */}
+{/* Controls Bar */}
 <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between bg-surface-container p-4 rounded-2xl border border-outline-variant">
 <div className="flex-1 w-full md:w-auto relative lg:hidden">
 <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">search</span>
@@ -51,9 +51,9 @@ export default function Page() {
 </button>
 </div>
 </div>
-{/*  Employee Grid  */}
+{/* Employee Grid */}
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-{/*  Card 1  */}
+{/* Card 1 */}
 <div className="bg-surface-container border border-outline-variant rounded-2xl p-6 flex flex-col hover:border-primary/50 hover:bg-surface-container-high transition-all duration-300 cursor-pointer group relative overflow-hidden">
 <div className="flex justify-between items-start mb-6 relative z-10">
 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-green/10 text-status-green border border-status-green/20">
@@ -84,7 +84,7 @@ export default function Page() {
 </div>
 </div>
 </div>
-{/*  Card 2  */}
+{/* Card 2 */}
 <div className="bg-surface-container border border-outline-variant rounded-2xl p-6 flex flex-col hover:border-primary/50 hover:bg-surface-container-high transition-all duration-300 cursor-pointer group relative overflow-hidden">
 <div className="flex justify-between items-start mb-6 relative z-10">
 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-blue/10 text-status-blue border border-status-blue/20">
@@ -112,7 +112,7 @@ export default function Page() {
 </div>
 </div>
 </div>
-{/*  Card 3  */}
+{/* Card 3 */}
 <div className="bg-surface-container border border-outline-variant rounded-2xl p-6 flex flex-col hover:border-primary/50 hover:bg-surface-container-high transition-all duration-300 cursor-pointer group relative overflow-hidden">
 <div className="flex justify-between items-start mb-6 relative z-10">
 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-green/10 text-status-green border border-status-green/20">
@@ -143,7 +143,7 @@ export default function Page() {
 </div>
 </div>
 </div>
-{/*  Card 4  */}
+{/* Card 4 */}
 <div className="bg-surface-container border border-outline-variant rounded-2xl p-6 flex flex-col hover:border-primary/50 hover:bg-surface-container-high transition-all duration-300 cursor-pointer group relative overflow-hidden">
 <div className="flex justify-between items-start mb-6 relative z-10">
 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-red/10 text-status-red border border-status-red/20">
@@ -172,7 +172,7 @@ export default function Page() {
 </div>
 </div>
 </div>
-{/*  Pagination  */}
+{/* Pagination */}
 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-6 border-t border-outline-variant mt-8">
 <p className="font-body-md text-body-md text-on-surface-variant">Showing 1 to 4 of 48 employees</p>
 <div className="flex gap-3">
@@ -182,6 +182,6 @@ export default function Page() {
 </div>
 </div>
 </div>
-    </>
-  );
+ </>
+ );
 }

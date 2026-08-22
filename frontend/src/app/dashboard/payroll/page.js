@@ -3,9 +3,9 @@
 import Link from 'next/link';
 
 export default function Page() {
-  const active = 'payroll';
-  return (
-    <>
+ const active = 'payroll';
+ return (
+ <>
 {/* Page Content */}
 <main className="flex-1 p-margin-mobile md:p-gutter max-w-max-width mx-auto w-full flex flex-col gap-6">
 {/* Page Header */}
@@ -28,13 +28,13 @@ export default function Page() {
 {/* Export Button */}
 <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-variant transition-colors border border-outline-variant font-label-sm text-label-sm font-medium shadow-sm">
 <span className="material-symbols-outlined text-[18px]">download</span>
-                        Export
-                    </button>
+ Export
+ </button>
 {/* Process Button */}
 <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-on-secondary hover:bg-on-secondary-container transition-colors shadow-sm font-label-sm text-label-sm font-medium">
 <span className="material-symbols-outlined text-[18px]">play_arrow</span>
-                        Process Payroll
-                    </button>
+ Process Payroll
+ </button>
 </div>
 </div>
 {/* Summary Metric Cards */}
@@ -48,8 +48,8 @@ export default function Page() {
 </div>
 </div>
 <div className="font-display-lg text-display-lg text-on-surface mt-2 relative">
-                        $245,890
-                        <span className="absolute -right-2 top-0 font-accent-marker text-accent-marker text-secondary-fixed-dim bg-secondary/10 px-2 rounded -rotate-6 hidden md:inline-block">Approved</span>
+ $245,890
+ <span className="absolute -right-2 top-0 font-accent-marker text-accent-marker text-secondary-fixed-dim bg-secondary/10 px-2 rounded -rotate-6 hidden md:inline-block">Approved</span>
 </div>
 <div className="flex items-center gap-1 text-secondary font-label-sm text-label-sm">
 <span className="material-symbols-outlined text-[16px]">trending_up</span>
@@ -65,7 +65,7 @@ export default function Page() {
 </div>
 </div>
 <div className="font-display-lg text-display-lg text-on-surface mt-2">
-                        142 <span className="font-title-md text-title-md text-outline">/ 150</span>
+ 142 <span className="font-title-md text-title-md text-outline">/ 150</span>
 </div>
 <div className="w-full bg-surface-variant rounded-full h-1.5 mt-2">
 <div className="bg-secondary h-1.5 rounded-full" style={{width: '94%'}}></div>
@@ -80,8 +80,8 @@ export default function Page() {
 </div>
 </div>
 <div className="font-display-lg text-display-lg text-on-surface mt-2">
-                        8
-                    </div>
+ 8
+ </div>
 <div className="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
 <span>Requires manager sign-off</span>
 </div>
@@ -203,6 +203,6 @@ export default function Page() {
 </div>
 </div>
 </main>
-    </>
-  );
+ </>
+ );
 }

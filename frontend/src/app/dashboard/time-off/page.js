@@ -3,11 +3,11 @@
 import Link from 'next/link';
 
 export default function Page() {
-  const active = 'time-off';
-  return (
-    <>
+ const active = 'time-off';
+ return (
+ <>
 {/* Canvas */}
-<main className="flex-1 overflow-y-auto p-4 md:p-gutter lg:p-container-padding">
+<main className="flex-1 p-4 md:p-gutter lg:p-container-padding">
 <div className="max-w-[1120px] mx-auto w-full">
 {/* Page Header */}
 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
@@ -17,8 +17,8 @@ export default function Page() {
 </div>
 <button className="bg-primary text-on-primary px-4 py-2.5 rounded-lg font-title-md text-title-md flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-primary">
 <span className="material-symbols-outlined text-xl">add</span>
-                        New Request
-                    </button>
+ New Request
+ </button>
 </div>
 {/* Summary Cards Bento */}
 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -35,7 +35,7 @@ export default function Page() {
 <span className="font-display-lg text-display-lg text-on-background">12</span>
 <span className="font-body-sm text-body-sm text-error bg-error/10 px-2 py-0.5 rounded flex items-center gap-1 mb-2">
 <span className="material-symbols-outlined text-[14px]">arrow_upward</span> 3 new
-                            </span>
+ </span>
 </div>
 <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mt-1 tracking-wider">Requires attention</p>
 </div>
@@ -72,8 +72,8 @@ export default function Page() {
 <path className="text-secondary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray="85, 100" strokeWidth="4"></path>
 </svg>
 <div className="absolute inset-0 flex items-center justify-center font-title-md text-title-md">
-                                    85%
-                                </div>
+ 85%
+ </div>
 </div>
 <div>
 <p className="font-body-sm text-body-sm text-on-surface-variant">142/165 Present</p>
@@ -116,8 +116,8 @@ export default function Page() {
 <td className="py-3 px-4">
 <div className="flex items-center gap-3">
 <div className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-title-md text-sm">
-                                                JD
-                                            </div>
+ JD
+ </div>
 <div>
 <p className="font-body-sm text-body-sm font-medium text-on-surface">Jane Doe</p>
 <p className="font-label-sm text-label-sm text-on-surface-variant">Engineering</p>
@@ -134,8 +134,8 @@ export default function Page() {
 <p className="font-body-sm text-body-sm text-on-surface">5 days</p>
 </td>
 <td className="py-3 px-4 hidden lg:table-cell max-w-[200px] truncate text-on-surface-variant font-body-sm text-body-sm">
-                                        Family vacation to the mountains...
-                                    </td>
+ Family vacation to the mountains...
+ </td>
 <td className="py-3 px-4 text-right">
 <div className="flex justify-end gap-2">
 <button className="w-8 h-8 rounded border border-secondary text-secondary hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-colors" title="Approve">
@@ -152,8 +152,8 @@ export default function Page() {
 <td className="py-3 px-4">
 <div className="flex items-center gap-3">
 <div className="w-8 h-8 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-title-md text-sm">
-                                                MS
-                                            </div>
+ MS
+ </div>
 <div>
 <p className="font-body-sm text-body-sm font-medium text-on-surface">Michael Smith</p>
 <p className="font-label-sm text-label-sm text-on-surface-variant">Marketing</p>
@@ -170,8 +170,8 @@ export default function Page() {
 <p className="font-body-sm text-body-sm text-on-surface">1 day</p>
 </td>
 <td className="py-3 px-4 hidden lg:table-cell max-w-[200px] truncate text-on-surface-variant font-body-sm text-body-sm">
-                                        Not feeling well, fever.
-                                    </td>
+ Not feeling well, fever.
+ </td>
 <td className="py-3 px-4 text-right">
 <div className="flex justify-end gap-2">
 <button className="w-8 h-8 rounded border border-secondary text-secondary hover:bg-secondary hover:text-on-secondary flex items-center justify-center transition-colors" title="Approve">
@@ -204,12 +204,12 @@ export default function Page() {
 <p className="font-body-sm text-body-sm text-on-surface">0.5 days</p>
 </td>
 <td className="py-3 px-4 hidden lg:table-cell max-w-[200px] truncate text-on-surface-variant font-body-sm text-body-sm">
-                                        Personal errands in the afternoon.
-                                    </td>
+ Personal errands in the afternoon.
+ </td>
 <td className="py-3 px-4 text-right">
 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-secondary/10 text-secondary border border-secondary/20">
 <span className="material-symbols-outlined text-[14px]">done_all</span> Approved
-                                        </span>
+ </span>
 </td>
 </tr>
 </tbody>
@@ -229,6 +229,6 @@ export default function Page() {
 </div>
 </div>
 </main>
-    </>
-  );
+ </>
+ );
 }
