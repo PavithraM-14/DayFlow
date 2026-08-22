@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import DashboardShell from '@/components/DashboardShell';
+import DocumentsPanel from '@/components/DocumentsPanel';
+import TagListEditor from '@/components/TagListEditor';
 import { getEmployee, updateEmployee } from '@/services/employees';
 import { getSalary, updateSalary } from '@/services/payroll';
 
@@ -58,6 +60,20 @@ export default function EmployeeProfileViewPage() {
   const [salaryForm, setSalaryForm] = useState({ wage: 0, workingDaysPerWeek: 5 });
   const [savingSalary, setSavingSalary] = useState(false);
 
+  const [skills, setSkills] = useState([]);
+  const [certifications, setCertifications] = useState([]);
+  const [savingTags, setSavingTags] = useState(false);
+
+  const [editingBank, setEditingBank] = useState(false);
+  const [bankForm, setBankForm] = useState({
+    bankName: '',
+    accountNumber: '',
+    ifscCode: '',
+    uanNumber: '',
+    panNumber: '',
+  });
+  const [savingBank, setSavingBank] = useState(false);
+
   const load = useCallback(async () => {
     setLoading(true);
     setError('');
@@ -85,6 +101,15 @@ export default function EmployeeProfileViewPage() {
       personalEmail: emp.personalEmail || '',
       address: emp.address || '',
       about: emp.about || '',
+    });
+    setSkills(emp.skills || []);
+    setCertifications(emp.certifications || []);
+    setBankForm({
+      bankName: emp.bankDetails?.bankName || '',
+      accountNumber: emp.bankDetails?.accountNumber || '',
+      ifscCode: emp.bankDetails?.ifscCode || '',
+      uanNumber: emp.bankDetails?.uanNumber || '',
+      panNumber: emp.bankDetails?.panNumber || '',
     });
 
     if (salaryResponse.success) {
@@ -132,6 +157,34 @@ export default function EmployeeProfileViewPage() {
       setNotice('Salary structure updated.');
     } else {
       setError(response.message || 'Could not update salary.');
+    }
+  };
+
+  const saveTags = async (nextSkills, nextCertifications) => {
+    setSavingTags(true);
+    setNotice('');
+    const response = await updateEmployee(id, { skills: nextSkills, certifications: nextCertifications });
+    setSavingTags(false);
+    if (response.success) {
+      setSkills(response.data.employee.skills || []);
+      setCertifications(response.data.employee.certifications || []);
+      setNotice('Skills & certifications updated.');
+    } else {
+      setError(response.message || 'Could not save that.');
+    }
+  };
+
+  const saveBank = async (event) => {
+    event.preventDefault();
+    setSavingBank(true);
+    setNotice('');
+    const response = await updateEmployee(id, { bankDetails: bankForm });
+    setSavingBank(false);
+    if (response.success) {
+      setEditingBank(false);
+      setNotice('Bank details updated.');
+    } else {
+      setError(response.message || 'Could not save bank details.');
     }
   };
 
@@ -223,6 +276,73 @@ export default function EmployeeProfileViewPage() {
                 <p>{employee?.leaveAllocation?.sick ?? 7} days</p>
               </div>
             </div>
+          </div>
+
+          <div className="bg-surface-container-lowest rounded-xl border border-outline-variant p-6">
+            <h3 className="font-title-md text-title-md mb-4">Skills &amp; Certifications</h3>
+            <div className="mb-4">
+              <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Skills</p>
+              <TagListEditor
+                value={skills}
+                onChange={(next) => {
+                  setSkills(next);
+                  saveTags(next, certifications);
+                }}
+                placeholder="Add a skill"
+              />
+            </div>
+            <div>
+              <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Certifications</p>
+              <TagListEditor
+                value={certifications}
+                onChange={(next) => {
+                  setCertifications(next);
+                  saveTags(skills, next);
+                }}
+                placeholder="Add a certification"
+              />
+            </div>
+            {savingTags && <p className="font-label-sm text-label-sm text-on-surface-variant mt-2">Saving…</p>}
+          </div>
+
+          <div className="bg-surface-container-lowest rounded-xl border border-outline-variant p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-title-md text-title-md">Bank Details</h3>
+              {!editingBank && (
+                <button
+                  type="button"
+                  onClick={() => setEditingBank(true)}
+                  className="font-label-sm text-label-sm text-primary hover:underline flex items-center gap-1"
+                >
+                  <span className="material-symbols-outlined text-[16px]">edit</span> Edit
+                </button>
+              )}
+            </div>
+            {!editingBank ? (
+              <div className="grid grid-cols-1 gap-3 font-body-sm text-body-sm">
+                <Field label="Bank Name" value={bankForm.bankName} />
+                <Field label="Account Number" value={bankForm.accountNumber} />
+                <Field label="IFSC Code" value={bankForm.ifscCode} />
+                <Field label="PAN No" value={bankForm.panNumber} />
+                <Field label="UAN No" value={bankForm.uanNumber} />
+              </div>
+            ) : (
+              <form onSubmit={saveBank} className="flex flex-col gap-3">
+                <TextInput label="Bank Name" value={bankForm.bankName} onChange={(v) => setBankForm({ ...bankForm, bankName: v })} />
+                <TextInput label="Account Number" value={bankForm.accountNumber} onChange={(v) => setBankForm({ ...bankForm, accountNumber: v })} />
+                <TextInput label="IFSC Code" value={bankForm.ifscCode} onChange={(v) => setBankForm({ ...bankForm, ifscCode: v })} />
+                <TextInput label="PAN No" value={bankForm.panNumber} onChange={(v) => setBankForm({ ...bankForm, panNumber: v })} />
+                <TextInput label="UAN No" value={bankForm.uanNumber} onChange={(v) => setBankForm({ ...bankForm, uanNumber: v })} />
+                <div className="flex justify-end gap-3 pt-1">
+                  <button type="button" onClick={() => setEditingBank(false)} className="px-4 py-2 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-highest">
+                    Cancel
+                  </button>
+                  <button type="submit" disabled={savingBank} className="px-4 py-2 bg-primary text-on-primary rounded-lg font-label-sm text-label-sm hover:opacity-90 disabled:opacity-60">
+                    {savingBank ? 'Saving…' : 'Save'}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
 
@@ -350,6 +470,11 @@ export default function EmployeeProfileViewPage() {
                 <Field label="Net Pay" value={currency(breakdown.netPay)} />
               </div>
             )}
+          </div>
+
+          <div className="bg-surface-container-lowest rounded-xl border border-outline-variant p-6">
+            <h3 className="font-title-md text-title-md mb-4">Documents</h3>
+            <DocumentsPanel employeeId={id} canUpload />
           </div>
         </div>
       </div>

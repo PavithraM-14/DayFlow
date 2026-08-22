@@ -83,8 +83,20 @@ const getEmployee = async (req, res, next) => {
 };
 
 // Fields an employee may change on their own record. Everything else on
-// this list is HR-only (see updateEmployee below).
-const SELF_EDITABLE_FIELDS = ["phone", "address", "personalEmail", "about", "skills"];
+// this list is HR-only (see updateEmployee below). Bank details and
+// skills/certifications live on this list too, per the wireframe's
+// "Private Info" tab on the employee's OWN profile — it's their money and
+// their résumé, so self-service here matches how Odoo/most HRMS tools
+// treat these fields (HR can still see and override them).
+const SELF_EDITABLE_FIELDS = [
+  "phone",
+  "address",
+  "personalEmail",
+  "about",
+  "skills",
+  "certifications",
+  "bankDetails",
+];
 
 // Fields HR may change on anyone at their company. Deliberately excludes
 // email/role/company/passwordHash — those go through dedicated, more
@@ -105,10 +117,46 @@ const HR_EDITABLE_FIELDS = [
   "address",
   "about",
   "skills",
+  "certifications",
   "bankDetails",
   "salary",
   "leaveAllocation",
 ];
+
+const MAX_TAG_LENGTH = 100;
+const MAX_TAGS = 50;
+const BANK_DETAIL_KEYS = ["bankName", "accountNumber", "ifscCode", "uanNumber", "panNumber"];
+
+/**
+ * Coerces a client-supplied skills/certifications value into a safe
+ * string array — never trusts the shape or size of arbitrary JSON, since
+ * this ends up in a MongoDB array field with no schema-level cap.
+ */
+const sanitizeTagList = (value) => {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((item) => typeof item === "string")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, MAX_TAGS)
+    .map((item) => item.slice(0, MAX_TAG_LENGTH));
+};
+
+/**
+ * Only lets through the known bank-detail sub-fields as trimmed strings —
+ * a client sending extra keys or non-string values (e.g. an object meant
+ * for a NoSQL-operator injection attempt) never reaches `.set()`.
+ */
+const sanitizeBankDetails = (value) => {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  const clean = {};
+  BANK_DETAIL_KEYS.forEach((key) => {
+    if (typeof value[key] === "string") {
+      clean[key] = value[key].trim().slice(0, 60);
+    }
+  });
+  return clean;
+};
 
 /**
  * PATCH /api/employees/:id
@@ -144,7 +192,16 @@ const updateEmployee = async (req, res, next) => {
     }
 
     allowedFields.forEach((field) => {
-      if (req.body[field] !== undefined) {
+      if (req.body[field] === undefined) return;
+
+      // These three accept arbitrary nested JSON from the client — sanitize
+      // shape and content before it ever reaches Mongoose, rather than
+      // trusting the request body directly.
+      if (field === "skills" || field === "certifications") {
+        employee.set(field, sanitizeTagList(req.body[field]));
+      } else if (field === "bankDetails") {
+        employee.set(field, sanitizeBankDetails(req.body[field]));
+      } else {
         employee.set(field, req.body[field]);
       }
     });

@@ -73,10 +73,55 @@ const uploadAvatar = (req, res, next) => {
   });
 };
 
+const MAX_DOCUMENT_BYTES = Number(process.env.MAX_DOCUMENT_BYTES || 10 * 1024 * 1024); // 10 MB
+
+// Deliberately narrow: resumes, certificates, ID proof, and the wireframe's
+// "sick leave certificate" attachment are all covered by this list. No
+// executable, script, or markup type is accepted — see document.controller.js
+// for why that matters at download time too (served as an attachment, not
+// rendered inline).
+const ALLOWED_DOCUMENT_MIME_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "image/png",
+  "image/jpeg",
+  "image/jpg",
+  "image/webp",
+];
+
+const documentUpload = multer({
+  storage,
+  limits: { fileSize: MAX_DOCUMENT_BYTES, files: 1 },
+  fileFilter: (req, file, cb) => {
+    if (!ALLOWED_DOCUMENT_MIME_TYPES.includes(file.mimetype)) {
+      return cb(new Error("Only PDF, Word, PNG, JPG or WEBP files are accepted"));
+    }
+    return cb(null, true);
+  },
+});
+
+/** Accepts a single "document" file for the employee documents endpoint. */
+const uploadDocument = (req, res, next) => {
+  documentUpload.single("document")(req, res, (err) => {
+    if (!err) return next();
+
+    const message =
+      err.code === "LIMIT_FILE_SIZE"
+        ? `Files must be smaller than ${Math.round(MAX_DOCUMENT_BYTES / 1024 / 1024)} MB`
+        : err.message || "File upload failed";
+
+    return res.status(400).json({ success: false, message });
+  });
+};
+
 module.exports = {
   uploadCompanyLogo,
   uploadAvatar,
+  uploadDocument,
   MAX_LOGO_BYTES,
   MAX_AVATAR_BYTES,
+  MAX_DOCUMENT_BYTES,
   ALLOWED_MIME_TYPES,
+  ALLOWED_DOCUMENT_MIME_TYPES,
 };

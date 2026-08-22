@@ -77,6 +77,7 @@ const userSchema = new mongoose.Schema(
     address: { type: String, trim: true, default: "" },
     about: { type: String, trim: true, maxlength: 2000, default: "" },
     skills: { type: [String], default: [] },
+    certifications: { type: [String], default: [] },
 
     avatar: {
       data: Buffer,

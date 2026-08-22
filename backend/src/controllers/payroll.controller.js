@@ -33,6 +33,8 @@ const loadTarget = async (req, res, id) => {
 const mySalary = async (req, res, next) => {
   try {
     const employee = await User.findById(req.auth.sub);
+    if (!employee) return fail(res, 401, "Your session is no longer valid");
+
     return res.status(200).json({
       success: true,
       data: {

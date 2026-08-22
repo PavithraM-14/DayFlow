@@ -673,6 +673,18 @@ const verifyEmployeeSignupOtp = async (req, res, next) => {
  */
 const login = async (req, res, next) => {
   try {
+    // Guard the type before any string method touches these — a JSON body
+    // can send an object/array/number here (e.g. an `email` that is itself
+    // `{ "$ne": null }`), and calling .trim() on that would throw before
+    // ever reaching a query. Rejecting it outright as "invalid" is both
+    // safer and gives a cleaner 400 than a 500 from the crash.
+    if (req.body.email !== undefined && typeof req.body.email !== "string") {
+      return fail(res, 400, "Enter a valid email address");
+    }
+    if (req.body.password !== undefined && typeof req.body.password !== "string") {
+      return fail(res, 400, "Password is required");
+    }
+
     const email = (req.body.email || "").trim().toLowerCase();
     const password = req.body.password || "";
 

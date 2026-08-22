@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import DashboardShell from '@/components/DashboardShell';
+import DocumentsPanel from '@/components/DocumentsPanel';
+import TagListEditor from '@/components/TagListEditor';
 import { useAuth } from '@/context/AuthContext';
 import { updateEmployee } from '@/services/employees';
 
@@ -18,6 +20,50 @@ export default function EmployeeProfile() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+
+  const [skills, setSkills] = useState(user?.skills || []);
+  const [certifications, setCertifications] = useState(user?.certifications || []);
+  const [savingTags, setSavingTags] = useState(false);
+
+  const [editingBank, setEditingBank] = useState(false);
+  const [bankForm, setBankForm] = useState({
+    bankName: user?.bankDetails?.bankName || '',
+    accountNumber: user?.bankDetails?.accountNumber || '',
+    ifscCode: user?.bankDetails?.ifscCode || '',
+    uanNumber: user?.bankDetails?.uanNumber || '',
+    panNumber: user?.bankDetails?.panNumber || '',
+  });
+  const [savingBank, setSavingBank] = useState(false);
+
+  const saveTags = async (nextSkills, nextCertifications) => {
+    if (!user?._id) return;
+    setSavingTags(true);
+    setNotice('');
+    const response = await updateEmployee(user._id, { skills: nextSkills, certifications: nextCertifications });
+    setSavingTags(false);
+    if (response.success) {
+      await refreshUser();
+      setNotice('Skills & certifications updated.');
+    } else {
+      setError(response.message || 'Could not save that.');
+    }
+  };
+
+  const saveBank = async (event) => {
+    event.preventDefault();
+    if (!user?._id) return;
+    setSavingBank(true);
+    setNotice('');
+    const response = await updateEmployee(user._id, { bankDetails: bankForm });
+    setSavingBank(false);
+    if (response.success) {
+      await refreshUser();
+      setEditingBank(false);
+      setNotice('Bank details updated.');
+    } else {
+      setError(response.message || 'Could not save bank details.');
+    }
+  };
 
   const startEditing = () => {
     setForm({
@@ -188,6 +234,109 @@ export default function EmployeeProfile() {
               Job details, department, and manager will show here once HR fills them in on your record.
             </p>
           )}
+        </div>
+
+        <div className="md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+          <h3 className="font-title-md text-title-md mb-4 flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary">workspace_premium</span>
+            Skills &amp; Certifications
+          </h3>
+          <div className="mb-4">
+            <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Skills</p>
+            <TagListEditor
+              value={skills}
+              onChange={(next) => {
+                setSkills(next);
+                saveTags(next, certifications);
+              }}
+              placeholder="Add a skill"
+            />
+          </div>
+          <div>
+            <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Certifications</p>
+            <TagListEditor
+              value={certifications}
+              onChange={(next) => {
+                setCertifications(next);
+                saveTags(skills, next);
+              }}
+              placeholder="Add a certification"
+            />
+          </div>
+          {savingTags && <p className="font-label-sm text-label-sm text-on-surface-variant mt-2">Saving…</p>}
+        </div>
+
+        <div className="md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-title-md text-title-md flex items-center gap-2">
+              <span className="material-symbols-outlined text-primary">account_balance</span>
+              Bank Details
+            </h3>
+            {!editingBank && (
+              <button
+                type="button"
+                onClick={() => setEditingBank(true)}
+                className="font-label-sm text-label-sm text-primary hover:underline flex items-center gap-1"
+              >
+                <span className="material-symbols-outlined text-[16px]">edit</span> Edit
+              </button>
+            )}
+          </div>
+          {!editingBank ? (
+            <div className="grid grid-cols-1 gap-3 font-body-sm text-body-sm">
+              <div>
+                <p className="text-on-surface-variant uppercase font-label-sm text-label-sm mb-0.5">Bank Name</p>
+                <p>{bankForm.bankName || '—'}</p>
+              </div>
+              <div>
+                <p className="text-on-surface-variant uppercase font-label-sm text-label-sm mb-0.5">Account Number</p>
+                <p>{bankForm.accountNumber || '—'}</p>
+              </div>
+              <div>
+                <p className="text-on-surface-variant uppercase font-label-sm text-label-sm mb-0.5">IFSC Code</p>
+                <p>{bankForm.ifscCode || '—'}</p>
+              </div>
+              <div>
+                <p className="text-on-surface-variant uppercase font-label-sm text-label-sm mb-0.5">PAN No</p>
+                <p>{bankForm.panNumber || '—'}</p>
+              </div>
+              <div>
+                <p className="text-on-surface-variant uppercase font-label-sm text-label-sm mb-0.5">UAN No</p>
+                <p>{bankForm.uanNumber || '—'}</p>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={saveBank} className="flex flex-col gap-3">
+              {['bankName', 'accountNumber', 'ifscCode', 'panNumber', 'uanNumber'].map((field) => (
+                <div key={field}>
+                  <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-1 capitalize">
+                    {field.replace(/([A-Z])/g, ' $1')}
+                  </label>
+                  <input
+                    className="w-full bg-surface border border-outline-variant rounded-[10px] py-2 px-3 text-on-surface font-body-md focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim focus:outline-none"
+                    value={bankForm[field]}
+                    onChange={(e) => setBankForm({ ...bankForm, [field]: e.target.value })}
+                  />
+                </div>
+              ))}
+              <div className="flex justify-end gap-3 pt-1">
+                <button type="button" onClick={() => setEditingBank(false)} className="px-4 py-2 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-highest">
+                  Cancel
+                </button>
+                <button type="submit" disabled={savingBank} className="px-4 py-2 bg-primary text-on-primary rounded-lg font-label-sm text-label-sm hover:opacity-90 disabled:opacity-60">
+                  {savingBank ? 'Saving…' : 'Save'}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+
+        <div className="md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+          <h3 className="font-title-md text-title-md mb-4 flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary">description</span>
+            My Documents
+          </h3>
+          {user?._id && <DocumentsPanel employeeId={user._id} canUpload />}
         </div>
       </div>
     </DashboardShell>

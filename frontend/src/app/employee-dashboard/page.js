@@ -1,10 +1,18 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import { useAuth } from '@/context/AuthContext';
 import { checkIn, checkOut } from '@/services/attendance';
 import { dashboardSummary } from '@/services/dashboard';
+
+const QUICK_LINKS = [
+  { href: '/employee-dashboard/profile', label: 'Profile', icon: 'person' },
+  { href: '/employee-dashboard/attendance', label: 'Attendance', icon: 'timer' },
+  { href: '/employee-dashboard/time-off', label: 'Leave Requests', icon: 'event_busy' },
+];
 
 const formatTime = (value) => {
   if (!value) return '--:--';
@@ -27,8 +35,14 @@ const timeAgo = (value) => {
 };
 
 export default function EmployeeDashboard() {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
+  const router = useRouter();
   const firstName = (user?.name || '').split(' ')[0] || 'there';
+
+  const handleLogout = () => {
+    signOut();
+    router.replace('/login');
+  };
 
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -87,6 +101,29 @@ export default function EmployeeDashboard() {
           <h2 className="font-display-lg text-display-lg text-on-surface tracking-tight">Good day, {firstName}.</h2>
           <p className="font-body-md text-body-md text-on-surface-variant mt-2">Here&apos;s an overview of your workday and pending items.</p>
         </div>
+      </div>
+
+      {/* Quick-access cards, per the spec's Employee Dashboard requirement
+          (3.2.1: Profile / Attendance / Leave Requests / Logout). */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        {QUICK_LINKS.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex flex-col items-center gap-2 text-center hover:border-primary hover:shadow-sm transition-all"
+          >
+            <span className="material-symbols-outlined text-primary">{link.icon}</span>
+            <span className="font-label-sm text-label-sm text-on-surface">{link.label}</span>
+          </Link>
+        ))}
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex flex-col items-center gap-2 text-center hover:border-error hover:shadow-sm transition-all"
+        >
+          <span className="material-symbols-outlined text-error">logout</span>
+          <span className="font-label-sm text-label-sm text-on-surface">Logout</span>
+        </button>
       </div>
 
       {error && (

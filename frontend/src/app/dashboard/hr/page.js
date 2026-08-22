@@ -1,9 +1,19 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
 import DashboardShell from '@/components/DashboardShell';
 import { dashboardSummary } from '@/services/dashboard';
+import { listEmployees } from '@/services/employees';
 import { approveLeave, listCompanyLeaves, rejectLeave } from '@/services/timeOff';
+
+const STATUS_DOT = {
+  present: 'bg-[#2e7d32]',
+  'half-day': 'bg-[#d97706]',
+  leave: 'bg-primary',
+  absent: 'bg-error',
+  unmarked: 'bg-outline-variant',
+};
 
 const formatDateRange = (start, end) => {
   const fmt = (value) => {
@@ -37,6 +47,9 @@ export default function HRDashboardPage() {
   const [actingOn, setActingOn] = useState(null);
   const [notice, setNotice] = useState('');
 
+  const [employees, setEmployees] = useState([]);
+  const [employeesLoading, setEmployeesLoading] = useState(true);
+
   const loadSummary = useCallback(async () => {
     const response = await dashboardSummary();
     if (response.success) {
@@ -57,10 +70,20 @@ export default function HRDashboardPage() {
     setRequestsLoading(false);
   }, []);
 
+  const loadEmployees = useCallback(async () => {
+    setEmployeesLoading(true);
+    const response = await listEmployees();
+    if (response.success) {
+      setEmployees((response.data?.employees || []).slice(0, 6));
+    }
+    setEmployeesLoading(false);
+  }, []);
+
   useEffect(() => {
     loadSummary();
     loadRequests();
-  }, [loadSummary, loadRequests]);
+    loadEmployees();
+  }, [loadSummary, loadRequests, loadEmployees]);
 
   const act = async (request, action) => {
     setActingOn(request._id);
@@ -268,6 +291,53 @@ export default function HRDashboardPage() {
               <p className="font-body-sm text-body-sm text-on-surface-variant">Nothing to show yet.</p>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Employee list widget, per the spec's Admin dashboard requirement
+          ("Displays: Employee list... Ability to switch between
+          employees") — clicking straight into any employee's view-only
+          profile from here is that "switching". */}
+      <div className="bg-surface-container-lowest border border-outline-variant rounded-[10px] overflow-hidden mt-gutter">
+        <div className="px-4 py-3 border-b border-outline-variant flex justify-between items-center bg-[#FAF8FA]">
+          <h3 className="font-title-md text-title-md text-on-surface">Employees</h3>
+          <Link href="/dashboard/employee" className="font-label-sm text-label-sm text-primary hover:underline">
+            View All
+          </Link>
+        </div>
+        <div className="divide-y divide-outline-variant">
+          {employeesLoading ? (
+            <div className="p-6 text-center font-body-sm text-body-sm text-on-surface-variant">Loading…</div>
+          ) : employees.length === 0 ? (
+            <div className="p-6 text-center font-body-sm text-body-sm text-on-surface-variant">No employees yet.</div>
+          ) : (
+            employees.map((emp) => (
+              <Link
+                key={emp._id}
+                href={`/dashboard/profile/${emp._id}`}
+                className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-surface-container-lowest transition-colors"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="relative flex-shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">
+                      {(emp.name || '?').charAt(0).toUpperCase()}
+                    </div>
+                    <span
+                      className={`absolute bottom-0 right-0 w-2.5 h-2.5 border-2 border-surface-container-lowest rounded-full ${STATUS_DOT[emp.todayStatus] || STATUS_DOT.unmarked}`}
+                    ></span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-body-sm text-body-sm font-medium text-on-surface truncate">{emp.name}</p>
+                    <p className="font-label-sm text-label-sm text-on-surface-variant truncate">
+                      {emp.jobPosition || (emp.role === 'hr' ? 'HR' : 'Employee')}
+                      {emp.department ? ` · ${emp.department}` : ''}
+                    </p>
+                  </div>
+                </div>
+                <span className="material-symbols-outlined text-outline flex-shrink-0">chevron_right</span>
+              </Link>
+            ))
+          )}
         </div>
       </div>
     </DashboardShell>

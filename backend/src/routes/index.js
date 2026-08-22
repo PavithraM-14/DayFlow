@@ -12,5 +12,6 @@ router.use("/time-off", require("./timeOff.routes"));
 router.use("/payroll", require("./payroll.routes"));
 router.use("/dashboard", require("./dashboard.routes"));
 router.use("/reports", require("./reports.routes"));
+router.use("/documents", require("./document.routes"));
 
 module.exports = router;
