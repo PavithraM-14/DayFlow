@@ -107,11 +107,7 @@ export default function EmployeeSignUpPage() {
           required
         />
 
-        <InfoNote>
-          Your <strong>Login ID</strong> is generated automatically after
-          sign up — company and name initials plus year and serial number
-          (e.g. <strong>OIJODO20260001</strong>).
-        </InfoNote>
+        
 
         <SubmitButton>Sign Up</SubmitButton>
       </form>
